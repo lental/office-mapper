@@ -1,7 +1,7 @@
 
 var onMapsReady = function() {
     var MainView = Backbone.View.extend({
-      el: 'body',
+
         initialize: function(){
           this.render();
         },
@@ -18,9 +18,10 @@ var onMapsReady = function() {
             <% }); %> \
         <% }); %> "),
       render: function() {
-        this.$el.html(this.template({maps:this.model}));
+        $("#" + this.id).html(this.template({maps:this.model}));
         return this;
       }
     });
-    new MainView({model:maps});
+    new MainView({model:maps, 
+      id: 'map'});
 }
