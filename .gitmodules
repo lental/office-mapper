@@ -1,0 +1,18 @@
+[submodule "vendor/src/github.com/gorilla/mux"]
+	path = vendor/src/github.com/gorilla/mux
+	url = git://github.com/gorilla/mux.git
+[submodule "vendor/src/github.com/gorilla/context"]
+	path = vendor/src/github.com/gorilla/context
+	url = git://github.com/gorilla/context.git
+[submodule "vendor/src/ooyala/go-ooyala-headers"]
+	path = vendor/src/ooyala/go-ooyala-headers
+	url = http://github.services.ooyala.net/Platform/go-ooyala-headers.git
+[submodule "vendor/src/ooyala/go-ooyalalog"]
+	path = vendor/src/ooyala/go-ooyalalog
+	url = http://github.services.ooyala.net/Platform/go-ooyalalog.git
+[submodule "vendor/src/ooyala/go-ooyaladb"]
+	path = vendor/src/ooyala/go-ooyaladb
+	url = http://github.services.ooyala.net/Platform/go-ooyaladb.git
+[submodule "vendor/src/github.com/ziutek/mymysql"]
+	path = vendor/src/github.com/ziutek/mymysql
+	url = git://github.com/ziutek/mymysql

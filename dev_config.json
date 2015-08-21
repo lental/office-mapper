@@ -1,0 +1,15 @@
+{
+   "http_port":7070,
+   "container":{
+      "id":"development-local",
+      "host":"localhost",
+      "env":"development"
+   },
+   "dependencies":{
+      "mysql": {
+         "address": ["127.0.0.1:3306"],
+         "username": "root",
+         "password": ""
+      }
+   }
+}
