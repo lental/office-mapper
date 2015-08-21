@@ -20,7 +20,7 @@ CREATE TABLE users (
   desk_id INT,
   email VARCHAR(64) NOT NULL,
   thumbnail VARCHAR(1024),
-  admin BIT NOT NULL
+  admin TINYINT NOT NULL
 );
 
 CREATE TABLE rooms (
@@ -31,15 +31,15 @@ CREATE TABLE rooms (
   ypos INT NOT NULL,
   width INT NOT NULL,
   height INT NOT NULL,
-  tv BIT NOT NULL,
-  phone BIT NOT NULL,
-  chromecast BIT NOT NULL,
-  chairs INT NOT NULL,
+  tv TINYINT NOT NULL,
+  phone TINYINT NOT NULL,
+  chromecast TINYINT NOT NULL,
+  seats INT NOT NULL,
   KEY section_id (section_id),
   KEY tv (tv),
   KEY phone (phone),
   KEY chromecast (chromecast),
-  KEY chairs (chairs)
+  KEY seats (seats)
 );
 
 CREATE TABLE places (

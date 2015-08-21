@@ -9,7 +9,7 @@ INSERT INTO users (id, name, desk_id, email, thumbnail, admin) VALUES
   (2, "Evan Danaher", 3, "edanaher@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECK_gsp7dy8m9rgEiC3ZjYXJkX3Bob3RvKig1NDg4OWY0MGRhMmVhY2JlMWQxYjIzZDhhODEwYmRiYjRlOWY0YTE2MAHOrq89PJK7IN_axRHXyfdI2l9EYw", 0),
   (3, "Dustin Preuss", 2, "dustin@ooyala.com", "https://plus.google.com/_/focus/photos/private/AIbEiAIAAABDCOflwJPz89jUCiILdmNhcmRfcGhvdG8qKDJiODcxOWU0OWRjYzNkODBlYzQ3OWE0ZjA3ZGZhNmVlYThjMjY1NzQwAVbjtYb5KNg9HaM3FMlxZtTKGtkm", 1);
 
-INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, chromecast, chairs) VALUES
+INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, chromecast, seats) VALUES
   (1, "Shawshank Redemption", 1, 10, 110, 20, 40, 1, 1, 1, 4),
   (2, "Zamba", 2, 40, 90, 30, 80, 1, 1, 1, 20);
 
