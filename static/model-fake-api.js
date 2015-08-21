@@ -1,27 +1,30 @@
-var users = new Users();
-users.fetch({success:function(){
-    renderUsers();
-  }});
+var users, plases, rooms, maps, pageState;
+$( document ).ready(function(){
+    users = new Users();
+    users.fetch({success:function(){
+        renderUsers();
+      }});
 
-var places = new Places();
-places.fetch({success:function(){
-    renderPlaces();
-  }});
+    places = new Places();
+    places.fetch({success:function(){
+        renderPlaces();
+      }});
 
-var rooms = new Rooms();
-rooms.fetch({success:function(){
-    renderRooms();
-  }});
+    rooms = new Rooms();
+    rooms.fetch({success:function(){
+        renderRooms();
+      }});
 
-var maps = new Maps();
-maps.fetch({success:function(){
-  renderMapSelecton();
-  firstMap = maps.findWhere({"id":0});
-  firstMap.url = firstMap.get("url");
-  firstMap.fetch({success:function(){
-    onMapsReady();
-    renderInitialMap();
-  }});
-}});
+    maps = new Maps();
+    maps.fetch({success:function(){
+      renderMapSelecton();
+      firstMap = maps.findWhere({"id":0});
+      firstMap.url = firstMap.get("url");
+      firstMap.fetch({success:function(){
+        onMapsReady();
+        renderInitialMap();
+      }});
+    }});
 
-var pageState = new PageState();
+pageState = new PageState();
+});

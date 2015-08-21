@@ -30,6 +30,5 @@ var RoomListView = Backbone.View.extend({
   }
 });
 var renderRooms = function() {
-  new RoomListView({model:rooms, 
-    id: 'room-list'});
+  new RoomListView({model:rooms});
 };
