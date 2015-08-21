@@ -20,8 +20,8 @@ func AppHandlers() http.Handler {
 	// App routes
 	r.HandleFunc("/v1/maps", MapsHandler).Methods("GET")   // Sparse
 	r.HandleFunc("/v1/users", UsersHandler).Methods("GET") // All data
-	r.HandleFunc("/v1/rooms", MapsHandler).Methods("GET")  // All data
-	r.HandleFunc("/v1/places", MapsHandler).Methods("GET") // All data
+	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")  // All data
+	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET") // All data
 
 	r.HandleFunc("/healthz", HealthzHandler).Methods("GET")
 	r.HandleFunc("/statusz", StatuszHandler).Methods("GET")
@@ -44,9 +44,33 @@ func MapsHandler(w http.ResponseWriter, r *http.Request) {
 func UsersHandler(w http.ResponseWriter, r *http.Request) {
 	users, err := data.Users()
 	if err != nil {
-		panic("Error getting maps data")
+		panic("Error getting user data")
 	}
 	resp, err := json.Marshal(map[string][]data.User{"users": users})
+	if err != nil {
+		panic("Error converting to JSON")
+	}
+	w.Write(resp)
+}
+
+func RoomsHandler(w http.ResponseWriter, r *http.Request) {
+	rooms, err := data.Rooms()
+	if err != nil {
+		panic("Error getting rooms data")
+	}
+	resp, err := json.Marshal(map[string][]data.Room{"rooms": rooms})
+	if err != nil {
+		panic("Error converting to JSON")
+	}
+	w.Write(resp)
+}
+
+func PlacesHandler(w http.ResponseWriter, r *http.Request) {
+	places, err := data.Places()
+	if err != nil {
+		panic("Error getting places data")
+	}
+	resp, err := json.Marshal(map[string][]data.Place{"places": places})
 	if err != nil {
 		panic("Error converting to JSON")
 	}
