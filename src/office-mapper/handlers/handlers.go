@@ -18,7 +18,7 @@ func AppHandlers() http.Handler {
 	r.KeepContext = true
 
 	// App routes
-	r.HandleFunc("/maps", MapsHandler).Methods("GET")
+	r.HandleFunc("/v1/maps", MapsHandler).Methods("GET")
 	r.HandleFunc("/healthz", HealthzHandler).Methods("GET")
 	r.HandleFunc("/statusz", StatuszHandler).Methods("GET")
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
