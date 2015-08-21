@@ -1,0 +1,11 @@
+.desk {
+  height: 50px;
+  width: 50px;
+  background-color: coral;
+}
+
+#map {
+  width: 70%;
+  height: 100%;
+  background-color: darkgray;
+}
