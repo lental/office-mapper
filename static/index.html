@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="styles/layout.css"></link>
     <link rel="stylesheet" href="styles/list-bar.css"></link>
 
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
+
     <meta name="google-signin-client_id" content="805151204913-evi7t6cva0ijo71m2rggel6fgtlg3v82.apps.googleusercontent.com">
     <script src="views/gplus-button.js"></script>
   </head>
@@ -31,7 +32,11 @@
         <div class='listBarSection' id='place-list'></div>
       </div>
       <div class='flexElement' id='map'>map</div>
-      <div class='flexElement' id='edit-bar'>edit</div>
+      <div class='flexElement' id='edit-bar'>
+        <div class='logout'>Logout</div>
+        <div class='updateUsers'>Get Users</div>
+        <div id='my-signin2'></div>
+      </div>
     </div>
     hello
   </body>
