@@ -9,7 +9,7 @@ var onMapsReady = function() {
             Name: <%= map.get('name') %> <br /> \
             <% map.get('sections').each( function(section) { %>\
                 Section: <%= section.get('name') %> <br /> \
-                <% section.get('desk_groups').each( function(desk_group) { %>\
+                <% section.get('deskGroups').each( function(desk_group) { %>\
                     DeskGroup:  <br /> \
                     <% desk_group.get('desks').each( function(desk) { %>\
                         Desk: <%= JSON.stringify(desk.get('position')) %> <br /> \

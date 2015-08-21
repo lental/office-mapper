@@ -13,7 +13,7 @@ Map = Backbone.Model.extend({
 
 Section = Backbone.Model.extend({
     parse : function (response) {
-        response.desk_groups = new DeskGroups(response.desk_groups, {parse: true});
+        response.deskGroups = new DeskGroups(response.deskGroups, {parse: true});
         return response;
     }
 });
@@ -28,7 +28,7 @@ Desk = Backbone.Model.extend({});
 
 Room = Backbone.Model.extend({});
 
-PointOfInterest = Backbone.Model.extend({});
+Place = Backbone.Model.extend({});
 
 Users = Backbone.Collection.extend({
     model: User,
@@ -37,10 +37,10 @@ Users = Backbone.Collection.extend({
     }
 });
 
-PointsOfInterest = Backbone.Collection.extend({
-    model: PointOfInterest,
+Places = Backbone.Collection.extend({
+    model: Place,
     parse : function(response){
-        return response.points_of_interest;  
+        return response.places;  
     }
 });
 

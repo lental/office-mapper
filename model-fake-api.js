@@ -1,8 +1,8 @@
 var users = new Users();
 users.fetch();
 
-var pointsOfInterest = new PointsOfInterest();
-pointsOfInterest.fetch();
+var places = new Places();
+places.fetch();
 
 var rooms = new Rooms();
 rooms.fetch();
