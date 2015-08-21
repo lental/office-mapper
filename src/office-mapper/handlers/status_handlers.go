@@ -25,7 +25,7 @@ func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 
 	//if err := validateDBConnection(); err == nil {
 	w.Header().Add("Server-Status", "OK")
-	fmt.Fprintln(w, "Office-mapper is running")
+	fmt.Fprintln(w, "office-mapper knows where you live")
 	/*} else {
 		// Skeletor can still serve some requests from the cache if the DB is down
 		w.Header().Add("Server-Status", "DEGRADED")

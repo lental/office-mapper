@@ -1,0 +1,11 @@
+name = "office-mapper"
+description = "Magic"
+internal = false
+image = "precise64"
+app_type = "go1.4.1"
+run_command = "./office-mapper"
+cpu_shares = 1
+memory_limit = 128
+dependencies = [
+  "cmk"
+]

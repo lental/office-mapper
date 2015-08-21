@@ -10,22 +10,32 @@
     <script src="classes-fake-api.js"> </script>
     <script src="model-fake-api.js"> </script>
     <script src="views/demo.js"> </script>
-    <script src="views/list-bar.js"> </script>
+    <script src="views/user-list.js"> </script>
+    <script src="views/room-list.js"> </script>
+    <script src="views/place-list.js"> </script>
 
     <link rel="stylesheet" href="styles/layout.css"></link>
     <link rel="stylesheet" href="styles/list-bar.css"></link>
+    
     <script type='text/javascript' src='vendor/jquery-ui.js'></script>
     <link rel='stylesheet' href='vendor/jquery-ui.css'</link>
-
     <script type='text/javascript' src='map-interactions.js'></script>
     <link rel='stylesheet' href='styles/map.css'</link>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="805151204913-evi7t6cva0ijo71m2rggel6fgtlg3v82.apps.googleusercontent.com">
+    <script src="views/gplus-button.js"></script>
   </head>
   <body>
-    <div id='navigation-bar'>nav</div>
+    <div id='navigationBar'>nav</div>
     <div id='flexbox'>
-      <div class='flex-element' id='list-bar'>list</div>
-      <div class='flex-element' id='map'></div>
-      <div class='flex-element' id='edit-bar'>edit</div>
+      <div class='flexElement' id='list-bar'>
+        <div class='listBarSection' id='user-list'></div>
+        <div class='listBarSection' id='room-list'></div>
+        <div class='listBarSection' id='place-list'></div>
+      </div>
+      <div class='flexElement' id='map'>map</div>
+      <div class='flexElement' id='edit-bar'>edit</div>
     </div>
     hello
   </body>

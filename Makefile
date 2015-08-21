@@ -23,6 +23,7 @@ build: init
 package: build
 	@cp -r bin package
 	@cp -r templates package
+	@cp -r static package
 
 dep:
 	@git submodule update --init
