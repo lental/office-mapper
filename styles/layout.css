@@ -1,0 +1,12 @@
+
+#flexbox {
+  display:flex;
+}
+
+.flex-element {
+  margin:10px;
+}
+
+#list-bar{
+  flex: 1;
+}

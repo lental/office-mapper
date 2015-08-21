@@ -1,5 +1,7 @@
 var users = new Users();
-users.fetch();
+users.fetch({success:function(){
+    renderUsers();
+  }});
 
 var places = new Places();
 places.fetch();

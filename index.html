@@ -11,12 +11,18 @@
     <script src="classes-fake-api.js"> </script>
     <script src="model-fake-api.js"> </script>
     <script src="views/demo.js"> </script>
+    <script src="views/list-bar.js"> </script>
+
+    <link rel="stylesheet" href="styles/layout.css"></link>
+    <link rel="stylesheet" href="styles/list-bar.css"></link>
   </head>
   <body>
     <div id='navigation-bar'>nav</div>
-    <div id='list-bar'>list</div>
-    <div id='map'>map</div>
-    <div id='edit-bar'>edit</div>
+    <div id='flexbox'>
+      <div class='flex-element' id='list-bar'>list</div>
+      <div class='flex-element' id='map'>map</div>
+      <div class='flex-element' id='edit-bar'>edit</div>
+    </div>
     hello
   </body>
 
