@@ -1,0 +1,18 @@
+
+var userJson = {"users":[{"name":"Michael", "id":0, "desk_id":0, "email":"michael.len@ooyala.com", "thumbnailUrl":"https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECNn4_9WI4pz-nwEiC3ZjYXJkX3Bob3RvKigwMWJlMmFjZjk2YWFlMzkyODQ1MmZmYzc4OTQ1ZTQ0Y2UzMDM1MWRjMAHNy1tiC-4vJNOiL2aadmRRetRhNw"},{"name":"Evan", "id":1, "desk_id":10, "email":"edanaher@ooyala.com", "thumbnailUrl":"https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECK_gsp7dy8m9rgEiC3ZjYXJkX3Bob3RvKig1NDg4OWY0MGRhMmVhY2JlMWQxYjIzZDhhODEwYmRiYjRlOWY0YTE2MAHOrq89PJK7IN_axRHXyfdI2l9EYw"},{"name":"Dustin", "id":3, "desk_id":1, "email":"dustin@ooyala.com", "thumbnailUrl":"https://plus.google.com/_/focus/photos/private/AIbEiAIAAABDCOflwJPz89jUCiILdmNhcmRfcGhvdG8qKDJiODcxOWU0OWRjYzNkODBlYzQ3OWE0ZjA3ZGZhNmVlYThjMjY1NzQwAVbjtYb5KNg9HaM3FMlxZtTKGtkm"}]};
+
+var poiJson = {"places":[{"name":"Kitchen Area", "description":"We eat here", "id":0, "sectionId":0, "position":{"x":10, "y":10, "w":100, "h":100}}, {"name":"Electrical Room", "description":"Electricity is here", "id":1, "sectionId":0, "position":{"x":110, "y":10, "w":100, "h":100}},{"name":"Bathroom", "description":"baths are here", "id":3, "sectionId":1, "position":{"x":110, "y":110, "w":50, "h":50}}]};
+
+var roomsJson = {"conferenceRooms":[{"name":"Shawshank Redemption", "features":{"chromecast":true, "phone":true, "tv":true, "seats":4}, "id":0, "sectionId":0, "position":{"x":10, "y":110, "w":20, "h":40}} ]};
+
+var mapsJson = {"maps":[{"id":0, "name":"Santa Clara"},{"id":1, "name":"Guadalajara"}, {"id":2, "name":"London"}, {"id":3, "name":"Stockholm"}]};
+
+var mapJson = {"map":{"id":0, "name":"Santa Clara", "sections":[{"id":0, "name":"Engineering Area", "position":{"x":0, "y":0, "w":600, "h":600}, "desk_groups":[{"id":0, "xy_position":{"x":10, "y":160}, "desks":[{"id":0, "position":{"x":10, "y":10, "w":10, "h":20}, "rotation":0},{"id":1, "position":{"x":10, "y":30, "w":10, "h":20}, "rotation":0}, {"id":2, "position":{"x":15, "y":60, "w":10, "h":20}, "rotation":30},{"id":3, "position":{"x":30, "y":15, "w":10, "h":20}, "rotation":45}]},{"id":2, "xy_position":{"x":160, "y":10}, "desks":[{"id":4, "position":{"x":0, "y":0, "w":10, "h":20}, "rotation":0},{"id":7, "position":{"x":30, "y":30, "w":10, "h":20}, "rotation":0}, {"id":5, "position":{"x":15, "y":60, "w":10, "h":20}, "rotation":30},{"id":6, "position":{"x":30, "y":75, "w":10, "h":20}, "rotation":45}]}]},{"id":1, "name":"Non-Engineering Area", "position":{"x":0, "y":650, "w":600, "h":300}, "desk_groups":[{"id":3, "xy_position":{"x":10, "y":160}, "desks":[{"id":7, "position":{"x":10, "y":10, "w":10, "h":20}, "rotation":0},{"id":8, "position":{"x":10, "y":30, "w":10, "h":20}, "rotation":0}, {"id":9, "position":{"x":15, "y":60, "w":10, "h":20}, "rotation":30},{"id":10, "position":{"x":30, "y":15, "w":10, "h":20}, "rotation":45}]},{"id":4, "xy_position":{"x":160, "y":10}, "desks":[{"id":11, "position":{"x":0, "y":0, "w":10, "h":20}, "rotation":0},{"id":12, "position":{"x":30, "y":30, "w":10, "h":20}, "rotation":0}, {"id":13, "position":{"x":15, "y":60, "w":10, "h":20}, "rotation":30},{"id":14, "position":{"x":30, "y":75, "w":10, "h":20}, "rotation":45}]}]}]}};
+
+var users = new Users(userJson["users"]);
+var pointsOfInterest = new PointsOfInterest(poiJson["places"]);
+var rooms = new Rooms(roomsJson["conferenceRooms"]);
+var maps = new Maps(mapsJson["maps"]);
+
+
+maps.findWhere({"id": mapJson["map"]["id"]}).set(mapJson["map"]);
