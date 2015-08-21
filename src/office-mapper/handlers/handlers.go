@@ -18,9 +18,9 @@ func AppHandlers() http.Handler {
 	r.KeepContext = true
 
 	// App routes
-	r.HandleFunc("/v1/maps", MapsHandler).Methods("GET")   // Sparse
-	r.HandleFunc("/v1/users", UsersHandler).Methods("GET") // All data
-	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")  // All data
+	r.HandleFunc("/v1/maps", MapsHandler).Methods("GET")     // Sparse
+	r.HandleFunc("/v1/users", UsersHandler).Methods("GET")   // All data
+	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")   // All data
 	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET") // All data
 
 	r.HandleFunc("/healthz", HealthzHandler).Methods("GET")

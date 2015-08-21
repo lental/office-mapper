@@ -1,10 +1,10 @@
 package data
 
 type Position struct {
-  X int `json:"x"`
-  Y int `json:"y"`
-  W int `json:"w"`
-  H int `json:"h"`
+	X int `json:"x"`
+	Y int `json:"y"`
+	W int `json:"w"`
+	H int `json:"h"`
 }
 
 type Map struct {
@@ -22,28 +22,27 @@ type User struct {
 }
 
 type Features struct {
-  Chromecast bool `json:"chromecast"`
-  Phone bool `json:"phone"`
-  Tv bool `json:"tv"`
-  Seats int `json:"seats"`
+	Chromecast bool `json:"chromecast"`
+	Phone      bool `json:"phone"`
+	Tv         bool `json:"tv"`
+	Seats      int  `json:"seats"`
 }
 
 type Room struct {
-	Id           int    `json:"id"`
-	Name         string `json:"name"`
-	SectionId    int    `json:"sectionId"`
-  Position Position `json:"position"`
-  Features Features `json:"features"`
+	Id        int      `json:"id"`
+	Name      string   `json:"name"`
+	SectionId int      `json:"sectionId"`
+	Position  Position `json:"position"`
+	Features  Features `json:"features"`
 }
 
 type Place struct {
-	Id           int    `json:"id"`
-	Name         string `json:"name"`
-	SectionId    int    `json:"sectionId"`
-	Description         string `json:"description"`
-  Position Position `json:"position"`
+	Id          int      `json:"id"`
+	Name        string   `json:"name"`
+	SectionId   int      `json:"sectionId"`
+	Description string   `json:"description"`
+	Position    Position `json:"position"`
 }
-
 
 func Maps() ([]Map, error) {
 	mapsData := []Map{
@@ -65,18 +64,18 @@ func Users() ([]User, error) {
 }
 
 func Rooms() ([]Room, error) {
-  roomData := []Room{
-   Room{Name:"Shawshank Redemption", Features:Features{Chromecast:true, Phone:true, Tv:true, Seats:4}, Id:0, SectionId:0, Position:Position{X:10, Y:110, W:20, H:40}},
-  Room{Name:"Zamba", Features:Features{Chromecast:true, Phone:true, Tv:true, Seats:4}, Id:1, SectionId:1, Position:Position{X:10, Y:110, W:20, H:40}}}
+	roomData := []Room{
+		{Name: "Shawshank Redemption", Features: Features{Chromecast: true, Phone: true, Tv: true, Seats: 4}, Id: 0, SectionId: 0, Position: Position{X: 10, Y: 110, W: 20, H: 40}},
+		{Name: "Zamba", Features: Features{Chromecast: true, Phone: true, Tv: true, Seats: 4}, Id: 1, SectionId: 1, Position: Position{X: 10, Y: 110, W: 20, H: 40}}}
 
-  return roomData, nil
+	return roomData, nil
 }
 
 func Places() ([]Place, error) {
-  placesData := []Place{
-    Place{Name:"Kitchen Area", Description:"We eat here", Id:0, SectionId:0, Position:Position{X:10, Y:10, W:100, H:100}},
-  Place{Name:"Electrical Room", Description:"Electricity is here", Id:1, SectionId:0, Position:Position{X:110, Y:10, W:100, H:100}},
-  Place{Name:"Bathroom", Description:"baths are here", Id:3, SectionId:1, Position:Position{X:110, Y:110, W:50, H:50}}}
+	placesData := []Place{
+		{Name: "Kitchen Area", Description: "We eat here", Id: 0, SectionId: 0, Position: Position{X: 10, Y: 10, W: 100, H: 100}},
+		{Name: "Electrical Room", Description: "Electricity is here", Id: 1, SectionId: 0, Position: Position{X: 110, Y: 10, W: 100, H: 100}},
+		{Name: "Bathroom", Description: "baths are here", Id: 3, SectionId: 1, Position: Position{X: 110, Y: 110, W: 50, H: 50}}}
 
-  return placesData, nil
+	return placesData, nil
 }
