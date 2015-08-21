@@ -29,7 +29,7 @@ $(document).ready(function(){
       });
     },
 
-    el: '#edit-bar',
+    el: '#gplus-container',
 
     render: function() {
       return this;
