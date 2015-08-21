@@ -34,6 +34,9 @@ Place = Backbone.Model.extend({});
 
 Users = Backbone.Collection.extend({
     model: User,
+    getUser : function(id) {
+        return this.get({"id":id});
+    },
     parse : function(response){
         return response.users;  
     }
@@ -70,4 +73,15 @@ DeskGroups = Backbone.Collection.extend({
 
 Desks = Backbone.Collection.extend({
     model: Desk
+});
+
+PageState =  Backbone.Model.extend({
+    defaults: {
+      currentMapId: 0,
+      selectedObject: null
+    },
+    selectObject: function(obj) {
+        this.set({selectedObject: obj});
+    }
+
 });

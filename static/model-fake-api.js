@@ -22,3 +22,5 @@ maps.fetch({success:function(){
     onMapsReady();
   }});
 }});
+
+var pageState = new PageState();

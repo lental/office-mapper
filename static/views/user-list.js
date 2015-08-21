@@ -21,6 +21,7 @@ var UserListView = Backbone.View.extend({
   onUserClick: function(event) {
     element = event.currentTarget;
     console.log("user " + element.dataset.id + " click");
+    pageState.selectObject(users.getUser(element.dataset.id));
   },
 
   template: _.template("<% users.each( function(user) { %> \
