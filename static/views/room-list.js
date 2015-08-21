@@ -15,8 +15,9 @@ var RoomListView = Backbone.View.extend({
     "click .roomListElement": "onRoomClick",
   },
 
-  onRoomClick: function() {
-    alert("room click");
+  onRoomClick: function(event) {
+    element = event.currentTarget;
+    console.log("room " + element.dataset.id + " click");
   },
 
   template: _.template("<% rooms.each( function(room) { %> \
