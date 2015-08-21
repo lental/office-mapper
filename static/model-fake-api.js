@@ -4,10 +4,14 @@ users.fetch({success:function(){
   }});
 
 var places = new Places();
-places.fetch();
+places.fetch({success:function(){
+    renderPlaces();
+  }});
 
 var rooms = new Rooms();
-rooms.fetch();
+rooms.fetch({success:function(){
+    renderRooms();
+  }});
 
 var maps = new Maps();
 maps.fetch({success:function(){
