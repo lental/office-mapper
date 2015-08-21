@@ -1,5 +1,4 @@
-<html>
-
+<html>  
   <head>
     <script src="vendor/jquery-2.1.4.min.js"> </script>
     <script src="vendor/underscore-min.js"> </script>
@@ -19,8 +18,12 @@
     <link rel="stylesheet" href="styles/layout.css"></link>
     <link rel="stylesheet" href="styles/list-bar.css"></link>
     <link rel="stylesheet" href="styles/navigation-bar.css"></link>
-
     <script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
+    
+    <script type='text/javascript' src='vendor/jquery-ui.js'></script>
+    <link rel='stylesheet' href='vendor/jquery-ui.css'</link>
+    <script type='text/javascript' src='map-interactions.js'></script>
+    <link rel='stylesheet' href='styles/map.css'</link>
 
     <meta name="google-signin-client_id" content="805151204913-evi7t6cva0ijo71m2rggel6fgtlg3v82.apps.googleusercontent.com">
     <script src="views/gplus-button.js"></script>
@@ -33,7 +36,10 @@
         <div class='listBarSection' id='room-list'></div>
         <div class='listBarSection' id='place-list'></div>
       </div>
-      <div class='flexElement' id='map'>map</div>
+      <div class='flexElement' id='map'>
+        <div id='map_name'></div>
+        <div id="new_section_button">+</div>
+      </div>
       <div class='flexElement' id='edit-bar'>
         <div id="gplus-container">
           <div class='logout'>Logout</div>
@@ -44,5 +50,4 @@
     </div>
     hello
   </body>
-
 </html>
