@@ -20,6 +20,7 @@ maps.fetch({success:function(){
   firstMap.url = firstMap.get("url");
   firstMap.fetch({success:function(){
     onMapsReady();
+    renderInitialMap();
   }});
 }});
 

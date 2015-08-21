@@ -17,7 +17,19 @@ var MapSectionView = Backbone.View.extend({
   }
 });
 
-function onMapsReady() {
+var MapDeskGroupView = Backbone.View.extend({
+  "tagName": "div",
+  "className": "deskGroup",
+  initialize: function() {
+    this.render();
+  },
+  template: _.template(),
+  render: function() {
+    return this;
+  }
+});
+
+function renderInitialMap() {
   console.log("Maps ready!");
   var defaultMap = maps.first();
   $("#map_name").text(defaultMap.attributes.name);
