@@ -13,6 +13,12 @@ type Map struct {
 	Url  string `json:"url"`
 }
 
+type Section struct {
+	Id       int      `json:"id"`
+	Name     string   `json:"name"`
+	Position Position `json:"position"`
+}
+
 type User struct {
 	Id           int    `json:"id"`
 	Name         string `json:"name"`
@@ -52,6 +58,14 @@ func Maps() ([]Map, error) {
 		{Id: 3, Name: "Stockholm", Url: "json/map-sthm.json"}}
 
 	return mapsData, nil
+}
+
+func Sections() ([]Section, error) {
+	sectionsData := []Section{
+		{Id: 0, Name: "Engineering Area", Position: Position{X: 0, Y: 0, W: 600, H: 600}},
+		{Id: 1, Name: "Non-EngineeringArea", Position: Position{X: 0, Y: 650, W: 600, H: 300}}}
+
+	return sectionsData, nil
 }
 
 func Users() ([]User, error) {
