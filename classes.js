@@ -14,6 +14,8 @@ Map = Backbone.Model.extend({
 Section = Backbone.Model.extend({
     parse : function (response) {
         response.deskGroups = new DeskGroups(response.deskGroups, {parse: true});
+        response.places = new Places(response.places, {parse: true});
+        response.rooms = new DeskGroups(response.rooms, {parse: true});
         return response;
     }
 });
