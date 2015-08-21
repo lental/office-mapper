@@ -23,5 +23,5 @@ var onMapsReady = function() {
       }
     });
     new MainView({model:maps, 
-      id: 'map'});
+      id: 'nav'});
 }
