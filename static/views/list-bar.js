@@ -1,7 +1,9 @@
-var userTemplate = _.template("Name: <%= name %> <br />" + 
-  "email: <%= email %> <br />" + 
-  "thumbnail: <%= thumbnailUrl %> <br />" + 
-  "desk: <%= deskId %> <br />"
+var userTemplate = _.template("<div class='user-list-element' data-id=<%= id%>>" + 
+  "<div class='user-thumbnail'><img class='user-thumbnail-image' src='<%= thumbnailUrl %>' />" +
+  "<div class='user-name'>Name: <%= name %> </div>" + 
+  "<div class='user-email'>email: <%= email %> </div>" +  
+  "<div class='user-desk'>desk: <%= deskId %> </div>" +
+  "</div>"
   ); 
                    
 
@@ -10,7 +12,11 @@ var ListBarView = Backbone.View.extend({
     this.render();
   },
   template: _.template("<% users.each( function(user) { %> \
-       <%= userTemplate({name:user.get('name'), email:user.get('email'), thumbnailUrl:user.get('thumbnailUrl'), deskId:user.get('desk_id')})%> \
+       <%= userTemplate({id:user.get('id'), \
+                      name:user.get('name'), \
+                     email:user.get('email'), \
+              thumbnailUrl:user.get('thumbnailUrl'),\
+              deskId:user.get('deskId')})%> \
         <br /> \
     <% }); %> "),
   render: function() {
