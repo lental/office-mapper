@@ -23,7 +23,7 @@ var MapDeskGroupView = Backbone.View.extend({
   initialize: function() {
     this.render();
   },
-  template: _.template(),
+  // template: _.template(),
   render: function() {
     return this;
   }
