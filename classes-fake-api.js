@@ -1,7 +1,7 @@
 
 Users.prototype.url = "json/users.json";
 
-PointsOfInterest.prototype.url = "json/points-of-interest.json";
+PointsOfInterest.prototype.url = "json/places.json";
 
 Rooms.prototype.url = "json/rooms.json";
 
