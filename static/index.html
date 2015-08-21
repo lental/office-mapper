@@ -29,13 +29,16 @@
   <body>
     <div id='navigationBar'>nav</div>
     <div id='flexbox'>
-      <div class='flexElement' id='list-bar'>
+      <div class='flexElement' id='list-bar' style='display: none'>
         <div class='listBarSection' id='user-list'></div>
         <div class='listBarSection' id='room-list'></div>
         <div class='listBarSection' id='place-list'></div>
       </div>
-      <div class='flexElement' id='map'>map</div>
-      <div class='flexElement' id='edit-bar'>edit</div>
+      <div class='flexElement' id='map'>
+        <div id='map_name'></div>
+        <div id="new_section_button">+</div>
+      </div>
+      <div class='flexElement' id='edit-bar' style='display: none'>edit</div>
     </div>
     hello
   </body>
