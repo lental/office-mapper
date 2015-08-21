@@ -2,11 +2,11 @@ package config
 
 import (
 	"encoding/json"
-	//"fmt"
+	"fmt"
 	_ "github.com/ziutek/mymysql/godrv"
 	"io/ioutil"
 	"log"
-	//"ooyala/go-ooyaladb"
+	"ooyala/go-ooyaladb"
 	"os"
 )
 
@@ -31,7 +31,7 @@ type settings struct {
 			Address  []string `json:"address"`
 			Username string   `json:"username"`
 			Password string   `json:"password"`
-		} `json:"vstreams"`
+		} `json:"mysql"`
 	} `json:"dependencies"`
 
 	StatusInfoDir string
@@ -69,15 +69,14 @@ func loadConfig() *settings {
 	return s
 }
 
-/*func initDatabaseConn() *oodb.DB {
+func initDatabaseConn() *oodb.DB {
 	dbs := []string{}
-	for _, h := range Settings.Dependencies.Vstreams.Address {
-		connString := fmt.Sprintf("tcp:%s*%s/%s/%s", h, "vstreams", Settings.Dependencies.Vstreams.Username,
-			Settings.Dependencies.Vstreams.Password)
+	for _, h := range Settings.Dependencies.MySQL.Address {
+		connString := fmt.Sprintf("tcp:%s*%s/%s/%s", h, "officemapper", Settings.Dependencies.MySQL.Username, Settings.Dependencies.MySQL.Password)
 		dbs = append(dbs, connString)
 	}
 
-	db, err := oodb.GetDB("Skeletor:", dbs, "mymysql", os.Stderr, []string{`SELECT 1 FROM DUAL`})
+	db, err := oodb.GetDB("OfficeMapper:", dbs, "mymysql", os.Stderr, []string{`SELECT 1 FROM DUAL`})
 	db.SetMaxIdleConns(30)
 	db.SetMaxOpenConns(30)
 	if err != nil {
@@ -85,11 +84,11 @@ func loadConfig() *settings {
 			dbs, err.Error())
 	}
 	return db
-}*/
+}
 
 // Other package inits may use Settings. So do this during var initialization
 // so that it happens before init()s are run.
 var Settings = loadConfig()
 
 //var DatadogClient = initDatadogClient()
-//var DB = initDatabaseConn()
+var DB = initDatabaseConn()

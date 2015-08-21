@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	//"encoding/json"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -23,10 +23,10 @@ func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//if err := validateDBConnection(); err == nil {
+	if err := validateDBConnection(); err == nil {
 	w.Header().Add("Server-Status", "OK")
 	fmt.Fprintln(w, "office-mapper knows where you live")
-	/*} else {
+	} else {
 		// Skeletor can still serve some requests from the cache if the DB is down
 		w.Header().Add("Server-Status", "DEGRADED")
 		logger.Set("Server-Status", "Degraded due to DB connection error")
@@ -37,14 +37,16 @@ func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		resp, _ := json.Marshal(msg)
 		http.Error(w, string(resp), http.StatusInternalServerError)
-	}*/
+  }
 }
 
-/*func validateDBConnection() error {
-	row, err := config.DB.QueryRow(`SELECT 1 FROM DUAL`)
-	defer row.Close()
-	return err
-}*/
+func validateDBConnection() error {
+	row := config.DB.QueryRow(`SELECT 1 FROM DUAL`)
+  // err isn't exposed directly, so try to scan it and see if we succeed.
+  // This is a broken interface.
+  var n int
+	return row.Scan(&n)
+}
 
 // This route raises a panic and is only intended for tests
 func PanicRouteHandler(w http.ResponseWriter, r *http.Request) {

@@ -7,5 +7,6 @@ run_command = "./office-mapper"
 cpu_shares = 1
 memory_limit = 128
 dependencies = [
-  "cmk"
+  "cmk",
+  "mysql"
 ]
