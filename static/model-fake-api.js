@@ -15,6 +15,7 @@ rooms.fetch({success:function(){
 
 var maps = new Maps();
 maps.fetch({success:function(){
+  renderMapSelecton();
   firstMap = maps.findWhere({"id":0});
   firstMap.url = firstMap.get("url");
   firstMap.fetch({success:function(){
