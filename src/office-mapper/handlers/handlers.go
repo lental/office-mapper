@@ -21,6 +21,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/maps", MapsHandler).Methods("GET")
 	r.HandleFunc("/healthz", HealthzHandler).Methods("GET")
 	r.HandleFunc("/statusz", StatuszHandler).Methods("GET")
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 	return r
 }
 
