@@ -17,9 +17,10 @@ CREATE TABLE sections (
 CREATE TABLE users (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(64) NOT NULL,
+  desk_id INT,
+  email VARCHAR(64) NOT NULL,
   thumbnail VARCHAR(1024),
-  admin BIT NOT NULL,
-  desk_it INT
+  admin BIT NOT NULL
 );
 
 CREATE TABLE rooms (

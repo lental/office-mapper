@@ -2,3 +2,4 @@
 
 mysql -uroot < reset.sql
 mysql -uroot officemapper < tables.sql
+mysql -uroot officemapper < dummy-data.sql
