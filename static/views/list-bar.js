@@ -27,5 +27,5 @@ var ListBarView = Backbone.View.extend({
 
 var renderUsers = function() {
   new ListBarView({model:users, 
-    id: 'list-bar'});
+    id: 'user-list'});
 };
