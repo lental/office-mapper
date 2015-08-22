@@ -24,8 +24,8 @@ func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := validateDBConnection(); err == nil {
-	w.Header().Add("Server-Status", "OK")
-	fmt.Fprintln(w, "office-mapper knows where you live")
+		w.Header().Add("Server-Status", "OK")
+		fmt.Fprintln(w, "office-mapper knows where you live")
 	} else {
 		// Skeletor can still serve some requests from the cache if the DB is down
 		w.Header().Add("Server-Status", "DEGRADED")
@@ -37,14 +37,14 @@ func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		resp, _ := json.Marshal(msg)
 		http.Error(w, string(resp), http.StatusInternalServerError)
-  }
+	}
 }
 
 func validateDBConnection() error {
 	row := config.DB.QueryRow(`SELECT 1 FROM DUAL`)
-  // err isn't exposed directly, so try to scan it and see if we succeed.
-  // This is a broken interface.
-  var n int
+	// err isn't exposed directly, so try to scan it and see if we succeed.
+	// This is a broken interface.
+	var n int
 	return row.Scan(&n)
 }
 
