@@ -26,7 +26,6 @@ $( document ).ready(function(){
       firstMap.url = "json/map-sc.json"; // Use to get hard-coded map.  should use hard-coded apis in classes-fake-api
      // firstMap.url = "/v1/maps/1";
       firstMap.fetch({success:function(){
-        onMapsReady();
         renderInitialMap(firstMap);
       }});
     }});
