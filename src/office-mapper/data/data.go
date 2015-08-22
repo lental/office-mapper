@@ -39,9 +39,9 @@ type Section struct {
 
 type FullSection struct {
 	Section
-	Rooms      []Room  `json:"rooms"`
-	Places     []Place `json:"places"`
-	DeskGroups []FullDeskGroup
+	Rooms      []Room          `json:"rooms"`
+	Places     []Place         `json:"places"`
+	DeskGroups []FullDeskGroup `json:"deskGroups"`
 }
 
 type User struct {
