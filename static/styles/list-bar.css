@@ -12,9 +12,16 @@
 .roomListElement,
 .userListElement,
 .placeListElement {
+  display:flex;
   padding:10px;
 }
 
+.userListInfo {
+  margin: auto 10px;
+}
+.userName {
+font-size:24px;
+}
 
 #list-bar .active {
   background-color:#889;

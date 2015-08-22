@@ -14,3 +14,7 @@
 #list-bar{
   flex: 1;
 }
+
+body {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}

@@ -1,21 +1,25 @@
 #gplus-container {
     font-family: Roboto,arial,sans-serif;
     min-width:200px;
+    margin-bottom:20px;
+    background-color:#bb2b29;
+    padding:10px;
 }
 
 #signin {
 
 }
 
-#userInfo {
-
+#user-info {
+  color: white;
+  text-align: center;
 }
 
 #signout {
   text-align: center;
   padding: 10px;
   background-color: #dd4b39;
-  margin: 5px 0px;
+  margin: 0px 0 10px 0px;
   color: white;
   font-weight: 700;
   height:25px;
@@ -25,7 +29,17 @@
   text-align: center;
   padding: 10px;
   background-color: #dd4b39;
-  margin: 5px 0px;
+  margin: 0px 0 10px 0px;
   color: white;
   font-weight: 700;
+}
+
+#edit-seats input {
+    width:30px;
+}
+.inputLabel {
+    text-align:right;
+}
+.formRow > td{
+    /*border-bottom: 1px solid black;*/
 }

@@ -1,8 +1,10 @@
 var userTemplate = _.template("<div class='userListElement <%= isSelected ? 'active': '' %>' data-id=<%= id%>>" +
   "<div class='userThumbnail'><img class='userThumbnailImage' src='<%= thumbnailUrl %>' /></div>" +
-  "<div class='userName'>Name: <%= name %> </div>" +
-  "<div class='userEmail'>email: <%= email %> </div>" +
+  "<div class='userListInfo'>" +
+  "<div class='userName'><%= name %> </div>" +
+  "<div class='userEmail'><%= email %> </div>" +
   "<div class='userDesk'>desk: <%= deskId %> </div>" +
+  "</div>" +
   "</div>"
   );
 

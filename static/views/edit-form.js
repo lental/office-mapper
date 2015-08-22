@@ -1,64 +1,64 @@
-var formWrappingTemplate = _.template("<div class='<%= divName %>'><form>" +
-  "<%= innerForm %>" +
+var formWrappingTemplate = _.template("<form>" +
+  "<table class='<%= divName %>'><%= innerForm %></table>" +
   "<button id='save'>Save</button>" +
-  "</form></div>"
+  "</form>"
   )
 
 var editUserTemplate = _.template("" +
-  "<div class='edit-id'>id: <%= id %> </div>" +
-  "<div class='edit-name'>Name: <%= name %> </div>" +
-  "<div class='edit-email'>email: <%= email %> </div>" +
-  "<div class='edit-deskId'>deskId: <input type='text' name='deskId' value='<%= deskId %>'> </div>"
+  "<tr class='formRow' id='edit-id'><td class='inputLabel'>id:</td><td class='inputField'><%= id %></td></tr>" +
+  "<tr class='formRow' id='edit-name'><td class='inputLabel'>Name:</td><td class='inputField'><%= name %></td></tr>" +
+  "<tr class='formRow' id='edit-email'><td class='inputLabel'>email:</td><td class='inputField'><%= email %></td></tr>" +
+  "<tr class='formRow' id='edit-deskId'><td class='inputLabel'>deskId:</td><td class='inputField'><input type='text' name='deskId' value='<%= deskId %>'></td></tr>"
   );
 
-var editPositionTemplate = _.template("<div class='editPositionForm'>" +
-  "<div class='edit-x'>x: <input type='text' name='x' value='<%= x %>'> </div>" +
-  "<div class='edit-y'>y: <input type='text' name='y' value='<%= y %>'> </div>" +
-  "<div class='edit-w'>w: <input type='text' name='w' value='<%= w %>'> </div>" +
-  "<div class='edit-h'>h: <input type='text' name='h' value='<%= h %>'> </div>" +
-  "</div>"
+var editPositionTemplate = _.template("<table class='editPositionForm'>" +
+  "<tr class='' id='edit-x'><td class='positionInputLabel'>x:</td><td class='positionInputField'><input type='text' name='x' value='<%= x %>'></td></tr>" +
+  "<tr class='' id='edit-y'><td class='positionInputLabel'>y:</td><td class='positionInputField'><input type='text' name='y' value='<%= y %>'></td></tr>" +
+  "<tr class='' id='edit-w'><td class='positionInputLabel'>w:</td><td class='positionInputField'><input type='text' name='w' value='<%= w%>'></td></tr>" +
+  "<tr class='' id='edit-h'><td class='positionInputLabel'>h:</td><td class='positionInputField'><input type='text' name='h' value='<%= h %>'></td></tr>" +
+  "</table>"
   );
 
-var editFeaturesTemplate = _.template("<div class='editPositionForm'>" +
-  "<div class='edit-chromecast'>chromecast: <input type='checkbox' name='chromecast' value='chromecast' <%= chromecast ? 'checked' : '' %>> </div>" +
-  "<div class='edit-phone'>phone: <input type='checkbox' name='phone' value='phone' <%= phone ? 'checked' : '' %>> </div>" +
-  "<div class='edit-tv'>tv: <input type='checkbox' name='tv' value='tv' <%= tv ? 'checked' : '' %>> </div>" +
-  "<div class='edit-seats'>seats: <input type='text' name='seats' value='<%= seats %>'> </div>" +
-  "</div>"
+var editFeaturesTemplate = _.template("<table class='editFeatureForm'>" +
+  "<tr class='' id='edit-chromecast'><td class='featureInputLabel'>chromecast:</td><td class='featureInputField'><input type='checkbox' name='chromecast' value='chromecast' <%= chromecast ? 'checked' : '' %>></td></tr>" +
+  "<tr class='' id='edit-phone'><td class='featureInputLabel'>phone:</td><td class='featureInputField'><input type='checkbox' name='phone' value='phone' <%= phone ? 'checked' : '' %>></td></tr>" +
+  "<tr class='' id='edit-tv'><td class='featureInputLabel'>tv:</td><td class='featureInputField'><input type='checkbox' name='tv' value='tv' <%= tv ? 'checked' : '' %>></td></tr>" +
+  "<tr class='' id='edit-seats'><td class='featureInputLabel'>seats:</td><td class='featureInputField'><input type='text' name='seats' maxlength=3 value='<%= seats %>'></td></tr>" +
+  "</table>"
   );
 
 var editRoomTemplate = _.template("" +
-  "<div class='edit-id'>id: <%= id %> </div>" +
-  "<div class='edit-name'>Name: <input type='text' name='name' value='<%= name %>'> </div>" +
-  "<div class='edit-features'>features: <%= editFeaturesTemplate(features) %> </div>" +
-  "<div class='edit-sectionId'>sectionId: <input type='text' name='sectionId' value='<%= sectionId %>'> </div>" +
-  "<div class='edit-position'>position: <%= editPositionTemplate(position) %> </div>"
+  "<tr class='formRow' id='edit-id'><td class='inputLabel'>id:</td><td class='inputField'><%= id %></td></tr>" +
+  "<tr class='formRow' id='edit-name'><td class='inputLabel'>Name:</td><td class='inputField'><input type='text' name='name' value='<%= name %>'></td></tr>" +
+  "<tr class='formRow' id='edit-features'><td class='inputLabel'>features:</td><td class='inputField'><%= editFeaturesTemplate(features) %></td></tr>" +
+  "<tr class='formRow' id='edit-sectionId'><td class='inputLabel'>sectionId:</td><td class='inputField'><input type='text' name='sectionId' value='<%= sectionId %>'></td></tr>" +
+  "<tr class='formRow' id='edit-position'><td class='inputLabel'>position:</td><td class='inputField'><%= editPositionTemplate(position) %></td></tr>"
   );
 
 var editPlaceTemplate = _.template("" +
-  "<div class='edit-id'>id: <%= id %> </div>" +
-  "<div class='edit-name'>Name: <input type='text' name='name' value='<%= name %>'></div>" +
-  "<div class='edit-description'>description: <input type='text' name='description' value='<%= description %>'> </div>" +
-  "<div class='edit-sectionId'>sectionId: <input type='text' name='sectionId' value='<%= sectionId %>'> </div>" +
-  "<div class='edit-position'>position: <%= editPositionTemplate(position) %> </div>"
+  "<tr class='formRow' id='edit-id'><td class='inputLabel'>id:</td><td class='inputField'><%= id %></td></tr>" +
+  "<tr class='formRow' id='edit-name'>Name:<td class='inputLabel'></td><td class='inputField'><input type='text' name='name' value='<%= name %>'></td></tr>" +
+  "<tr class='formRow' id='edit-description'><td class='inputLabel'>description:</td><td class='inputField'><input type='text' name='description' value='<%= description %>'></td></tr>" +
+  "<tr class='formRow' id='edit-sectionId'><td class='inputLabel'>sectionId:</td><td class='inputField'><input type='text' name='sectionId' value='<%= sectionId %>'></td></tr>" +
+  "<tr class='formRow' id='edit-position'><td class='inputLabel'>position:</td><td class='inputField'><%= editPositionTemplate(position) %></td></tr>"
   );
 
 var editSectionTemplate = _.template("" +
-  "<div class='edit-id'>id: <%= id %> </div>" +
-  "<div class='edit-name'>Name: <input type='text' name='name' value='<%= name %>'> </div>" +
-  // "<div class='edit-mapId'>mapId: <%= mapId %> </div>" +
-  "<div class='edit-position'>position: <%= editPositionTemplate(position) %> </div>"
+  "<tr class='formRow' id='edit-id'><td class='inputLabel'>id:</td><td class='inputField'><%= id %></td></tr>" +
+  "<tr class='formRow' id='edit-name'><td class='inputLabel'>Name:</td><td class='inputField'><input type='text' name='name' value='<%= name %>'></td></tr>" +
+  // "<tr class='formRow' id='edit-mapId'>mapId: <%= mapId %> </tr>" +
+  "<tr class='formRow' id='edit-position'><td class='inputLabel'>position:</td><td class='inputField'><%= editPositionTemplate(position) %></td></tr>"
   );
 
 var editMapTemplate = _.template(""+
-  "<div class='edit-id'>id: <%= id %> </div>" +
-  "<div class='edit-name'>Name: <input type='text' name='name' value='<%= name %>'> </div>"
-  // "<div class='edit-mapId'>mapId: <%= mapId %> </div>" +
-  // "<div class='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
+  "<tr class='formRow' id='edit-id'><td class='inputLabel'>id:</td><td class='inputField'><%= id %></td></tr>" +
+  "<tr class='formRow' id='edit-name'><td class='inputLabel'>Name:</td><td class='inputField'><input type='text' name='name' value='<%= name %>'></td></tr>"
+  // "<div class='' id='edit-mapId'>mapId: <%= mapId %> </div>" +
+  // "<div class='' id='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
   );
 
 
-var EditFormView = Backbone.View.extend({
+var EditFormView= Backbone.View.extend({
   initialize: function(){
     this.render();
     this.listenTo(pageState, 'change', this.render);

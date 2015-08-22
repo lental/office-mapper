@@ -47,7 +47,7 @@ function onSuccess(googleUser) {
   console.log('Image URL: ' + profile.getImageUrl());
   console.log('Email: ' + profile.getEmail());
   console.log('ID Token: ' + googleUser.getAuthResponse().id_token);
-  this.$('#user-info').html("Hello, " + profile.getName());
+  this.$('#user-info').html("Hello, " + profile.getName() + "!");
   this.$("#loggedOut").hide();
   this.$("#loggedIn").show();
 }
