@@ -1,11 +1,34 @@
+
+
+#edit-squish-button {
+  position: absolute;
+  left: -40px;
+  width: 40px;
+  z-index: 1;
+  background-color:red;
+  padding: 10px 0px 10px 0px;
+  text-align:center;
+}
+
+.rightBar {
+  width:240px;
+  margin-left:4px;
+}
+
 #edit-bar {
   margin-right: 0px;
   background-color:#FAFAFA;
+  overflow:hidden;
+  -webkit-transition: width 400ms ease-in, margin 400ms ease-in;
+  -moz-transition: width 400ms ease-in, margin 400ms ease-in;
+  -o-transition: width 400ms ease-in, margin 400ms ease-in;
+  -ms-transition: width 400ms ease-in, margin 400ms ease-in;
+  transition: width 400ms ease-in, margin 400ms ease-in;
 }
 
 #gplus-container {
     font-family: Roboto,arial,sans-serif;
-    min-width:240px;
+    min-width:220px;
     margin-bottom:20px;
     background-color:#bb2b29;
     padding:10px;

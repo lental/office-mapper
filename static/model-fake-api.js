@@ -32,4 +32,6 @@ $( document ).ready(function(){
 
     renderEditForm();
     renderSearchBar();
+    renderListBarSquishView();
+    renderEditBarSquishView();
 });

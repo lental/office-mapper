@@ -1,9 +1,32 @@
+
+
+#list-squish-button {
+  position: absolute;
+  right: -40px;
+  width: 40px;
+  z-index: 1;
+  background-color:red;
+  padding: 10px 0px 10px 0px;
+  text-align:center;
+}
+
 #list-bar {
   max-width: 400px;
   word-wrap: break-word;
   margin-left: 0px;
   display: flex;
   flex-flow: column;
+  overflow:hidden;
+  -webkit-transition: width 400ms ease-in, margin 400ms ease-in;
+  -moz-transition: width 400ms ease-in, margin 400ms ease-in;
+  -o-transition: width 400ms ease-in, margin 400ms ease-in;
+  -ms-transition: width 400ms ease-in, margin 400ms ease-in;
+  transition: width 400ms ease-in, margin 400ms ease-in;
+}
+
+.leftBar {
+  width:350px;
+  margin-right:4px;
 }
 
 /* Search bar styles in search-bar.css */
@@ -30,7 +53,7 @@
 }
 
 .hiddenList {
-    max-height:0px
+  max-height:0px
 }
 
 .listElement {

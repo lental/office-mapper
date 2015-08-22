@@ -16,10 +16,10 @@
   flex: 1 0 500px;
 }
 
-.flexElement {
-  margin: 0px 2px 0px 2px;
-}
 
+.squishWrapper {
+  position:relative;
+}
 
 body {
   margin:0px;

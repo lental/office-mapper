@@ -1,0 +1,7 @@
+/* Styles that are at the bottom of the CSS pool to have priority */
+
+
+.squished {
+  width: 0px;
+  margin:0px;
+}
