@@ -36,16 +36,20 @@ func AppHandlers() http.Handler {
 	return r
 }
 
+func respond(w http.ResponseWriter, name string, data interface{}) {
+	resp, err := json.Marshal(map[string]interface{}{name: data})
+	if err != nil {
+		panic("Error converting to JSON")
+	}
+	w.Write(resp)
+}
+
 func MapsHandler(w http.ResponseWriter, r *http.Request) {
 	maps, err := data.Maps()
 	if err != nil {
 		panic("Error getting maps data")
 	}
-	resp, err := json.Marshal(map[string][]data.Map{"maps": maps})
-	if err != nil {
-		panic("Error converting to JSON")
-	}
-	w.Write(resp)
+	respond(w, "maps", maps)
 }
 
 func MapHandler(w http.ResponseWriter, r *http.Request) {
@@ -76,11 +80,7 @@ func SectionsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic("Error getting sections data")
 	}
-	resp, err := json.Marshal(map[string][]data.Section{"sections": sections})
-	if err != nil {
-		panic("Error converting to JSON")
-	}
-	w.Write(resp)
+	respond(w, "sections", sections)
 }
 
 func UsersHandler(w http.ResponseWriter, r *http.Request) {
@@ -88,11 +88,7 @@ func UsersHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic("Error getting user data")
 	}
-	resp, err := json.Marshal(map[string][]data.User{"users": users})
-	if err != nil {
-		panic("Error converting to JSON")
-	}
-	w.Write(resp)
+	respond(w, "users", users)
 }
 
 func NewUserHandler(w http.ResponseWriter, r *http.Request) {
@@ -146,11 +142,7 @@ func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic("Error getting user")
 	}
-	resp, err := json.Marshal(map[string]interface{}{"user": user})
-	if err != nil {
-		panic("Error converting to JSON")
-	}
-	w.Write(resp)
+	respond(w, "user", user)
 }
 
 func UserHandler(w http.ResponseWriter, r *http.Request) {
@@ -169,11 +161,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"error": "user not found"}`, http.StatusNotFound)
 		return
 	}
-	resp, err := json.Marshal(map[string]interface{}{"user": user})
-	if err != nil {
-		panic("Error converting to JSON")
-	}
-	w.Write(resp)
+	respond(w, "user", user)
 }
 
 func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
@@ -204,11 +192,7 @@ func RoomsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic("Error getting rooms data")
 	}
-	resp, err := json.Marshal(map[string][]data.Room{"rooms": rooms})
-	if err != nil {
-		panic("Error converting to JSON")
-	}
-	w.Write(resp)
+	respond(w, "rooms", rooms)
 }
 
 func PlacesHandler(w http.ResponseWriter, r *http.Request) {
@@ -216,9 +200,5 @@ func PlacesHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic("Error getting places data")
 	}
-	resp, err := json.Marshal(map[string][]data.Place{"places": places})
-	if err != nil {
-		panic("Error converting to JSON")
-	}
-	w.Write(resp)
+	respond(w, "places", places)
 }
