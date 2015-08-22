@@ -1,6 +1,7 @@
 package data
 
 import (
+	"database/sql"
 	"office-mapper/config"
 	"reflect"
 	"strings"
@@ -39,6 +40,24 @@ func extractStructureFieldAddress(v reflect.Value, columnMaps map[string]interfa
 
 }
 
+func extractRow(rv reflect.Value, rows *sql.Rows) {
+	columns, err := rows.Columns()
+	if err != nil {
+		panic("Error extracing column names")
+	}
+
+	columnMaps := map[string]interface{}{}
+	extractStructureFieldAddress(rv, columnMaps)
+
+	scanInto := make([]interface{}, len(columns))
+	for i, column := range columns {
+		if addr, ok := columnMaps[column]; ok {
+			scanInto[i] = addr
+		}
+	}
+	rows.Scan(scanInto...)
+}
+
 func loadAll(result interface{}) error {
 	v := reflect.ValueOf(result)
 	if v.Kind() != reflect.Ptr {
@@ -59,23 +78,9 @@ func loadAll(result interface{}) error {
 		return err
 	}
 
-	columns, err := rows.Columns()
-	if err != nil {
-		return err
-	}
-
 	for rows.Next() {
 		rv := reflect.New(elemType).Elem()
-		columnMaps := map[string]interface{}{}
-		extractStructureFieldAddress(rv, columnMaps)
-
-		scanInto := make([]interface{}, len(columns))
-		for i, column := range columns {
-			if addr, ok := columnMaps[column]; ok {
-				scanInto[i] = addr
-			}
-		}
-		rows.Scan(scanInto...)
+		extractRow(rv, rows)
 		v.Set(reflect.Append(v, rv))
 	}
 
@@ -103,24 +108,10 @@ func loadOne(id int, result interface{}) error {
 		return err
 	}
 
-	columns, err := rows.Columns()
-	if err != nil {
-		return err
-	}
-
 	found := false
 
 	for rows.Next() {
-		columnMaps := map[string]interface{}{}
-		extractStructureFieldAddress(v, columnMaps)
-
-		scanInto := make([]interface{}, len(columns))
-		for i, column := range columns {
-			if addr, ok := columnMaps[column]; ok {
-				scanInto[i] = addr
-			}
-		}
-		rows.Scan(scanInto...)
+		extractRow(v, rows)
 		found = true
 	}
 
