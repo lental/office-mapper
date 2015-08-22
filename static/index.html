@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="styles/layout.css"></link>
     <link rel="stylesheet" href="styles/list-bar.css"></link>
     <link rel="stylesheet" href="styles/navigation-bar.css"></link>
+    <link rel="stylesheet" href="styles/edit-bar.css"></link>
 
     <script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
     <meta name="google-signin-client_id" content="805151204913-evi7t6cva0ijo71m2rggel6fgtlg3v82.apps.googleusercontent.com">
@@ -44,9 +45,14 @@
       </div>
       <div class='flexElement' id='edit-bar'>
         <div id="gplus-container">
-          <div class='logout'>Logout</div>
-          <div class='updateUsers'>Get Users</div>
-          <div id='my-signin2'></div>
+          <div id='loggedIn'>
+            <div id='signout'>Logout</div>
+            <div id='updateUsers'>Get Users</div>
+            <div id='user-info'></div>
+          </div>
+          <div id='loggedOut'>
+            <div id='signin'></div>
+          </div>
         </div>
         <div id="edit-form"></div>
       </div>

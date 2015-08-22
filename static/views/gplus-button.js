@@ -4,8 +4,8 @@ var GPlusButtonView = Backbone.View.extend({
   },
 
   events: {
-    "click .logout": "logout",
-    "click .updateUsers": "updateUsers"
+    "click #signout": "signout",
+    "click #updateUsers": "updateUsers"
   },
 
   updateUsers: function() {
@@ -22,7 +22,9 @@ var GPlusButtonView = Backbone.View.extend({
             });
           });
   },
-  logout: function() {
+  signout: function() {
+    this.$("#loggedIn").hide();
+    this.$("#loggedOut").show();
     gapi.load('auth2', function(){
       gapi.auth2.getAuthInstance().signOut();
     });
@@ -45,17 +47,21 @@ function onSuccess(googleUser) {
   console.log('Image URL: ' + profile.getImageUrl());
   console.log('Email: ' + profile.getEmail());
   console.log('ID Token: ' + googleUser.getAuthResponse().id_token);
-
+  this.$('#user-info').html("Hello, " + profile.getName());
+  this.$("#loggedOut").hide();
+  this.$("#loggedIn").show();
 }
 function onFailure(error) {
   console.log(error);
 }
 function renderButton() {
-  gapi.signin2.render('my-signin2', {
+  this.$("#loggedIn").hide();
+  this.$("#loggedOut").show();
+  gapi.signin2.render('signin', {
     'scope': 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/admin.directory.user.readonly',
-    'width': 250,
-    'height': 50,
-    'longtitle': true,
+    'width': 200,
+    'height': 45,
+    'longtitle': false,
     'theme': 'dark',
     'onsuccess': onSuccess,
     'onfailure': onFailure
