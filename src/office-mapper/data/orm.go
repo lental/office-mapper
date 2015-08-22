@@ -81,3 +81,53 @@ func loadAll(result interface{}) error {
 
 	return nil
 }
+
+func loadOne(id int, result interface{}) error {
+	v := reflect.ValueOf(result)
+	if v.Kind() != reflect.Ptr {
+		panic("loadAll passed a non-pointer")
+	}
+	v = reflect.Indirect(v)
+	if v.Kind() != reflect.Ptr {
+		panic("loadAll passed a pointer to a non-pointer")
+	}
+	v = reflect.Indirect(v)
+	if v.Kind() != reflect.Struct {
+		panic("loadAll passed a pointer to a non-structure type " + v.Kind().String())
+	}
+
+	elemType := v.Type()
+	table := tableName(elemType.Name())
+	rows, err := config.DB.Query(`SELECT * FROM `+table+` WHERE id = ?`, id)
+	if err != nil {
+		return err
+	}
+
+	columns, err := rows.Columns()
+	if err != nil {
+		return err
+	}
+
+	found := false
+
+	for rows.Next() {
+		columnMaps := map[string]interface{}{}
+		extractStructureFieldAddress(v, columnMaps)
+
+		scanInto := make([]interface{}, len(columns))
+		for i, column := range columns {
+			if addr, ok := columnMaps[column]; ok {
+				scanInto[i] = addr
+			}
+		}
+		rows.Scan(scanInto...)
+		found = true
+	}
+
+	if !found {
+		v := reflect.ValueOf(result).Elem()
+		v.Set(reflect.Zero(v.Type()))
+	}
+
+	return nil
+}

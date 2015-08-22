@@ -237,17 +237,12 @@ func Users() ([]User, error) {
 }
 
 func GetUser(id int) (*User, error) {
-	row := config.DB.QueryRow(`SELECT id, name, desk_id, email, thumbnail FROM users WHERE id = ?`, id)
-	u := User{}
-	err := row.Scan(&u.Id, &u.Name, &u.DeskId, &u.Email, &u.ThumbnailUrl)
-	if err == sql.ErrNoRows {
-		return nil, nil
-	}
+	user := &User{}
+	err := loadOne(id, &user)
 	if err != nil {
 		return nil, err
 	}
-
-	return &u, nil
+	return user, nil
 }
 
 func NewUser(u User) (int, error) {
