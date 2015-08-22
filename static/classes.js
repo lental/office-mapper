@@ -24,9 +24,13 @@ Map = Backbone.Model.extend({
 
 Section = Backbone.Model.extend({
     parse : function (response) {
+        if (places) {
         response.deskGroups = new DeskGroups(response.deskGroups, {parse: true});
-        response.places = new Places(response.places, {parse: true});
-        response.rooms = new DeskGroups(response.rooms, {parse: true});
+        response.places = places.getSubsetFromJSONArray(response.places);
+        response.rooms = rooms.getSubsetFromJSONArray(response.rooms);
+        } else {
+            console.log("Tried to parse a section without places");
+        }
         return response;
     }
 });
@@ -73,6 +77,11 @@ Users = Backbone.Collection.extend({
 
 Places = Backbone.Collection.extend({
     model: Place,
+    getSubsetFromJSONArray: function (localPlaces) {
+        var subset = new Places();
+        subset.add(localPlaces.map(_.bind(function(place){return this.get(place.id)},this)));
+        return subset;
+    },
     getPlace : function(id) {
         return this.get({"id":id});
     },
@@ -88,6 +97,11 @@ Places = Backbone.Collection.extend({
 
 Rooms = Backbone.Collection.extend({
     model: Room,
+    getSubsetFromJSONArray: function (localPlaces) {
+        var subset = new Rooms();
+        subset.add(localPlaces.map(_.bind(function(place){return this.get(place.id)},this)));
+        return subset;
+    },
     getRoom : function(id) {
         return this.get({"id":id});
     },

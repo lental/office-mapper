@@ -3,6 +3,7 @@ var MapSectionView = Backbone.View.extend({
   className: "mapSection shadowed",
   initialize: function() {
    this.render();
+    this.listenTo(pageState, 'change', this.render);
   },
 
   template: _.template(
@@ -36,6 +37,7 @@ var MapDeskGroupView = Backbone.View.extend({
   className: "mapDeskGroup shadowed",
   initialize: function() {
     this.render();
+    this.listenTo(pageState, 'change', this.render);
   },
   template: _.template(
     "<% desks.forEach(function(desk){ %>" +
@@ -70,6 +72,7 @@ var MapDeskView = Backbone.View.extend({
   className: "mapDesk shadowed",
   initialize: function() {
     this.render();
+    this.listenTo(pageState, 'change', this.render);
   },
   render: function() {
     this.$el.css({
@@ -87,6 +90,7 @@ var MapRoomView = Backbone.View.extend({
   className: "mapRoom shadowed",
   initialize: function() {
     this.render();
+    this.listenTo(pageState, 'change', this.render);
   },
   template: _.template(
     "<div class='mapRoomName'><%= name %></div>"
@@ -108,6 +112,7 @@ var MapPlaceView = Backbone.View.extend({
   className: "mapPlace shadowed",
   initialize: function() {
     this.render();
+    this.listenTo(pageState, 'change', this.render);
   },
   template: _.template(
     "<div class='mapPlaceName'><%= name %></div>"
