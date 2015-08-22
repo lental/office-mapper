@@ -20,11 +20,10 @@ var UserListView = Backbone.View.extend({
 
   events: {
     "click .userListElement": "onUserClick",
-    "click #users-title": "hideShowUsers",
-    "mouseenter #users-title"  : "showHideButton",
-    "mouseleave #users-title"  : "hideHideButton"
+    "click .listBarTitle": "hideShowUsers",
+    "mouseenter .listBarTitle"  : "showHideButton",
+    "mouseleave .listBarTitle"  : "hideHideButton"
   },
-
 
   hideHideButton: function(event) {
     this.$('.listHideButton').removeClass("visible");

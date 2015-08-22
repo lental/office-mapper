@@ -139,5 +139,9 @@ PageState =  Backbone.Model.extend({
     changeSearch: function(search) {
         console.log("searchChanged: " + search);
         this.set({searchQuery: search});
+    },
+    setOnSelectedObject: function(key, val) {
+        this.get("selectedObject").set(key, val);
+        this.trigger('change', this);
     }
 });
