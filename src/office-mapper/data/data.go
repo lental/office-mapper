@@ -185,7 +185,7 @@ func GetFullMap(id int) (*FullMap, error) {
 	}
 
 	rows, err = config.DB.Query(`SELECT desks.id, desks.name, desks.desk_group_id, desks.xpos, desks.ypos,
-  desks.length, desks.depth, desks.rotation FROM sections JOIN desk_groups ON (desk_groups.section_id =
+  desks.width, desks.height, desks.rotation FROM sections JOIN desk_groups ON (desk_groups.section_id =
   sections.id) JOIN desks ON (desks.desk_group_id = desk_groups.id) WHERE sections.map_id = ?`, id)
 	if err != nil {
 		return nil, err
