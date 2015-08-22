@@ -77,7 +77,7 @@ type DeskGroup struct {
 	Id         int        `json:"id"`
 	Name       *string    `json:"name"`
 	SectionId  int        `json:"sectionId"`
-	XyPosition XyPosition `json:"xy_position`
+	XyPosition XyPosition `json:"xyPosition"`
 }
 
 type FullDeskGroup struct {
