@@ -77,7 +77,12 @@ Places = Backbone.Collection.extend({
         return this.get({"id":id});
     },
     parse : function(response){
+      //TODO(Dustin): figure out why it's sometimes
+      //in an object and sometimes not
+      if (response.places)
         return response.places;
+      else
+        return response;
     }
 });
 
