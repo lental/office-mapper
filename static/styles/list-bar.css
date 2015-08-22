@@ -42,8 +42,9 @@
   margin: auto 10px;
 }
 .roomName,
-.userName {
-font-size:24px;
+.userName,
+.placeName {
+    font-size:24px;
 }
 
 #list-bar .active {
