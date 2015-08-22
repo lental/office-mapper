@@ -1,11 +1,22 @@
 .mapListElement {
   display: inline-block;
   padding: 10px;
+  border-top-right-radius: .5em;
+  border-top-left-radius: .5em;
+  -webkit-transition: background-color 400ms ease-out;
+  -moz-transition: background-color 400ms ease-out;
+  -o-transition: background-color 400ms ease-out;
+  -ms-transition: background-color 400ms ease-out;
+  transition: background-color 400ms ease-out;
 }
 .mapListElement:hover {
   background-color:#DDD;
 }
 
-#navigation-bar .active {
+#navigation-bar {
+  border-bottom: 10px solid #889;
+  margin-bottom:0px;
+}
+.mapListElement.active {
   background-color:#889;
 }

@@ -1,18 +1,25 @@
 #list-bar {
   max-width: 400px;
   word-wrap: break-word;
-}
-
-.roomListElement:hover,
-.userListElement:hover,
-.placeListElement:hover {
-  background-color:#DDD;
+  margin-left: 0px;
 }
 
 .roomListElement,
 .userListElement,
 .placeListElement {
   padding:10px;
+  -webkit-transition: background-color 400ms ease-out;
+  -moz-transition: background-color 400ms ease-out;
+  -o-transition: background-color 400ms ease-out;
+  -ms-transition: background-color 400ms ease-out;
+  transition: background-color 400ms ease-out;
+}
+
+
+.roomListElement:nth-child(even),
+.userListElement:nth-child(even),
+.placeListElement:nth-child(even) {
+  background-color:#FAFAFA;
 }
 
 .roomListElement:nth-child(odd),
@@ -21,6 +28,11 @@
   background-color:#EEE;
 }
 
+.roomListElement:hover,
+.userListElement:hover,
+.placeListElement:hover {
+  background-color:#DDD;
+}
 
 .userListElement {
   display:flex;
@@ -47,6 +59,7 @@ font-size:24px;
   font-size:30px;
   background-color:#CCF;
   padding: 10px 0px;
+  margin:10px 0px 5px 0px;
 }
 
 .featureListSpacer {
