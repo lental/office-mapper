@@ -8,6 +8,14 @@ div {
   background-color: coral;
 }
 
+.deskGroup {
+  position: absolute;
+  background-color: mediumpurple;
+  border-radius: 10px;
+  min-height: 40px;
+  min-width: 40px;
+}
+
 .section {
   position: absolute;
   background-color: aquamarine;

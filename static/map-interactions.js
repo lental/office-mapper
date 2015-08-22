@@ -4,7 +4,10 @@ var MapSectionView = Backbone.View.extend({
   initialize: function() {
    this.render(); 
   },
-  template: _.template("<div class='sectionName'><%= name %></div>"),
+  template: _.template("<div class='sectionName'><%= name %></div>" + 
+                       "<% deskGroups.forEach(function(group){ %>" +
+                        " <%= (new MapDeskGroupView({model: group})).el.outerHTML %>" +
+                       "<% }); %>"),
   render: function() {
     this.$el.html(this.template(this.model.attributes));
     this.$el.css({
@@ -21,10 +24,14 @@ var MapDeskGroupView = Backbone.View.extend({
   "tagName": "div",
   "className": "deskGroup",
   initialize: function() {
+    console.log("foobar");
     this.render();
   },
-  // template: _.template(),
   render: function() {
+    this.$el.css({
+      top: this.model.attributes.xy_position.y,
+      left: this.model.attributes.xy_position.x,
+    });
     return this;
   }
 });
