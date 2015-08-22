@@ -2,6 +2,8 @@
   max-width: 400px;
   word-wrap: break-word;
   margin-left: 0px;
+  display: flex;
+  flex-flow: column;
 }
 
 /* Search bar styles in search-bar.css */

@@ -24,9 +24,8 @@ div {
 }
 
 #map {
-  width: 70%;
   background-color: rgba(0,0,0,0.8);
-  flex: 1;
+  flex: 1 0 500px;
   position: relative;
   font-family: sans-serif;
   overflow-x: scroll;
