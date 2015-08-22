@@ -21,8 +21,10 @@ $( document ).ready(function(){
     maps = new Maps();
     maps.fetch({success:function(){
       renderMapSelecton();
-      firstMap = maps.findWhere({"id":pageState.get("currentMapId")});
-      firstMap.url = firstMap.get("url");
+      firstMap = maps.first();
+      pageState.selectMapId(firstMap.get("id"));
+      firstMap.url = "json/map-sc.json"; // Use to get hard-coded map.  should use hard-coded apis in classes-fake-api
+     // firstMap.url = "/v1/maps/1";
       firstMap.fetch({success:function(){
         renderInitialMap();
       }});
