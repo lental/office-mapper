@@ -24,6 +24,7 @@ var RoomListView = Backbone.View.extend({
 
   events: {
     "click .roomListElement": "onRoomClick",
+    "click .roomListElement": "onRoomClick",
   },
 
   onRoomClick: function(event) {
@@ -32,10 +33,11 @@ var RoomListView = Backbone.View.extend({
     pageState.selectObject(rooms.getRoom(element.dataset.id));
   },
 
-  template: _.template("<% rooms.each( function(room) { %> \
-       <% room.attributes.isSelected = room == pageState.get('selectedObject') %> \
-       <%= roomTemplate(room.attributes)%> \
-    <% }); %> "),
+  template: _.template("<% rooms.each( function(room) { %>" +
+       "<% if (room.searchMatches(pageState.get('searchQuery'))) { %>" +
+       "<% room.attributes.isSelected = room == pageState.get('selectedObject') %>" +
+       "<%= roomTemplate(room.attributes)%>" +
+    "<% }}); %> "),
   render: function() {
     this.$el.html(this.template({rooms:this.model}));
     return this;

@@ -28,7 +28,6 @@ var MapListView = Backbone.View.extend({
     <% }); %> "),
 
   render: function() {
-    console.log("re-rednering map");
     this.$el.html(this.template({maps:this.model, currentMapId:pageState.get("currentMapId")}));
     return this;
   }

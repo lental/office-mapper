@@ -1,0 +1,13 @@
+#search-bar {
+  display: -webkit-flex;
+  display: flex;
+}
+
+#search-input {
+  flex: 1;
+  font-size: 20px;
+}
+
+#search-clear {
+  font-size:20px;
+}

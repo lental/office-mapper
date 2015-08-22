@@ -1,4 +1,15 @@
-User = Backbone.Model.extend({});
+User = Backbone.Model.extend({
+    searchMatches: function(query) {
+        if(query == '') {
+            return true;
+        } else if (this.get("name") && this.get("name").toUpperCase().indexOf(query.toUpperCase()) > -1) {
+            return true;
+        } else if (this.get("email") && this.get("email").toUpperCase().indexOf(query.toUpperCase()) > -1 ) {
+            return true;
+        }
+        return false;
+    }
+});
 
 Map = Backbone.Model.extend({
     parse : function (response) {
@@ -28,9 +39,27 @@ DeskGroup = Backbone.Model.extend({
 
 Desk = Backbone.Model.extend({});
 
-Room = Backbone.Model.extend({});
+Room = Backbone.Model.extend({
+    searchMatches: function(query) {
+        if(query == '') {
+            return true;
+        } else if (this.get("name") && this.get("name").toUpperCase().indexOf(query.toUpperCase()) > -1) {
+            return true;
+        }
+        return false;
+    }
+});
 
-Place = Backbone.Model.extend({});
+Place = Backbone.Model.extend({
+    searchMatches: function(query) {
+        if(query == '') {
+            return true;
+        } else if (this.get("name") && this.get("name").toUpperCase().indexOf(query.toUpperCase()) > -1) {
+            return true;
+        }
+        return false;
+    }
+});
 
 Users = Backbone.Collection.extend({
     model: User,
@@ -87,7 +116,8 @@ Desks = Backbone.Collection.extend({
 PageState =  Backbone.Model.extend({
     defaults: {
       currentMapId: 0,
-      selectedObject: null
+      selectedObject: null,
+      searchQuery: ''
     },
     selectObject: function(obj) {
         if(obj instanceof User) {
@@ -105,5 +135,9 @@ PageState =  Backbone.Model.extend({
         console.log("map selected: " + mapId);
         //If mapId == currentMapId, don't clear selectedObject
         this.set({currentMapId: mapId});
+    },
+    changeSearch: function(search) {
+        console.log("searchChanged: " + search);
+        this.set({searchQuery: search});
     }
 });

@@ -22,10 +22,11 @@ var PlaceListView = Backbone.View.extend({
     pageState.selectObject(places.getPlace(element.dataset.id));
   },
 
-  template: _.template("<% places.each( function(place) { %> \
-       <% place.attributes.isSelected = place == pageState.get('selectedObject') %> \
-       <%= placeTemplate(place.attributes)%> \
-    <% }); %> "),
+  template: _.template("<% places.each( function(place) { %>" +
+       "<% if (place.searchMatches(pageState.get('searchQuery'))) { %>" +
+       "<% place.attributes.isSelected = place == pageState.get('selectedObject') %>" +
+       "<%= placeTemplate(place.attributes)%>" +
+    "<% }}); %> "),
 
   render: function() {
 
