@@ -19,7 +19,7 @@ CREATE TABLE users (
   name VARCHAR(64) NOT NULL,
   desk_id INT,
   email VARCHAR(64) NOT NULL,
-  thumbnail VARCHAR(1024),
+  thumbnail_url VARCHAR(1024),
   admin TINYINT NOT NULL
 );
 
