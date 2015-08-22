@@ -15,12 +15,17 @@ var UserListView = Backbone.View.extend({
     this.listenTo(pageState, 'change', this.render);
   },
 
-  el: '#user-list',
+  el: '#user-section',
 
   events: {
     "click .userListElement": "onUserClick",
+    "click #users-title": "hideShowUsers"
   },
 
+  hideShowUsers: function(event) {
+    // element = event.currentTarget;
+    this.$('#user-list').toggleClass("hiddenList");
+  },
   onUserClick: function(event) {
     element = event.currentTarget;
     console.log("user " + element.dataset.id + " click");
@@ -32,7 +37,7 @@ var UserListView = Backbone.View.extend({
        <%= userTemplate(user.attributes)%> \
     <% }); %> "),
   render: function() {
-    this.$el.html(this.template({users:this.model}));
+    this.$('#user-list').html(this.template({users:this.model}));
     return this;
   }
 });

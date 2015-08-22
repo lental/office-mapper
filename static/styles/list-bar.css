@@ -63,9 +63,14 @@
 }
 .listBarSection {
   margin:10px 0px 5px 0px;
+  overflow:hidden;
 }
 .listBarSection:first-child{
   margin:0px 0px 5px 0px;
+}
+
+.hiddenList {
+    max-height:0px
 }
 
 .featureListSpacer {
