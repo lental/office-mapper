@@ -93,6 +93,7 @@ func NewUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic("Error converting to JSON")
 	}
+  w.WriteHeader(http.StatusCreated)
 	w.Write(resp)
 }
 
