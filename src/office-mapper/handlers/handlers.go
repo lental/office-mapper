@@ -30,7 +30,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/users/{id}", DeleteUserHandler).Methods("DELETE")
 	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PUT")
 	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PATCH")
-	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")            // All data
+	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET") // All data
 	r.HandleFunc("/v1/rooms", NewRoomHandler).Methods("POST")
 	r.HandleFunc("/v1/rooms/{id}", RoomHandler).Methods("GET")
 	r.HandleFunc("/v1/rooms/{id}", UpdateRoomHandler).Methods("PUT")

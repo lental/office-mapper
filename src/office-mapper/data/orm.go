@@ -181,7 +181,14 @@ func insertOne(input interface{}) error {
 func getSqlFieldsFromJson(updateData map[string]interface{}, v reflect.Value, sqlData map[string]interface{}) error {
 	for i := 0; i < v.NumField(); i++ {
 		if v.Type().Field(i).Type.Kind() == reflect.Struct {
-			getSqlFieldsFromJson(updateData, v.Field(i), sqlData)
+			subUpdateData := updateData
+			if tag := v.Type().Field(i).Tag.Get("json"); tag != "" {
+				maybeSubUpdateData := updateData[tag]
+				if yesSubUpdateData, ok := maybeSubUpdateData.(map[string]interface{}); ok {
+					subUpdateData = yesSubUpdateData
+				}
+			}
+			getSqlFieldsFromJson(subUpdateData, v.Field(i), sqlData)
 			continue
 		}
 
