@@ -9,6 +9,8 @@
   padding: 10px 0px 10px 0px;
   text-align:center;
   overflow:hidden;
+  border-top-right-radius:5px;
+  border-bottom-right-radius:5px;
   -webkit-transition: width 300ms ease-out, right 300ms ease-out;
   -moz-transition: width 300ms ease-out, right 300ms ease-out;
   -o-transition: width 300ms ease-out, right 300ms ease-out;
