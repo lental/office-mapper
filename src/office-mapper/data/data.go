@@ -213,6 +213,14 @@ func GetFullMap(id int) (*FullMap, error) {
 	return &m, nil
 }
 
+func DeleteRow(table string, id int) (int64, error) {
+	result, err := config.DB.Exec(`DELETE FROM `+table+` WHERE id = ?`, id)
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected()
+}
+
 func Sections() ([]Section, error) {
 	var sections []Section
 	err := loadAll(&sections)
@@ -254,11 +262,6 @@ func InsertFromJson(body io.Reader, obj interface{}) error {
 
 func NewUser(u *User) error {
 	err := insertOne(u)
-	return err
-}
-
-func DeleteUser(id int) error {
-	_, err := config.DB.Exec(`DELETE FROM users WHERE id = ?`, id)
 	return err
 }
 

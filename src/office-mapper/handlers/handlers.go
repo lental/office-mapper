@@ -20,7 +20,9 @@ func AppHandlers() http.Handler {
 
 	// App routes
 	r.HandleFunc("/v1/maps", MapsHandler).Methods("GET") // Sparse
+	r.HandleFunc("/v1/maps", NewMapHandler).Methods("POST")
 	r.HandleFunc("/v1/maps/{id}", MapHandler).Methods("GET")
+	r.HandleFunc("/v1/maps/{id}", DeleteMapHandler).Methods("DELETE")
 	r.HandleFunc("/v1/sections", SectionsHandler).Methods("GET") // Sparse
 	r.HandleFunc("/v1/users", UsersHandler).Methods("GET")       // All data
 	r.HandleFunc("/v1/users", NewUserHandler).Methods("POST")
@@ -54,6 +56,19 @@ func MapsHandler(w http.ResponseWriter, r *http.Request) {
 	respond(w, "maps", maps)
 }
 
+func NewMapHandler(w http.ResponseWriter, r *http.Request) {
+	var m data.Map
+
+	err := data.InsertFromJson(r.Body, &m)
+	if err != nil {
+		http.Error(w, `{"error": "error creating map: `+err.Error()+`"}`, http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	respond(w, "map", m)
+}
+
 func MapHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -75,6 +90,25 @@ func MapHandler(w http.ResponseWriter, r *http.Request) {
 		panic("Error converting to JSON")
 	}
 	w.Write(resp)
+}
+
+func DeleteMapHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad map id"}`, http.StatusBadRequest)
+		return
+	}
+
+	rowsAffected, err := data.DeleteRow("maps", id)
+	if err != nil {
+		panic("Error deleting map")
+	}
+	if rowsAffected == 0 {
+		http.Error(w, `{"error": "map not found"}`, http.StatusNotFound)
+		return
+	}
+	http.Error(w, "", http.StatusNoContent)
 }
 
 func SectionsHandler(w http.ResponseWriter, r *http.Request) {
@@ -160,17 +194,13 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := data.GetUser(id)
-	if err != nil {
-		panic("Error getting user data")
-	}
-	if user == nil {
-		http.Error(w, `{"error": "user not found"}`, http.StatusNotFound)
-		return
-	}
-	err = data.DeleteUser(id)
+	rowsAffected, err := data.DeleteRow("users", id)
 	if err != nil {
 		panic("Error deleting user")
+	}
+	if rowsAffected == 0 {
+		http.Error(w, `{"error": "user not found"}`, http.StatusNotFound)
+		return
 	}
 	http.Error(w, "", http.StatusNoContent)
 }
