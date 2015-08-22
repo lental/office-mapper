@@ -22,6 +22,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/maps", MapsHandler).Methods("GET")         // Sparse
 	r.HandleFunc("/v1/sections", SectionsHandler).Methods("GET") // Sparse
 	r.HandleFunc("/v1/users", UsersHandler).Methods("GET")       // All data
+	r.HandleFunc("/v1/users", NewUserHandler).Methods("POST")
 	r.HandleFunc("/v1/users/{id}", UserHandler).Methods("GET")
 	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")   // All data
 	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET") // All data
@@ -62,6 +63,32 @@ func UsersHandler(w http.ResponseWriter, r *http.Request) {
 		panic("Error getting user data")
 	}
 	resp, err := json.Marshal(map[string][]data.User{"users": users})
+	if err != nil {
+		panic("Error converting to JSON")
+	}
+	w.Write(resp)
+}
+
+func NewUserHandler(w http.ResponseWriter, r *http.Request) {
+	decoder := json.NewDecoder(r.Body)
+	var u data.User
+	err := decoder.Decode(&u)
+	if err != nil {
+		http.Error(w, `{"error": "bad user data: `+err.Error()+`"}`, http.StatusBadRequest)
+		return
+	}
+
+	id, err := data.NewUser(u)
+	if err != nil {
+		http.Error(w, `{"error": "error creating user: `+err.Error()+`"}`, http.StatusBadRequest)
+		return
+	}
+
+	user, err := data.GetUser(id)
+	if err != nil {
+		panic("Error getting user data")
+	}
+	resp, err := json.Marshal(map[string]interface{}{"user": user})
 	if err != nil {
 		panic("Error converting to JSON")
 	}

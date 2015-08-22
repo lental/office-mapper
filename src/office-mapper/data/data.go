@@ -30,6 +30,7 @@ type User struct {
 	DeskId       int    `json:"deskId"`
 	Email        string `json:"email"`
 	ThumbnailUrl string `json:"thumbnailUrl"`
+	Admin        bool   `json:"admin"`
 }
 
 type Features struct {
@@ -115,6 +116,19 @@ func GetUser(id int) (*User, error) {
 	}
 
 	return &u, nil
+}
+
+func NewUser(u User) (int, error) {
+	result, err := config.DB.Exec(`INSERT INTO users (name, desk_id, email, thumbnail, admin) VALUES (?, ?, ?, ?, ?)`,
+		u.Name, u.DeskId, u.Email, u.ThumbnailUrl, u.Admin)
+	if err != nil {
+		return 0, err
+	}
+	id, err := result.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+	return int(id), nil
 }
 
 func Rooms() ([]Room, error) {
