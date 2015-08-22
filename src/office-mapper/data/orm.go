@@ -177,3 +177,61 @@ func insertOne(input interface{}) error {
 
 	return nil
 }
+
+func getSqlFieldsFromJson(updateData map[string]interface{}, v reflect.Value, sqlData map[string]interface{}) error {
+	for i := 0; i < v.NumField(); i++ {
+		if v.Type().Field(i).Type.Kind() == reflect.Struct {
+			getSqlFieldsFromJson(updateData, v.Field(i), sqlData)
+			continue
+		}
+
+		fieldName := v.Type().Field(i).Name
+		columnName := sqlCase(fieldName)
+		if tag := v.Type().Field(i).Tag.Get("sql"); tag != "" {
+			columnName = tag
+		}
+		jsonName := fieldName
+		if tag := v.Type().Field(i).Tag.Get("json"); tag != "" {
+			jsonName = tag
+		}
+		if val, ok := updateData[jsonName]; ok {
+			sqlData[columnName] = val
+		}
+	}
+	return nil
+}
+
+func updateOne(id int, updateData map[string]interface{}, obj interface{}) error {
+	v := reflect.ValueOf(obj)
+	if v.Kind() != reflect.Ptr {
+		panic("updateOne passed a non-pointer")
+	}
+	v = reflect.Indirect(v)
+	if v.Kind() != reflect.Ptr {
+		panic("updateOne passed a pointer to a non-pointer")
+	}
+	v = reflect.Indirect(v)
+	if v.Kind() != reflect.Struct {
+		panic("updateOne passed a pointer to a non-structure: " + v.Kind().String())
+	}
+
+	elemType := v.Type()
+	table := tableName(elemType.Name())
+
+	sqlData := map[string]interface{}{}
+	getSqlFieldsFromJson(updateData, v, sqlData)
+
+	setFields := []string{}
+	setValues := []interface{}{}
+	for c, v := range sqlData {
+		setFields = append(setFields, c+" = ?")
+		setValues = append(setValues, v)
+	}
+
+	_, err := config.DB.Exec(`UPDATE `+table+` SET `+strings.Join(setFields, ", "), setValues...)
+	if err != nil {
+		return err
+	}
+
+	return loadOne(id, obj)
+}

@@ -29,6 +29,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/users/{id}", UserHandler).Methods("GET")
 	r.HandleFunc("/v1/users/{id}", DeleteUserHandler).Methods("DELETE")
 	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PUT")
+	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PATCH")
 	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")            // All data
 	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET")          // All data
 	r.HandleFunc("/v1/desk_groups", DeskGroupsHandler).Methods("GET") // All data
@@ -148,22 +149,17 @@ func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	decoder := json.NewDecoder(r.Body)
-	var u data.User
-	err = decoder.Decode(&u)
+	user := &data.User{}
+	err = data.UpdateRowFromJson(id, r.Body, &user)
 	if err != nil {
-		http.Error(w, `{"error": "bad user data: `+err.Error()+`"}`, http.StatusBadRequest)
+		http.Error(w, `{"error": "error updating user"}`, http.StatusBadRequest)
+		return
+	}
+	if user == nil {
+		http.Error(w, `{"error": "user not found"}`, http.StatusNotFound)
 		return
 	}
 
-	err = data.UpdateUser(id, u)
-	if err != nil {
-		panic("Error updating user")
-	}
-	user, err := data.GetUser(id)
-	if err != nil {
-		panic("Error getting user")
-	}
 	respond(w, "user", user)
 }
 

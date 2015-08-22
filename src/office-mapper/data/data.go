@@ -254,20 +254,25 @@ func InsertFromJson(body io.Reader, obj interface{}) error {
 	decoder := json.NewDecoder(body)
 	err := decoder.Decode(&obj)
 	if err != nil {
-		return errors.New("bad user data: " + err.Error())
+		return errors.New("bad JSON data: " + err.Error())
 	}
 
 	return insertOne(obj)
 }
 
-func NewUser(u *User) error {
-	err := insertOne(u)
-	return err
+func UpdateRowFromJson(id int, body io.Reader, obj interface{}) error {
+	decoder := json.NewDecoder(body)
+	updateData := map[string]interface{}{}
+	err := decoder.Decode(&updateData)
+	if err != nil {
+		return errors.New("bad JSON data: " + err.Error())
+	}
+
+	return updateOne(id, updateData, obj)
 }
 
-func UpdateUser(id int, u User) error {
-	_, err := config.DB.Exec(`UPDATE users SET name = ?, desk_id = ?, email = ?, thumbnail = ?, admin = ?  WHERE id = ?`,
-		u.Name, u.DeskId, u.Email, u.ThumbnailUrl, u.Admin, id)
+func NewUser(u *User) error {
+	err := insertOne(u)
 	return err
 }
 
