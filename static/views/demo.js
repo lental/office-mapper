@@ -22,6 +22,6 @@ var onMapsReady = function() {
         return this;
       }
     });
-    new MainView({model:maps, 
+    new MainView({model:maps,
       id: 'nav'});
 }

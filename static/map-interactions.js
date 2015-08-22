@@ -2,9 +2,9 @@ var MapSectionView = Backbone.View.extend({
   tagName: "div",
   className: "section",
   initialize: function() {
-   this.render(); 
+   this.render();
   },
-  template: _.template("<div class='sectionName'><%= name %></div>" + 
+  template: _.template("<div class='sectionName'><%= name %></div>" +
                        "<% deskGroups.forEach(function(group){ %>" +
                         " <%= (new MapDeskGroupView({model: group})).el.outerHTML %>" +
                        "<% }); %>"),

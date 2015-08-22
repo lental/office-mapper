@@ -17,7 +17,7 @@ $( document ).ready(function(){
 
     renderGPlusButton();
     pageState = new PageState();
-    
+
     maps = new Maps();
     maps.fetch({success:function(){
       renderMapSelecton();

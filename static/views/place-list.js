@@ -1,8 +1,8 @@
 var placeTemplate = _.template("<div class='placeListElement <%= isSelected ? 'active': '' %>' data-id=<%= id%>>" +
   "<div class='place-name'>Name: <%= name %> </div>" +
   "</div>"
-  ); 
-                   
+  );
+
 var PlaceListView = Backbone.View.extend({
   initialize: function(){
     this.render();
@@ -27,7 +27,7 @@ var PlaceListView = Backbone.View.extend({
     <% }); %> "),
 
   render: function() {
-    
+
     this.$el.html(this.template({places:this.model}));
     return this;
   }

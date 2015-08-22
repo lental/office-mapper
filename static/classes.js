@@ -38,7 +38,7 @@ Users = Backbone.Collection.extend({
         return this.get({"id":id});
     },
     parse : function(response){
-        return response.users;  
+        return response.users;
     }
 });
 
@@ -48,7 +48,7 @@ Places = Backbone.Collection.extend({
         return this.get({"id":id});
     },
     parse : function(response){
-        return response.places;  
+        return response.places;
     }
 });
 
@@ -58,14 +58,14 @@ Rooms = Backbone.Collection.extend({
         return this.get({"id":id});
     },
     parse : function(response){
-        return response.rooms;  
+        return response.rooms;
     }
 });
 
 Maps = Backbone.Collection.extend({
     model: Map,
     parse : function(response){
-        return response.maps;  
+        return response.maps;
     }
 });
 

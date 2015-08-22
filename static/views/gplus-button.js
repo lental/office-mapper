@@ -23,7 +23,7 @@ var GPlusButtonView = Backbone.View.extend({
           });
   },
   logout: function() {
-    gapi.load('auth2', function(){ 
+    gapi.load('auth2', function(){
       gapi.auth2.getAuthInstance().signOut();
     });
   },

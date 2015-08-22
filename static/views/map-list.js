@@ -1,8 +1,8 @@
 var mapTemplate = _.template("<div class='mapListElement <%= isSelected ? 'active': '' %>' data-id=<%= id %>>" +
   "<div class='mapName'>Map: <%= name %> </div>" +
   "</div>"
-  ); 
-                   
+  );
+
 var MapListView = Backbone.View.extend({
   initialize: function(){
     this.render();

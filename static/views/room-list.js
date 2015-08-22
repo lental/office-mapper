@@ -2,8 +2,8 @@ var roomTemplate = _.template("<div class='roomListElement <%= isSelected ? 'act
   "<div class='room-name'>Name: <%= name %> </div>" +
   "<div class='room-features'>Features: <%= JSON.stringify(features) %> </div>" +
   "</div>"
-  ); 
-                   
+  );
+
 var RoomListView = Backbone.View.extend({
   initialize: function(){
     this.render();
