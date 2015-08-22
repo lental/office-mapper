@@ -1,4 +1,4 @@
-var userTemplate = _.template("<div class='userListElement <%= isSelected ? 'active': '' %>' data-id=<%= id%>>" +
+var userTemplate = _.template("<div class='listElement userListElement<%= isSelected ? ' active': '' %>' data-id=<%= id%>>" +
   "<div class='userThumbnail'><img class='userThumbnailImage' src='<%= thumbnailUrl %>' /></div>" +
   "<div class='userListInfo'>" +
   "<div class='userName'><%= name %> </div>" +

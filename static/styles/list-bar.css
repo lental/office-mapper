@@ -4,9 +4,33 @@
   margin-left: 0px;
 }
 
-.roomListElement,
-.userListElement,
-.placeListElement {
+/* Search bar styles in search-bar.css */
+
+#scrollable-list {
+  overflow-y:scroll;
+}
+
+.listBarSection {
+  margin:10px 0px 5px 0px;
+  overflow:hidden;
+}
+
+.listBarSection:first-child{
+  margin:0px 0px 5px 0px;
+}
+
+.listBarTitle {
+  text-align:center;
+  font-size:30px;
+  background-color:#CCF;
+  padding: 10px 0px;
+}
+
+.hiddenList {
+    max-height:0px
+}
+
+.listElement {
   padding:10px;
   -webkit-transition: background-color 400ms ease-out;
   -moz-transition: background-color 400ms ease-out;
@@ -15,23 +39,20 @@
   transition: background-color 400ms ease-out;
 }
 
-
-.roomListElement:nth-child(even),
-.userListElement:nth-child(even),
-.placeListElement:nth-child(even) {
+.listElement:nth-child(even) {
   background-color:#FAFAFA;
 }
 
-.roomListElement:nth-child(odd),
-.userListElement:nth-child(odd),
-.placeListElement:nth-child(odd) {
+.listElement:nth-child(odd) {
   background-color:#EEE;
 }
 
-.roomListElement:hover,
-.userListElement:hover,
-.placeListElement:hover {
+.listElement:hover {
   background-color:#DDD;
+}
+
+.listElement.active {
+  background-color:#889;
 }
 
 .userListElement {
@@ -41,38 +62,15 @@
 .userListInfo {
   margin: auto 10px;
 }
+
 .roomName,
 .userName,
 .placeName {
     font-size:24px;
 }
 
-#list-bar .active {
-  background-color:#889;
-}
 
-#featureListSeats input{
-  width:30px;
-}
-
-.listBarTitle {
-  text-align:center;
-  font-size:30px;
-  background-color:#CCF;
-  padding: 10px 0px;
-}
-.listBarSection {
-  margin:10px 0px 5px 0px;
-  overflow:hidden;
-}
-.listBarSection:first-child{
-  margin:0px 0px 5px 0px;
-}
-
-.hiddenList {
-    max-height:0px
-}
-
+/* Styles for the feature lists of rooms*/
 .featureListSpacer {
   width:40px;
 }
@@ -82,4 +80,8 @@
 
 .featureListTable {
   margin: auto;
+}
+
+#featureListSeats input{
+  width:30px;
 }

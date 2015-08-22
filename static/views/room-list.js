@@ -1,4 +1,4 @@
-var roomTemplate = _.template("<div class='roomListElement <%= isSelected ? 'active': '' %>' data-id=<%= id%>>" +
+var roomTemplate = _.template("<div class='listElement roomListElement<%= isSelected ? ' active': '' %>' data-id=<%= id%>>" +
   "<div class='roomName'><%= name %> </div>" +
   "<div class='roomFeatures'><%= roomFeaturesTemplate(features) %> </div>" +
   "</div>"

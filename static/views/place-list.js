@@ -1,4 +1,4 @@
-var placeTemplate = _.template("<div class='placeListElement <%= isSelected ? 'active': '' %>' data-id=<%= id%>>" +
+var placeTemplate = _.template("<div class='listElement placeListElement<%= isSelected ? ' active': '' %>' data-id=<%= id%>>" +
   "<div class='placeName'><%= name %> </div>" +
   "<div class='placeDescription'><%= description %> </div>" +
   "</div>"
