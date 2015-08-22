@@ -94,15 +94,9 @@ func UsersHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func NewUserHandler(w http.ResponseWriter, r *http.Request) {
-	decoder := json.NewDecoder(r.Body)
 	var u data.User
-	err := decoder.Decode(&u)
-	if err != nil {
-		http.Error(w, `{"error": "bad user data: `+err.Error()+`"}`, http.StatusBadRequest)
-		return
-	}
 
-	err = data.NewUser(&u)
+	err := data.InsertFromJson(r.Body, &u)
 	if err != nil {
 		http.Error(w, `{"error": "error creating user: `+err.Error()+`"}`, http.StatusBadRequest)
 		return

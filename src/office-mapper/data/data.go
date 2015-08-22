@@ -2,6 +2,9 @@ package data
 
 import (
 	"database/sql"
+	"encoding/json"
+	"errors"
+	"io"
 	"office-mapper/config"
 )
 
@@ -237,6 +240,16 @@ func GetUser(id int) (*User, error) {
 		return nil, err
 	}
 	return user, nil
+}
+
+func InsertFromJson(body io.Reader, obj interface{}) error {
+	decoder := json.NewDecoder(body)
+	err := decoder.Decode(&obj)
+	if err != nil {
+		return errors.New("bad user data: " + err.Error())
+	}
+
+	return insertOne(obj)
 }
 
 func NewUser(u *User) error {
