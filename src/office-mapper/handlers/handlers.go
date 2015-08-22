@@ -31,6 +31,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PUT")
 	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PATCH")
 	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")            // All data
+	r.HandleFunc("/v1/rooms", NewRoomHandler).Methods("POST")
 	r.HandleFunc("/v1/rooms/{id}", RoomHandler).Methods("GET")
 	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET")          // All data
 	r.HandleFunc("/v1/desk_groups", DeskGroupsHandler).Methods("GET") // All data
@@ -208,6 +209,19 @@ func RoomsHandler(w http.ResponseWriter, r *http.Request) {
 		panic("Error getting rooms data")
 	}
 	respond(w, "rooms", rooms)
+}
+
+func NewRoomHandler(w http.ResponseWriter, r *http.Request) {
+	var room data.Room
+
+	err := data.InsertFromJson(r.Body, &room)
+	if err != nil {
+		http.Error(w, `{"error": "error creating room: `+err.Error()+`"}`, http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	respond(w, "room", room)
 }
 
 func RoomHandler(w http.ResponseWriter, r *http.Request) {
