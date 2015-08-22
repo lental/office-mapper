@@ -1,7 +1,6 @@
 package data
 
 import (
-	"fmt"
 	"office-mapper/config"
 	"reflect"
 	"strings"
@@ -21,6 +20,23 @@ func sqlCase(s string) string {
 
 func tableName(s string) string {
 	return sqlCase(s) + "s"
+}
+
+func extractStructureFieldAddress(v reflect.Value, columnMaps map[string]interface{}) {
+	for i := 0; i < v.NumField(); i++ {
+		if v.Type().Field(i).Type.Kind() == reflect.Struct {
+			extractStructureFieldAddress(v.Field(i), columnMaps)
+			continue
+		}
+
+		fieldName := v.Type().Field(i).Name
+		columnName := sqlCase(fieldName)
+		if tag := v.Type().Field(i).Tag.Get("sql"); tag != "" {
+			columnName = tag
+		}
+		columnMaps[columnName] = v.Field(i).Addr().Interface()
+	}
+
 }
 
 func loadAll(result interface{}) error {
@@ -49,18 +65,10 @@ func loadAll(result interface{}) error {
 	}
 
 	for rows.Next() {
-		columnMaps := map[string]interface{}{}
 		rv := reflect.New(elemType).Elem()
-		for i := 0; i < rv.NumField(); i++ {
-			fieldName := rv.Type().Field(i).Name
-			columnName := sqlCase(fieldName)
-			if rv.Field(i).CanAddr() {
-				columnMaps[columnName] = rv.Field(i).Addr().Interface()
-			} else {
-				fmt.Printf("Can't addr: ")
-			}
-			fmt.Printf("%v => %v: %v\n", fieldName, columnName, rv.Field(i).Type())
-		}
+		columnMaps := map[string]interface{}{}
+		extractStructureFieldAddress(rv, columnMaps)
+
 		scanInto := make([]interface{}, len(columns))
 		for i, column := range columns {
 			if addr, ok := columnMaps[column]; ok {
