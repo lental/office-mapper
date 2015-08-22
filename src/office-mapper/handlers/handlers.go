@@ -27,8 +27,10 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/users/{id}", UserHandler).Methods("GET")
 	r.HandleFunc("/v1/users/{id}", DeleteUserHandler).Methods("DELETE")
 	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PUT")
-	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")   // All data
-	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET") // All data
+	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")            // All data
+	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET")          // All data
+	r.HandleFunc("/v1/desk_groups", DeskGroupsHandler).Methods("GET") // All data
+	r.HandleFunc("/v1/desks", DesksHandler).Methods("GET")            // All data
 
 	r.HandleFunc("/healthz", HealthzHandler).Methods("GET")
 	r.HandleFunc("/statusz", StatuszHandler).Methods("GET")
@@ -201,4 +203,20 @@ func PlacesHandler(w http.ResponseWriter, r *http.Request) {
 		panic("Error getting places data")
 	}
 	respond(w, "places", places)
+}
+
+func DeskGroupsHandler(w http.ResponseWriter, r *http.Request) {
+	deskGroups, err := data.DeskGroups()
+	if err != nil {
+		panic("Error getting desk groups data")
+	}
+	respond(w, "desk_groups", deskGroups)
+}
+
+func DesksHandler(w http.ResponseWriter, r *http.Request) {
+	desks, err := data.Desks()
+	if err != nil {
+		panic("Error getting desks data")
+	}
+	respond(w, "desk", desks)
 }

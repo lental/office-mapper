@@ -282,3 +282,21 @@ func Places() ([]Place, error) {
 
 	return places, nil
 }
+
+func DeskGroups() ([]DeskGroup, error) {
+	deskGroups := []DeskGroup{}
+	err := loadAll(&deskGroups)
+	if err != nil {
+		return nil, err
+	}
+	return deskGroups, nil
+}
+
+func Desks() ([]Desk, error) {
+	desks := []Desk{}
+	err := loadAll(&desks)
+	if err != nil {
+		return nil, err
+	}
+	return desks, nil
+}
