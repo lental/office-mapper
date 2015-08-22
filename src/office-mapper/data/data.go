@@ -233,16 +233,10 @@ func Sections() ([]Section, error) {
 }
 
 func Users() ([]User, error) {
-	rows, err := config.DB.Query(`SELECT id, name, desk_id, email, thumbnail FROM users`)
+	var users []User
+	err := loadAll(&users)
 	if err != nil {
 		return nil, err
-	}
-
-	users := []User{}
-	for rows.Next() {
-		u := User{}
-		rows.Scan(&u.Id, &u.Name, &u.DeskId, &u.Email, &u.ThumbnailUrl)
-		users = append(users, u)
 	}
 
 	return users, nil
