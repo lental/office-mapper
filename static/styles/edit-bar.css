@@ -31,11 +31,11 @@
   margin-right: 0px;
   background-color:#FAFAFA;
   overflow:hidden;
-  -webkit-transition: width 400ms ease-in, margin 400ms ease-in;
-  -moz-transition: width 400ms ease-in, margin 400ms ease-in;
-  -o-transition: width 400ms ease-in, margin 400ms ease-in;
-  -ms-transition: width 400ms ease-in, margin 400ms ease-in;
-  transition: width 400ms ease-in, margin 400ms ease-in;
+  -webkit-transition: width 400ms ease-in;
+  -moz-transition: width 400ms ease-in;
+  -o-transition: width 400ms ease-in;
+  -ms-transition: width 400ms ease-in;
+  transition: width 400ms ease-in;
 }
 
 #gplus-container {
