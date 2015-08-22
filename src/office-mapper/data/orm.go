@@ -228,7 +228,9 @@ func updateOne(id int, updateData map[string]interface{}, obj interface{}) error
 		setValues = append(setValues, v)
 	}
 
-	_, err := config.DB.Exec(`UPDATE `+table+` SET `+strings.Join(setFields, ", "), setValues...)
+	setValues = append(setValues, id)
+
+	_, err := config.DB.Exec(`UPDATE `+table+` SET `+strings.Join(setFields, ", ")+` WHERE id = ?`, setValues...)
 	if err != nil {
 		return err
 	}
