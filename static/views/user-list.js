@@ -11,20 +11,32 @@ var userTemplate = _.template("<div class='listElement userListElement<%= isSele
 
 var UserListView = Backbone.View.extend({
   initialize: function(){
-    this.render();
     this.listenTo(pageState, 'change', this.render);
+    this.hiding = false;
+    this.render();
   },
 
   el: '#user-section',
 
   events: {
     "click .userListElement": "onUserClick",
-    "click #users-title": "hideShowUsers"
+    "click #users-title": "hideShowUsers",
+    "mouseenter #users-title"  : "showHideButton",
+    "mouseleave #users-title"  : "hideHideButton"
+  },
+
+
+  hideHideButton: function(event) {
+    this.$('.listHideButton').removeClass("visible");
+  },
+  showHideButton: function(event) {
+    this.$('.listHideButton').addClass("visible");
   },
 
   hideShowUsers: function(event) {
     // element = event.currentTarget;
-    this.$('#user-list').toggleClass("hiddenList");
+    this.hiding = !this.hiding;
+    this.render();
   },
   onUserClick: function(event) {
     element = event.currentTarget;
@@ -38,7 +50,10 @@ var UserListView = Backbone.View.extend({
        "<% user.attributes.isSelected = isSelected %>" +
        "<%= userTemplate(user.attributes)%>" +
     "<% }}); %> "),
+
   render: function() {
+    this.$('.listHideButton').html(this.hiding ? "Show" : "Hide");
+    this.$('#user-list').toggleClass("hiddenList", this.hiding);
     this.$('#user-list').html(this.template({users:this.model}));
     return this;
   }

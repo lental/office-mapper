@@ -6,16 +6,31 @@ var placeTemplate = _.template("<div class='listElement placeListElement<%= isSe
 
 var PlaceListView = Backbone.View.extend({
   initialize: function(){
-    this.render();
+    this.hiding = false;
     this.listenTo(pageState, 'change', this.render);
+    this.render();
   },
 
-  el: '#place-list',
+  el: '#places-section',
 
   events: {
     "click .placeListElement": "onPlaceClick",
+    "click #places-title": "hideShowPlaces",
+    "mouseenter .listBarTitle"  : "showHideButton",
+    "mouseleave .listBarTitle"  : "hideHideButton"
   },
 
+  hideHideButton: function(event) {
+    this.$('.listHideButton').removeClass("visible");
+  },
+  showHideButton: function(event) {
+    this.$('.listHideButton').addClass("visible");
+  },
+
+  hideShowPlaces: function(event) {
+    this.hiding = !this.hiding;
+    this.render();
+  },
   onPlaceClick: function(event) {
     element = event.currentTarget;
     console.log("place " + element.dataset.id + " click");
@@ -31,7 +46,9 @@ var PlaceListView = Backbone.View.extend({
 
   render: function() {
 
-    this.$el.html(this.template({places:this.model}));
+    this.$('.listHideButton').html(this.hiding ? "Show" : "Hide");
+    this.$('#place-list').toggleClass("hiddenList", this.hiding);
+    this.$("#place-list").html(this.template({places:this.model}));
     return this;
   }
 });

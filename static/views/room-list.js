@@ -16,15 +16,31 @@ var roomFeaturesTemplate = _.template("<table class='featureListTable'>" +
 
 var RoomListView = Backbone.View.extend({
   initialize: function(){
+    this.hiding = false;
     this.render();
     this.listenTo(pageState, 'change', this.render);
   },
 
-  el: '#room-list',
+  el: '#rooms-section',
 
   events: {
     "click .roomListElement": "onRoomClick",
-    "click .roomListElement": "onRoomClick",
+    "click .listBarTitle": "hideShowRooms",
+    "mouseenter .listBarTitle"  : "showHideButton",
+    "mouseleave .listBarTitle"  : "hideHideButton"
+  },
+
+  hideHideButton: function(event) {
+    this.$('.listHideButton').removeClass("visible");
+  },
+  showHideButton: function(event) {
+    this.$('.listHideButton').addClass("visible");
+  },
+
+  hideShowRooms: function(event) {
+    // element = event.currentTarget;
+    this.hiding = !this.hiding;
+    this.render();
   },
 
   onRoomClick: function(event) {
@@ -39,8 +55,11 @@ var RoomListView = Backbone.View.extend({
        "<% room.attributes.isSelected = isSelected %>" +
        "<%= roomTemplate(room.attributes)%>" +
     "<% }}); %> "),
+
   render: function() {
-    this.$el.html(this.template({rooms:this.model}));
+    this.$('.listHideButton').html(this.hiding ? "Show" : "Hide");
+    this.$('#room-list').toggleClass("hiddenList", this.hiding);
+    this.$("#room-list").html(this.template({rooms:this.model}));
     return this;
   }
 });

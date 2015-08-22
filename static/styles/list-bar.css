@@ -26,6 +26,7 @@
   font-size:30px;
   background-color:#CCF;
   padding: 10px 0px;
+  position:relative;
 }
 
 .hiddenList {
@@ -71,6 +72,22 @@
     font-size:24px;
 }
 
+.listHideButton {
+  opacity: 0;
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  font-size: 20px;
+  -webkit-transition: opacity 400ms ease-out;
+  -moz-transition: opacity 400ms ease-out;
+  -o-transition: opacity 400ms ease-out;
+  -ms-transition: opacity 400ms ease-out;
+  transition: opacity 400ms ease-out;
+}
+
+.visible {
+    opacity: 1;
+}
 
 /* Styles for the feature lists of rooms*/
 .featureListSpacer {
