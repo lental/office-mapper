@@ -23,8 +23,8 @@ $( document ).ready(function(){
       renderMapSelecton();
       firstMap = maps.first();
       pageState.selectMapId(firstMap.get("id"));
-      firstMap.url = "json/map-sc.json"; // Use to get hard-coded map.  should use hard-coded apis in classes-fake-api
-     // firstMap.url = "/v1/maps/1";
+      // firstMap.url = "json/map-sc.json"; // Use to get hard-coded map.  should use hard-coded apis in classes-fake-api
+      firstMap.url = "/v1/maps/" + firstMap.get("id");
       firstMap.fetch({success:function(){
         renderInitialMap(firstMap);
       }});
