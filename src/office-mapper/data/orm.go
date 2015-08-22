@@ -10,9 +10,9 @@ import (
 
 func sqlCase(s string) string {
 	s = strings.ToLower(s[0:1]) + s[1:]
-	for i, r := range s {
-		if unicode.IsUpper(r) {
-			s = s[:i] + "_" + strings.ToLower(string(r)) + s[i+1:]
+	for i := 0; i < len(s); i++ {
+		if unicode.IsUpper(rune(s[i])) {
+			s = s[:i] + "_" + strings.ToLower(s[i:i+1]) + s[i+1:]
 		}
 	}
 
