@@ -142,11 +142,11 @@ func extractStructureFieldValues(v reflect.Value, columnMaps map[string]interfac
 func insertOne(input interface{}) error {
 	v := reflect.ValueOf(input)
 	if v.Kind() != reflect.Ptr {
-		panic("loadAll passed a non-pointer")
+		panic("insertOne passed a non-pointer")
 	}
 	v = reflect.Indirect(v)
 	if v.Kind() != reflect.Struct {
-		panic("loadAll passed a pointer to a non-structure")
+		panic("insertOne passed a pointer to a non-structure")
 	}
 
 	elemType := v.Type()
