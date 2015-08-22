@@ -1,9 +1,14 @@
-var editUserTemplate = _.template("<div class='editUserForm'><form>" +
+var formWrappingTemplate = _.template("<div class='<%= divName %>'><form>" +
+  "<%= innerForm %>" +
+  "<button id='save'>Save</button>" +
+  "</form></div>"
+  )
+
+var editUserTemplate = _.template("" +
   "<div class='edit-id'>id: <%= id %> </div>" +
   "<div class='edit-name'>Name: <%= name %> </div>" +
   "<div class='edit-email'>email: <%= email %> </div>" +
-  "<div class='edit-deskId'>deskId: <input type='text' name='deskId' value='<%= deskId %>'> </div>" +
-  "</form></div>"
+  "<div class='edit-deskId'>deskId: <input type='text' name='deskId' value='<%= deskId %>'> </div>"
   );
 
 var editPositionTemplate = _.template("<div class='editPositionForm'>" +
@@ -22,41 +27,35 @@ var editFeaturesTemplate = _.template("<div class='editPositionForm'>" +
   "</div>"
   );
 
-var editRoomTemplate = _.template("<div class='editRoomForm'><form>" +
+var editRoomTemplate = _.template("" +
   "<div class='edit-id'>id: <%= id %> </div>" +
   "<div class='edit-name'>Name: <input type='text' name='name' value='<%= name %>'> </div>" +
   "<div class='edit-features'>features: <%= editFeaturesTemplate(features) %> </div>" +
   "<div class='edit-sectionId'>sectionId: <input type='text' name='sectionId' value='<%= sectionId %>'> </div>" +
-  "<div class='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
-  "</form></div>"
+  "<div class='edit-position'>position: <%= editPositionTemplate(position) %> </div>"
   );
 
-var editPlaceTemplate = _.template("<div class='editPlaceForm'><form>" +
+var editPlaceTemplate = _.template("" +
   "<div class='edit-id'>id: <%= id %> </div>" +
   "<div class='edit-name'>Name: <input type='text' name='name' value='<%= name %>'></div>" +
   "<div class='edit-description'>description: <input type='text' name='description' value='<%= description %>'> </div>" +
   "<div class='edit-sectionId'>sectionId: <input type='text' name='sectionId' value='<%= sectionId %>'> </div>" +
-  "<div class='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
-  "</form></div>"
+  "<div class='edit-position'>position: <%= editPositionTemplate(position) %> </div>"
   );
 
-var editSectionTemplate = _.template("<div class='editSectionForm'><form>" +
+var editSectionTemplate = _.template("" +
   "<div class='edit-id'>id: <%= id %> </div>" +
   "<div class='edit-name'>Name: <input type='text' name='name' value='<%= name %>'> </div>" +
   // "<div class='edit-mapId'>mapId: <%= mapId %> </div>" +
-  "<div class='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
-  "</form></div>"
+  "<div class='edit-position'>position: <%= editPositionTemplate(position) %> </div>"
   );
 
-var editMapTemplate = _.template("<div class='editMapForm'><form>" +
+var editMapTemplate = _.template(""+
   "<div class='edit-id'>id: <%= id %> </div>" +
-  "<div class='edit-name'>Name: <input type='text' name='name' value='<%= name %>'> </div>" +
+  "<div class='edit-name'>Name: <input type='text' name='name' value='<%= name %>'> </div>"
   // "<div class='edit-mapId'>mapId: <%= mapId %> </div>" +
   // "<div class='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
-  "</form></div>"
   );
-
-
 
 
 var EditFormView = Backbone.View.extend({
@@ -79,15 +78,15 @@ var EditFormView = Backbone.View.extend({
   render: function() {
     var obj = pageState.get("selectedObject");
     if(obj instanceof User) {
-      this.$el.html(editUserTemplate(obj.attributes));
+      this.$el.html(formWrappingTemplate({divName:'editUserForm', innerForm:editUserTemplate(obj.attributes)}));
     } else if (obj instanceof Room) {
-      this.$el.html(editRoomTemplate(obj.attributes));
+      this.$el.html(formWrappingTemplate({divName:'editRoomForm', innerForm:editRoomTemplate(obj.attributes)}));
     } else if (obj instanceof Place) {
-      this.$el.html(editPlaceTemplate(obj.attributes));
+      this.$el.html(formWrappingTemplate({divName:'editPlaceForm', innerForm:editPlaceTemplate(obj.attributes)}));
     } else if (obj instanceof Section) {
-      this.$el.html(editSectionTemplate(obj.attributes));
+      this.$el.html(formWrappingTemplate({divName:'editSectionForm', innerForm:editSectionTemplate(obj.attributes)}));
     } else if (obj instanceof  Map) {
-      this.$el.html(editMapTemplate(obj.attributes));
+      this.$el.html(formWrappingTemplate({divName:'editMapForm', innerForm:editMapTemplate(obj.attributes)}));
     }
     else {
       this.$el.html("");
