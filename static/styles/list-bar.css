@@ -12,17 +12,50 @@
 .roomListElement,
 .userListElement,
 .placeListElement {
-  display:flex;
   padding:10px;
+}
+
+.roomListElement:nth-child(odd),
+.userListElement:nth-child(odd),
+.placeListElement:nth-child(odd) {
+  background-color:#EEE;
+}
+
+
+.userListElement {
+  display:flex;
 }
 
 .userListInfo {
   margin: auto 10px;
 }
+.roomName,
 .userName {
 font-size:24px;
 }
 
 #list-bar .active {
   background-color:#889;
+}
+
+#featureListSeats input{
+  width:30px;
+}
+
+.listBarTitle {
+  text-align:center;
+  font-size:30px;
+  background-color:#CCF;
+  padding: 10px 0px;
+}
+
+.featureListSpacer {
+  width:40px;
+}
+.featureListLabel {
+  text-align:right;
+}
+
+.featureListTable {
+  margin: auto;
 }

@@ -1,7 +1,17 @@
 var roomTemplate = _.template("<div class='roomListElement <%= isSelected ? 'active': '' %>' data-id=<%= id%>>" +
-  "<div class='room-name'>Name: <%= name %> </div>" +
-  "<div class='room-features'>Features: <%= JSON.stringify(features) %> </div>" +
+  "<div class='roomName'><%= name %> </div>" +
+  "<div class='roomFeatures'><%= roomFeaturesTemplate(features) %> </div>" +
   "</div>"
+  );
+
+var roomFeaturesTemplate = _.template("<table class='featureListTable'>" +
+  "<tr class='' id=''><td class='featureListLabel'>chromecast:</td><td><%= chromecast ? '&#10004;' : 'X' %></td>" +
+  "<td class='featureListSpacer'></td>" +
+  "<td class='featureListLabel'>phone:</td><td><%= phone ? '&#10004;' : 'X' %></td></tr>" +
+  "<tr class='' id=''><td class='featureListLabel'>tv:</td><td><%= tv ?  '&#10004;' : 'X'  %></td>" +
+  "<td class='featureListSpacer'></td>" +
+  "<td class='featureListLabel'>seats:</td><td><%= seats %></td></tr>" +
+  "</table>"
   );
 
 var RoomListView = Backbone.View.extend({
