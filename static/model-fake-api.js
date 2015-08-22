@@ -24,7 +24,6 @@ $( document ).ready(function(){
       firstMap = maps.findWhere({"id":pageState.get("currentMapId")});
       firstMap.url = firstMap.get("url");
       firstMap.fetch({success:function(){
-        onMapsReady();
         renderInitialMap();
       }});
     }});

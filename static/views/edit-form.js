@@ -48,6 +48,14 @@ var editSectionTemplate = _.template("<div class='editSectionForm'><form>" +
   "</form></div>"
   );
 
+var editMapTemplate = _.template("<div class='editMapForm'><form>" +
+  "<div class='edit-id'>id: <%= id %> </div>" +
+  "<div class='edit-name'>Name: <input type='text' name='name' value='<%= name %>'> </div>" +
+  // "<div class='edit-mapId'>mapId: <%= mapId %> </div>" +
+  // "<div class='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
+  "</form></div>"
+  );
+
 
 
 
@@ -78,6 +86,8 @@ var EditFormView = Backbone.View.extend({
       this.$el.html(editPlaceTemplate(obj.attributes));
     } else if (obj instanceof Section) {
       this.$el.html(editSectionTemplate(obj.attributes));
+    } else if (obj instanceof  Map) {
+      this.$el.html(editMapTemplate(obj.attributes));
     }
     else {
       this.$el.html("");
