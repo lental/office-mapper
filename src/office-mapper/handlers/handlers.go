@@ -33,6 +33,8 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")            // All data
 	r.HandleFunc("/v1/rooms", NewRoomHandler).Methods("POST")
 	r.HandleFunc("/v1/rooms/{id}", RoomHandler).Methods("GET")
+	r.HandleFunc("/v1/rooms/{id}", UpdateRoomHandler).Methods("PUT")
+	r.HandleFunc("/v1/rooms/{id}", UpdateRoomHandler).Methods("PATCH")
 	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET")          // All data
 	r.HandleFunc("/v1/desk_groups", DeskGroupsHandler).Methods("GET") // All data
 	r.HandleFunc("/v1/desks", DesksHandler).Methods("GET")            // All data
@@ -221,6 +223,28 @@ func NewRoomHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
+	respond(w, "room", room)
+}
+
+func UpdateRoomHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad room id"}`, http.StatusBadRequest)
+		return
+	}
+
+	room := &data.Room{}
+	err = data.UpdateRowFromJson(id, r.Body, &room)
+	if err != nil {
+		http.Error(w, `{"error": "error updating room"}`, http.StatusBadRequest)
+		return
+	}
+	if room == nil {
+		http.Error(w, `{"error": "room not found"}`, http.StatusNotFound)
+		return
+	}
+
 	respond(w, "room", room)
 }
 
