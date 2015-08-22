@@ -30,6 +30,7 @@ div {
   flex: 1;
   position: relative;
   font-family: sans-serif;
+  overflow-x: scroll;
 }
 
 #map_name {
