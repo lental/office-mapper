@@ -1,12 +1,12 @@
 var MapSectionView = Backbone.View.extend({
   tagName: "div",
-  className: "section",
+  className: "mapSection shadowed",
   initialize: function() {
    this.render();
   },
 
   template: _.template(
-    "<div class='sectionName'><%= name %></div>" +
+    "<div class='mapSectionName'><%= name %></div>" +
     "<% deskGroups.forEach(function(group){ %>" +
       "<%= (new MapDeskGroupView({model: group})).el.outerHTML %>" +
     "<% }); %>" +
@@ -32,7 +32,7 @@ var MapSectionView = Backbone.View.extend({
 
 var MapDeskGroupView = Backbone.View.extend({
   tagName: "div",
-  className: "deskGroup",
+  className: "mapDeskGroup shadowed",
   initialize: function() {
     this.render();
   },
@@ -53,7 +53,7 @@ var MapDeskGroupView = Backbone.View.extend({
 
 var MapDeskView = Backbone.View.extend({
   tagName: "div",
-  className: "desk",
+  className: "mapDesk shadowed",
   initialize: function() {
     this.render();
   },
@@ -70,14 +70,15 @@ var MapDeskView = Backbone.View.extend({
 
 var MapRoomView = Backbone.View.extend({
   tagName: "div",
-  className: "room",
+  className: "mapRoom shadowed",
   initialize: function() {
     this.render();
   },
   template: _.template(
-    ""
+    "<div class='mapRoomName'><%= name %></div>"
   ),
   render: function() {
+    this.$el.html(this.template(this.model.attributes));
     this.$el.css({
       height: this.model.attributes.position.h,
       width: this.model.attributes.position.w,
@@ -90,14 +91,15 @@ var MapRoomView = Backbone.View.extend({
 
 var MapPlaceView = Backbone.View.extend({
   tagName: "div",
-  className: "place",
+  className: "mapPlace shadowed",
   initialize: function() {
     this.render();
   },
   template: _.template(
-    ""
+    "<div class='mapPlaceName'><%= name %></div>"
   ),
   render: function() {
+    this.$el.html(this.template(this.model.attributes));
     this.$el.css({
       height: this.model.attributes.position.h,
       width: this.model.attributes.position.w,
