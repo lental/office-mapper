@@ -17,6 +17,7 @@ var PlaceListView = Backbone.View.extend({
   onPlaceClick: function(event) {
     element = event.currentTarget;
     console.log("place " + element.dataset.id + " click");
+    pageState.selectObject(places.getPlace(element.dataset.id));
   },
 
   template: _.template("<% places.each( function(place) { %> \

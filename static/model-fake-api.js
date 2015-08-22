@@ -26,5 +26,6 @@ $( document ).ready(function(){
       }});
     }});
 
-pageState = new PageState();
+    renderGPlusButton();
+    pageState = new PageState();
 });

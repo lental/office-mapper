@@ -1,42 +1,42 @@
-$(document).ready(function(){
-  var GPlusButtonView = Backbone.View.extend({
-    initialize: function(){
-      this.render();
-    },
+var GPlusButtonView = Backbone.View.extend({
+  initialize: function(){
+    this.render();
+  },
 
-    events: {
-      "click .logout": "logout",
-      "click .updateUsers": "updateUsers"
-    },
+  events: {
+    "click .logout": "logout",
+    "click .updateUsers": "updateUsers"
+  },
 
-    updateUsers: function() {
-      gapi.client.load('admin', 'directory_v1', function() {
-              // Step 5: Assemble the API request
-              console.log(gapi.client);
-              var request = gapi.client.directory.users.list({
-                customer: "my_customer",
-                viewType: "domain_public"
-              });
-              // Step 6: Execute the API request
-              request.execute(function(resp) {
-                console.log('RESPONSE', resp);
-              });
+  updateUsers: function() {
+    gapi.client.load('admin', 'directory_v1', function() {
+            // Step 5: Assemble the API request
+            console.log(gapi.client);
+            var request = gapi.client.directory.users.list({
+              customer: "my_customer",
+              viewType: "domain_public"
             });
-    },
-    logout: function() {
-      gapi.load('auth2', function(){ 
-        gapi.auth2.getAuthInstance().signOut();
-      });
-    },
+            // Step 6: Execute the API request
+            request.execute(function(resp) {
+              console.log('RESPONSE', resp);
+            });
+          });
+  },
+  logout: function() {
+    gapi.load('auth2', function(){ 
+      gapi.auth2.getAuthInstance().signOut();
+    });
+  },
 
-    el: '#gplus-container',
+  el: '#gplus-container',
 
-    render: function() {
-      return this;
-    }
-  });
-  new GPlusButtonView({model:places});
+  render: function() {
+    return this;
+  }
 });
+function renderGPlusButton() {
+  new GPlusButtonView({model:places});
+};
 
 function onSuccess(googleUser) {
   var profile = googleUser.getBasicProfile();

@@ -44,6 +44,9 @@ Users = Backbone.Collection.extend({
 
 Places = Backbone.Collection.extend({
     model: Place,
+    getPlace : function(id) {
+        return this.get({"id":id});
+    },
     parse : function(response){
         return response.places;  
     }
@@ -51,6 +54,9 @@ Places = Backbone.Collection.extend({
 
 Rooms = Backbone.Collection.extend({
     model: Room,
+    getRoom : function(id) {
+        return this.get({"id":id});
+    },
     parse : function(response){
         return response.rooms;  
     }
@@ -81,7 +87,20 @@ PageState =  Backbone.Model.extend({
       selectedObject: null
     },
     selectObject: function(obj) {
+        if(obj instanceof User) {
+            console.log("User selected");
+        } else if(obj instanceof Room) {
+            console.log("Room selected");
+        } else if(obj instanceof Place) {
+            console.log("Place selected");
+        } else {
+            console.log("something else selected");
+        }
         this.set({selectedObject: obj});
+    },
+    selectMapId: function(mapId) {
+        console.log("map selected: " + mapId);
+        //If mapId == currentMapId, don't clear selectedObject
+        this.set({currentMapId: mapId});
     }
-
 });
