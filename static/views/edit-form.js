@@ -1,6 +1,6 @@
 var formWrappingTemplate = _.template("<form>" +
   "<table class='<%= divName %>'><%= innerForm %></table>" +
-  "<button id='save'>Save</button>" +
+  "<button type='button' id='save'>Save</button>" +
   "</form>"
   )
 
@@ -70,15 +70,16 @@ var EditFormView= Backbone.View.extend({
     "change .editInput": "onFieldEdited",
     "change .editPosInput": "onPosFieldEdited",
     "change .editFeatInput": "onFeatFieldEdited",
+    "click #save": "saveSelectedObject"
   },
 
   onPosFieldEdited: function(event) {
     element = event.currentTarget;
     var newPos = {
-      x: this.$("[name='x']").val(),
-      y: this.$("[name='y']").val(),
-      w: this.$("[name='w']").val(),
-      h: this.$("[name='h']").val()
+      x: Number(this.$("[name='x']").val()),
+      y: Number(this.$("[name='y']").val()),
+      w: Number(this.$("[name='w']").val()),
+      h: Number(this.$("[name='h']").val())
     }
     console.log("edit position changed to " + JSON.stringify(newPos));
     pageState.setOnSelectedObject("position", newPos);
@@ -90,15 +91,23 @@ var EditFormView= Backbone.View.extend({
       chromecast: this.$("[name='chromecast']").prop('checked'),
       phone: this.$("[name='phone']").prop('checked'),
       tv: this.$("[name='tv']").prop('checked'),
-      seats: this.$("[name='seats']").val()
+      seats: Number(this.$("[name='seats']").val())
     }
-    console.log("edit feats changed to " + JSON.stringify(newFeats));
+    // console.log("edit feats changed to " + JSON.stringify(newFeats));
     pageState.setOnSelectedObject("features", newFeats)
   },
+
   onFieldEdited: function(event) {
     element = event.currentTarget;
-    console.log("edit " + element.name + " changed to " + element.value);
-    pageState.setOnSelectedObject(element.name, element.value)
+
+    var value = !isNaN(element.value) ? Number(element.value) : element.value;
+    // console.log("edit " + element.name + " changed to " + element.value);
+    pageState.setOnSelectedObject(element.name, value)
+  },
+
+  saveSelectedObject: function(event) {
+    console.log("saving!")
+    pageState.get("selectedObject").save();
   },
 
   render: function() {
