@@ -131,6 +131,11 @@ func NewUser(u User) (int, error) {
 	return int(id), nil
 }
 
+func DeleteUser(id int) error {
+	_, err := config.DB.Exec(`DELETE FROM users WHERE id = ?`, id)
+	return err
+}
+
 func Rooms() ([]Room, error) {
 	rows, err := config.DB.Query(`SELECT id, name, section_id, xpos, ypos, width, height, chromecast, phone, tv,
  seats FROM rooms`)

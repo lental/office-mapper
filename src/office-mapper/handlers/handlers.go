@@ -24,6 +24,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/users", UsersHandler).Methods("GET")       // All data
 	r.HandleFunc("/v1/users", NewUserHandler).Methods("POST")
 	r.HandleFunc("/v1/users/{id}", UserHandler).Methods("GET")
+	r.HandleFunc("/v1/users/{id}", DeleteUserHandler).Methods("DELETE")
 	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")   // All data
 	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET") // All data
 
@@ -116,6 +117,29 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		panic("Error converting to JSON")
 	}
 	w.Write(resp)
+}
+
+func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad user id"}`, http.StatusBadRequest)
+		return
+	}
+
+	user, err := data.GetUser(id)
+	if err != nil {
+		panic("Error getting user data")
+	}
+	if user == nil {
+		http.Error(w, `{"error": "user not found"}`, http.StatusNotFound)
+		return
+	}
+	err = data.DeleteUser(id)
+	if err != nil {
+		panic("Error deleting user")
+	}
+	http.Error(w, "", http.StatusNoContent)
 }
 
 func RoomsHandler(w http.ResponseWriter, r *http.Request) {
