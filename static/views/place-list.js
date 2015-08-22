@@ -23,8 +23,9 @@ var PlaceListView = Backbone.View.extend({
   },
 
   template: _.template("<% places.each( function(place) { %>" +
-       "<% if (place.searchMatches(pageState.get('searchQuery'))) { %>" +
-       "<% place.attributes.isSelected = place == pageState.get('selectedObject') %>" +
+       "<% var isSelected = place == pageState.get('selectedObject') %>" +
+       "<% if (isSelected || place.searchMatches(pageState.get('searchQuery'))) { %>" +
+       "<% place.attributes.isSelected = isSelected %>" +
        "<%= placeTemplate(place.attributes)%>" +
     "<% }}); %> "),
 

@@ -33,8 +33,9 @@ var UserListView = Backbone.View.extend({
   },
 
   template: _.template("<% users.each( function(user) { %>" +
-       "<% if (user.searchMatches(pageState.get('searchQuery'))) { %>" +
-       "<% user.attributes.isSelected = user == pageState.get('selectedObject') %>" +
+       "<% var isSelected = user == pageState.get('selectedObject') %>" +
+       "<% if (isSelected || user.searchMatches(pageState.get('searchQuery'))) { %>" +
+       "<% user.attributes.isSelected = isSelected %>" +
        "<%= userTemplate(user.attributes)%>" +
     "<% }}); %> "),
   render: function() {

@@ -34,8 +34,9 @@ var RoomListView = Backbone.View.extend({
   },
 
   template: _.template("<% rooms.each( function(room) { %>" +
-       "<% if (room.searchMatches(pageState.get('searchQuery'))) { %>" +
-       "<% room.attributes.isSelected = room == pageState.get('selectedObject') %>" +
+       "<% var isSelected = room == pageState.get('selectedObject') %>" +
+       "<% if (isSelected || room.searchMatches(pageState.get('searchQuery'))) { %>" +
+       "<% room.attributes.isSelected = isSelected %>" +
        "<%= roomTemplate(room.attributes)%>" +
     "<% }}); %> "),
   render: function() {
