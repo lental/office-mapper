@@ -31,6 +31,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PUT")
 	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PATCH")
 	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")            // All data
+	r.HandleFunc("/v1/rooms/{id}", RoomHandler).Methods("GET")
 	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET")          // All data
 	r.HandleFunc("/v1/desk_groups", DeskGroupsHandler).Methods("GET") // All data
 	r.HandleFunc("/v1/desks", DesksHandler).Methods("GET")            // All data
@@ -207,6 +208,25 @@ func RoomsHandler(w http.ResponseWriter, r *http.Request) {
 		panic("Error getting rooms data")
 	}
 	respond(w, "rooms", rooms)
+}
+
+func RoomHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad room id"}`, http.StatusBadRequest)
+		return
+	}
+	room, err := data.GetRoom(id)
+
+	if err != nil {
+		panic("Error getting room data")
+	}
+	if room == nil {
+		http.Error(w, `{"error": "room not found"}`, http.StatusNotFound)
+		return
+	}
+	respond(w, "room", room)
 }
 
 func PlacesHandler(w http.ResponseWriter, r *http.Request) {

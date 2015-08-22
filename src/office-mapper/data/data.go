@@ -286,6 +286,15 @@ func Rooms() ([]Room, error) {
 	return rooms, nil
 }
 
+func GetRoom(id int) (*Room, error) {
+	room := &Room{}
+	err := loadOne(id, &room)
+	if err != nil {
+		return nil, err
+	}
+	return room, nil
+}
+
 func Places() ([]Place, error) {
 	places := []Place{}
 	err := loadAll(&places)
