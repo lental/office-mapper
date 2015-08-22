@@ -2,14 +2,24 @@
 
 #edit-squish-button {
   position: absolute;
-  left: -40px;
-  width: 40px;
+  left: -10px;
+  width: 10px;
   z-index: 1;
   background-color:red;
   padding: 10px 0px 10px 0px;
   text-align:center;
+  overflow:hidden;
+  -webkit-transition: width 300ms ease-out, left 300ms ease-out;
+  -moz-transition: width 300ms ease-out, left 300ms ease-out;
+  -o-transition: width 300ms ease-out, left 300ms ease-out;
+  -ms-transition: width 300ms ease-out, left 300ms ease-out;
+  transition: width 300ms ease-out, left 300ms ease-out;
 }
 
+#edit-squish-button:hover {
+  left:-40px;
+  width:40px;
+}
 .rightBar {
   width:240px;
   margin-left:4px;

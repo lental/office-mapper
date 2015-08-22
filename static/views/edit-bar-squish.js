@@ -16,6 +16,7 @@ var EditBarSquishView = Backbone.View.extend({
     this.render();
   },
   render: function() {
+    this.$(".squishRight").html(this.editSquished ? "<<" : ">>");
     this.$("#edit-bar").toggleClass("squished", this.editSquished);
     return this;
   }

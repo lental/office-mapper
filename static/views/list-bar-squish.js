@@ -16,6 +16,7 @@ var ListBarSquishView = Backbone.View.extend({
     this.render();
   },
   render: function() {
+    this.$(".squishLeft").html(this.listSquished ? ">>" : "<<");
     this.$("#list-bar").toggleClass("squished", this.listSquished);
     return this;
   }
