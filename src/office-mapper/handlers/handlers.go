@@ -19,7 +19,7 @@ func AppHandlers() http.Handler {
 	r.KeepContext = true
 
 	// App routes
-	r.HandleFunc("/v1/maps", MapsHandler).Methods("GET")         // Sparse
+	r.HandleFunc("/v1/maps", MapsHandler).Methods("GET") // Sparse
 	r.HandleFunc("/v1/maps/{id}", MapHandler).Methods("GET")
 	r.HandleFunc("/v1/sections", SectionsHandler).Methods("GET") // Sparse
 	r.HandleFunc("/v1/users", UsersHandler).Methods("GET")       // All data
@@ -56,15 +56,15 @@ func MapHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	mp, err := data.FullMap(id)
+	mp, err := data.GetFullMap(id)
 	if err != nil {
 		panic("Error getting maps data")
 	}
-  if mp == nil {
+	if mp == nil {
 		http.Error(w, `{"error": "map not found"}`, http.StatusNotFound)
-  }
+	}
 
-	resp, err := json.Marshal(map[string]*data.Map{"map": mp})
+	resp, err := json.Marshal(map[string]*data.FullMap{"map": mp})
 	if err != nil {
 		panic("Error converting to JSON")
 	}

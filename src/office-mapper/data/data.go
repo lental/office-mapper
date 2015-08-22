@@ -17,10 +17,23 @@ type Map struct {
 	Name string `json:"name"`
 }
 
+type FullMap struct {
+	Map
+	Sections []FullSection `json:"sections"`
+}
+
 type Section struct {
 	Id       int      `json:"id"`
+	MapId    int      `json:"map_id"`
 	Name     string   `json:"name"`
 	Position Position `json:"position"`
+}
+
+type FullSection struct {
+	Section
+	Rooms  []Room  `json:"rooms"`
+	Places []Place `json:"places"`
+	//DeskGroups []FullDeskGroups
 }
 
 type User struct {
@@ -71,11 +84,12 @@ func Maps() ([]Map, error) {
 	return maps, nil
 }
 
-func FullMap(id int) (*Map, error) {
+func GetFullMap(id int) (*FullMap, error) {
 	row := config.DB.QueryRow(`SELECT id, name FROM maps WHERE id = ?`, id)
 
-  m := Map{}
+	m := FullMap{}
 	err := row.Scan(&m.Id, &m.Name)
+
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -83,11 +97,62 @@ func FullMap(id int) (*Map, error) {
 		return nil, err
 	}
 
+	rows, err := config.DB.Query(`SELECT id, name, xpos, ypos, width, height FROM sections WHERE map_id = ?`, id)
+	if err != nil {
+		return nil, err
+	}
+
+	sections := map[int]*FullSection{}
+
+	for rows.Next() {
+		s := FullSection{}
+		rows.Scan(&s.Id, &s.Name, &s.Position.X, &s.Position.Y, &s.Position.W, &s.Position.H)
+		s.Rooms = []Room{}
+		s.MapId = id
+		sections[s.Id] = &s
+	}
+
+	rows, err = config.DB.Query(`SELECT sections.id, rooms.id, rooms.name, rooms.xpos, rooms.ypos, rooms.width,
+  rooms.height, rooms.tv, rooms.phone, rooms.chromecast, rooms.seats FROM sections JOIN rooms ON
+  (rooms.section_id = sections.id) WHERE sections.map_id = ?`, id)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		r := Room{}
+		var s int
+		rows.Scan(&s, &r.Id, &r.Name, &r.Position.X, &r.Position.Y, &r.Position.W, &r.Position.H, &r.Features.Tv, &r.Features.Phone, &r.Features.Chromecast, &r.Features.Seats)
+		if section, ok := sections[s]; ok {
+			section.Rooms = append(section.Rooms, r)
+		}
+	}
+
+	rows, err = config.DB.Query(`SELECT sections.id, places.id, places.name, places.description, places.xpos,
+  places.ypos, places.width, places.height FROM sections JOIN places ON (places.section_id = sections.id)
+  WHERE sections.map_id = ?`, id)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		p := Place{}
+		var s int
+		rows.Scan(&s, &p.Id, &p.Name, &p.Description, &p.Position.X, &p.Position.Y, &p.Position.W, &p.Position.H)
+		if section, ok := sections[s]; ok {
+			section.Places = append(section.Places, p)
+		}
+	}
+
+	for _, s := range sections {
+		m.Sections = append(m.Sections, *s)
+	}
+
 	return &m, nil
 }
 
 func Sections() ([]Section, error) {
-	rows, err := config.DB.Query(`SELECT id, name, xpos, ypos, width, height FROM sections`)
+	rows, err := config.DB.Query(`SELECT id, name, map_id, xpos, ypos, width, height FROM sections`)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +160,7 @@ func Sections() ([]Section, error) {
 	sections := []Section{}
 	for rows.Next() {
 		s := Section{}
-		rows.Scan(&s.Id, &s.Name, &s.Position.X, &s.Position.Y, &s.Position.W, &s.Position.H)
+		rows.Scan(&s.Id, &s.Name, &s.MapId, &s.Position.X, &s.Position.Y, &s.Position.W, &s.Position.H)
 		sections = append(sections, s)
 	}
 
