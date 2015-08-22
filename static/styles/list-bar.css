@@ -59,7 +59,12 @@ font-size:24px;
   font-size:30px;
   background-color:#CCF;
   padding: 10px 0px;
+}
+.listBarSection {
   margin:10px 0px 5px 0px;
+}
+.listBarSection:first-child{
+  margin:0px 0px 5px 0px;
 }
 
 .featureListSpacer {
