@@ -25,7 +25,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/users", NewUserHandler).Methods("POST")
 	r.HandleFunc("/v1/users/{id}", UserHandler).Methods("GET")
 	r.HandleFunc("/v1/users/{id}", DeleteUserHandler).Methods("DELETE")
-	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PATCH")
+	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PUT")
 	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")   // All data
 	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET") // All data
 
@@ -107,7 +107,7 @@ func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	decoder := json.NewDecoder(r.Body)
-	var u map[string]string
+	var u data.User
 	err = decoder.Decode(&u)
 	if err != nil {
 		http.Error(w, `{"error": "bad user data: `+err.Error()+`"}`, http.StatusBadRequest)
