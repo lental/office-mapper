@@ -20,6 +20,7 @@ func AppHandlers() http.Handler {
 
 	// App routes
 	r.HandleFunc("/v1/maps", MapsHandler).Methods("GET")         // Sparse
+	r.HandleFunc("/v1/maps/{id}", MapHandler).Methods("GET")
 	r.HandleFunc("/v1/sections", SectionsHandler).Methods("GET") // Sparse
 	r.HandleFunc("/v1/users", UsersHandler).Methods("GET")       // All data
 	r.HandleFunc("/v1/users", NewUserHandler).Methods("POST")
@@ -41,6 +42,29 @@ func MapsHandler(w http.ResponseWriter, r *http.Request) {
 		panic("Error getting maps data")
 	}
 	resp, err := json.Marshal(map[string][]data.Map{"maps": maps})
+	if err != nil {
+		panic("Error converting to JSON")
+	}
+	w.Write(resp)
+}
+
+func MapHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad map id"}`, http.StatusBadRequest)
+		return
+	}
+
+	mp, err := data.FullMap(id)
+	if err != nil {
+		panic("Error getting maps data")
+	}
+  if mp == nil {
+		http.Error(w, `{"error": "map not found"}`, http.StatusNotFound)
+  }
+
+	resp, err := json.Marshal(map[string]*data.Map{"map": mp})
 	if err != nil {
 		panic("Error converting to JSON")
 	}

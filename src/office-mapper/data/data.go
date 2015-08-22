@@ -15,7 +15,6 @@ type Position struct {
 type Map struct {
 	Id   int    `json:"id"`
 	Name string `json:"name"`
-	Url  string `json:"url"`
 }
 
 type Section struct {
@@ -70,6 +69,21 @@ func Maps() ([]Map, error) {
 	}
 
 	return maps, nil
+}
+
+func FullMap(id int) (*Map, error) {
+	row := config.DB.QueryRow(`SELECT id, name FROM maps WHERE id = ?`, id)
+
+  m := Map{}
+	err := row.Scan(&m.Id, &m.Name)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	return &m, nil
 }
 
 func Sections() ([]Section, error) {
