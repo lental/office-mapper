@@ -64,6 +64,9 @@ Rooms = Backbone.Collection.extend({
 
 Maps = Backbone.Collection.extend({
     model: Map,
+    getMap : function(id) {
+        return this.get({"id":id});
+    },
     parse : function(response){
         return response.maps;
     }

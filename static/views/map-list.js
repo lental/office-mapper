@@ -19,7 +19,7 @@ var MapListView = Backbone.View.extend({
     element = event.currentTarget;
     console.log("map " + element.dataset.id + " click");
     pageState.selectMapId(element.dataset.id);
-    pageState.selectObject(null);
+    pageState.selectObject(maps.getMap(element.dataset.id));
   },
 
   template: _.template("<% maps.each( function(map) { %> \
