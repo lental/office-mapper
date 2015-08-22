@@ -28,7 +28,7 @@ INSERT INTO desk_groups (id, name, section_id, xpos, ypos) VALUES
   (3, "HR or something", 2, 80, 20),
   (4, NULL, 2, 100, 80);
 
-INSERT INTO desks (id, name, desk_group_id, xpos, ypos, length, depth, rotation) VALUES
+INSERT INTO desks (id, name, desk_group_id, xpos, ypos, width, height, rotation) VALUES
   (1, NULL, 1, 0, 0, 60, 20, 0),
   (2, NULL, 1, 60, 0, 60, 20, 0),
   (3, NULL, 1, 0, 20, 60, 20, 0),

@@ -69,8 +69,8 @@ CREATE TABLE desks (
   desk_group_id INT NOT NULL,
   xpos INT NOT NULL,
   ypos INT NOT NULL,
-  length INT NOT NULL DEFAULT 60,
-  depth INT NOT NULL DEFAULT 20,
+  width INT NOT NULL DEFAULT 60,
+  height INT NOT NULL DEFAULT 20,
   rotation INT NOT NULL
 );
 
