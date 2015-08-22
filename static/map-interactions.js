@@ -15,7 +15,8 @@ var MapSectionView = Backbone.View.extend({
     "<% }); %>" +
     "<% places.forEach(function(place){ %>" +
       "<%= (new MapPlaceView({model: place})).el.outerHTML %>" +
-    "<% }); %>"
+    "<% }); %>" +
+    "<div class='mapSectionAddButton shadowed'>+</div>"
   ),
 
   render: function() {
@@ -39,13 +40,26 @@ var MapDeskGroupView = Backbone.View.extend({
   template: _.template(
     "<% desks.forEach(function(desk){ %>" +
       "<%= (new MapDeskView({model: desk})).el.outerHTML %>" +
-    "<% }); %>"
+    "<% }); %>" +
+    "<div class='mapDeskAddButton shadowed'>+</div>"
   ),
   render: function() {
+    var maxX = 0;
+    var maxY = 0;
+    var maxWidth = 0;
+    var maxHeight = 0;
+    this.model.attributes.desks.forEach(function(desk){
+      maxX = Math.max(maxX, desk.attributes.position.x);
+      maxY = Math.max(maxX, desk.attributes.position.y);
+      maxWidth = Math.max(maxX, desk.attributes.position.w);
+      maxHeight = Math.max(maxX, desk.attributes.position.h);
+    });
     this.$el.html(this.template(this.model.attributes));
     this.$el.css({
-      top: this.model.attributes.xy_position.y,
-      left: this.model.attributes.xy_position.x,
+      top: this.model.attributes.xyPosition.y,
+      left: this.model.attributes.xyPosition.x,
+      height: (maxY + maxHeight + 5) + "px",
+      width: (maxX + maxWidth + 5) + "px",
     });
     return this;
   }
