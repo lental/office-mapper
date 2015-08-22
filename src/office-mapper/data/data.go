@@ -12,6 +12,11 @@ type Position struct {
 	H int `json:"h"`
 }
 
+type XyPosition struct {
+	X int `json:"x"`
+	Y int `json:"y"`
+}
+
 type Map struct {
 	Id   int    `json:"id"`
 	Name string `json:"name"`
@@ -31,9 +36,9 @@ type Section struct {
 
 type FullSection struct {
 	Section
-	Rooms  []Room  `json:"rooms"`
-	Places []Place `json:"places"`
-	//DeskGroups []FullDeskGroups
+	Rooms      []Room  `json:"rooms"`
+	Places     []Place `json:"places"`
+	DeskGroups []FullDeskGroup
 }
 
 type User struct {
@@ -66,6 +71,26 @@ type Place struct {
 	SectionId   int      `json:"sectionId"`
 	Description string   `json:"description"`
 	Position    Position `json:"position"`
+}
+
+type DeskGroup struct {
+	Id         int        `json:"id"`
+	Name       *string    `json:"name"`
+	SectionId  int        `json:"sectionId"`
+	XyPosition XyPosition `json:"xy_position`
+}
+
+type FullDeskGroup struct {
+	DeskGroup
+	Desks []Desk `json:"desks"`
+}
+
+type Desk struct {
+	Id          int      `json:"id"`
+	Name        *string  `json:"name"`
+	DeskGroupId int      `json:"deskGroupId"`
+	Position    Position `json:"position"`
+	Rotation    int      `json:"rotation"`
 }
 
 func Maps() ([]Map, error) {
@@ -109,6 +134,8 @@ func GetFullMap(id int) (*FullMap, error) {
 		s := FullSection{}
 		rows.Scan(&s.Id, &s.Name, &s.Position.X, &s.Position.Y, &s.Position.W, &s.Position.H)
 		s.Rooms = []Room{}
+		s.Places = []Place{}
+		s.DeskGroups = []FullDeskGroup{}
 		s.MapId = id
 		sections[s.Id] = &s
 	}
@@ -142,6 +169,43 @@ func GetFullMap(id int) (*FullMap, error) {
 		rows.Scan(&s, &p.Id, &p.Name, &p.Description, &p.Position.X, &p.Position.Y, &p.Position.W, &p.Position.H)
 		if section, ok := sections[s]; ok {
 			section.Places = append(section.Places, p)
+		}
+	}
+
+	rows, err = config.DB.Query(`SELECT desk_groups.id, desk_groups.name, desk_groups.section_id,
+  desk_groups.xpos, desk_groups.ypos FROM sections JOIN desk_groups ON (desk_groups.section_id = sections.id)
+  WHERE sections.map_id = ?`, id)
+	if err != nil {
+		return nil, err
+	}
+
+	deskGroups := map[int]*FullDeskGroup{}
+	for rows.Next() {
+		d := &FullDeskGroup{}
+		rows.Scan(&d.Id, &d.Name, &d.SectionId, &d.XyPosition.X, &d.XyPosition.Y)
+		d.Desks = []Desk{}
+		deskGroups[d.Id] = d
+	}
+
+	rows, err = config.DB.Query(`SELECT desks.id, desks.name, desks.desk_group_id, desks.xpos, desks.ypos,
+  desks.length, desks.depth, desks.rotation FROM sections JOIN desk_groups ON (desk_groups.section_id =
+  sections.id) JOIN desks ON (desks.desk_group_id = desk_groups.id) WHERE sections.map_id = ?`, id)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		d := Desk{}
+		rows.Scan(&d.Id, &d.Name, &d.DeskGroupId, &d.Position.X, &d.Position.Y, &d.Position.W, &d.Position.H,
+			&d.Rotation)
+		if deskGroup, ok := deskGroups[d.DeskGroupId]; ok {
+			deskGroup.Desks = append(deskGroup.Desks, d)
+		}
+	}
+
+	for _, d := range deskGroups {
+		if section, ok := sections[d.SectionId]; ok {
+			section.DeskGroups = append(section.DeskGroups, *d)
 		}
 	}
 
