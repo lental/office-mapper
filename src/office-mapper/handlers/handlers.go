@@ -102,22 +102,14 @@ func NewUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := data.NewUser(u)
+	err = data.NewUser(&u)
 	if err != nil {
 		http.Error(w, `{"error": "error creating user: `+err.Error()+`"}`, http.StatusBadRequest)
 		return
 	}
 
-	user, err := data.GetUser(id)
-	if err != nil {
-		panic("Error getting user data")
-	}
-	resp, err := json.Marshal(map[string]interface{}{"user": user})
-	if err != nil {
-		panic("Error converting to JSON")
-	}
 	w.WriteHeader(http.StatusCreated)
-	w.Write(resp)
+	respond(w, "user", u)
 }
 
 func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {

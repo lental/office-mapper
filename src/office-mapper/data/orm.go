@@ -122,3 +122,58 @@ func loadOne(id int, result interface{}) error {
 
 	return nil
 }
+
+func extractStructureFieldValues(v reflect.Value, columnMaps map[string]interface{}) {
+	for i := 0; i < v.NumField(); i++ {
+		if v.Type().Field(i).Type.Kind() == reflect.Struct {
+			extractStructureFieldValues(v.Field(i), columnMaps)
+			continue
+		}
+
+		fieldName := v.Type().Field(i).Name
+		columnName := sqlCase(fieldName)
+		if tag := v.Type().Field(i).Tag.Get("sql"); tag != "" {
+			columnName = tag
+		}
+		columnMaps[columnName] = v.Field(i).Interface()
+	}
+}
+
+func insertOne(input interface{}) error {
+	v := reflect.ValueOf(input)
+	if v.Kind() != reflect.Ptr {
+		panic("loadAll passed a non-pointer")
+	}
+	v = reflect.Indirect(v)
+	if v.Kind() != reflect.Struct {
+		panic("loadAll passed a pointer to a non-structure")
+	}
+
+	elemType := v.Type()
+	table := tableName(elemType.Name())
+
+	columnMaps := map[string]interface{}{}
+	extractStructureFieldValues(v, columnMaps)
+	setFields := []string{}
+	setValues := []interface{}{}
+	for f, v := range columnMaps {
+		setFields = append(setFields, f+" = ?")
+		setValues = append(setValues, v)
+	}
+	result, err := config.DB.Exec(`INSERT INTO `+table+` SET `+strings.Join(setFields, ", "), setValues...)
+	if err != nil {
+		return err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+
+	field := v.FieldByName("Id")
+	if field.IsValid() {
+		field.SetInt(id)
+	}
+
+	return nil
+}
