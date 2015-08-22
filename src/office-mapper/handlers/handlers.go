@@ -33,6 +33,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET") // All data
 	r.HandleFunc("/v1/rooms", NewRoomHandler).Methods("POST")
 	r.HandleFunc("/v1/rooms/{id}", RoomHandler).Methods("GET")
+	r.HandleFunc("/v1/rooms/{id}", DeleteRoomHandler).Methods("DELETE")
 	r.HandleFunc("/v1/rooms/{id}", UpdateRoomHandler).Methods("PUT")
 	r.HandleFunc("/v1/rooms/{id}", UpdateRoomHandler).Methods("PATCH")
 	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET")          // All data
@@ -224,6 +225,25 @@ func NewRoomHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 	respond(w, "room", room)
+}
+
+func DeleteRoomHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad room id"}`, http.StatusBadRequest)
+		return
+	}
+
+	rowsAffected, err := data.DeleteRow("rooms", id)
+	if err != nil {
+		panic("Error deleting room")
+	}
+	if rowsAffected == 0 {
+		http.Error(w, `{"error": "room not found"}`, http.StatusNotFound)
+		return
+	}
+	http.Error(w, "", http.StatusNoContent)
 }
 
 func UpdateRoomHandler(w http.ResponseWriter, r *http.Request) {
