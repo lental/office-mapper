@@ -211,16 +211,10 @@ func GetFullMap(id int) (*FullMap, error) {
 }
 
 func Sections() ([]Section, error) {
-	rows, err := config.DB.Query(`SELECT id, name, map_id, xpos, ypos, width, height FROM sections`)
+	var sections []Section
+	err := loadAll(&sections)
 	if err != nil {
 		return nil, err
-	}
-
-	sections := []Section{}
-	for rows.Next() {
-		s := Section{}
-		rows.Scan(&s.Id, &s.Name, &s.MapId, &s.Position.X, &s.Position.Y, &s.Position.W, &s.Position.H)
-		sections = append(sections, s)
 	}
 
 	return sections, nil
