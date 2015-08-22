@@ -89,6 +89,7 @@ func GetFullMap(id int) (*FullMap, error) {
 
 	m := FullMap{}
 	err := row.Scan(&m.Id, &m.Name)
+	m.Sections = []FullSection{}
 
 	if err == sql.ErrNoRows {
 		return nil, nil
