@@ -7,6 +7,7 @@ import (
 	_ "github.com/ziutek/mymysql/godrv"
 	"net/http"
 	"office-mapper/data"
+	"strconv"
 )
 
 func AppHandlers() http.Handler {
@@ -21,8 +22,9 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/maps", MapsHandler).Methods("GET")         // Sparse
 	r.HandleFunc("/v1/sections", SectionsHandler).Methods("GET") // Sparse
 	r.HandleFunc("/v1/users", UsersHandler).Methods("GET")       // All data
-	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")       // All data
-	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET")     // All data
+	r.HandleFunc("/v1/users/{id}", UserHandler).Methods("GET")
+	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")   // All data
+	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET") // All data
 
 	r.HandleFunc("/healthz", HealthzHandler).Methods("GET")
 	r.HandleFunc("/statusz", StatuszHandler).Methods("GET")
@@ -60,6 +62,29 @@ func UsersHandler(w http.ResponseWriter, r *http.Request) {
 		panic("Error getting user data")
 	}
 	resp, err := json.Marshal(map[string][]data.User{"users": users})
+	if err != nil {
+		panic("Error converting to JSON")
+	}
+	w.Write(resp)
+}
+
+func UserHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad user id"}`, http.StatusBadRequest)
+		return
+	}
+	user, err := data.GetUser(id)
+
+	if err != nil {
+		panic("Error getting user data")
+	}
+	if user == nil {
+		http.Error(w, `{"error": "user not found"}`, http.StatusNotFound)
+		return
+	}
+	resp, err := json.Marshal(map[string]interface{}{"user": user})
 	if err != nil {
 		panic("Error converting to JSON")
 	}

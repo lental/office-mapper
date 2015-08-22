@@ -1,6 +1,7 @@
 package data
 
 import (
+	"database/sql"
 	"office-mapper/config"
 )
 
@@ -100,6 +101,20 @@ func Users() ([]User, error) {
 	}
 
 	return users, nil
+}
+
+func GetUser(id int) (*User, error) {
+	row := config.DB.QueryRow(`SELECT id, name, desk_id, email, thumbnail FROM users WHERE id = ?`, id)
+	u := User{}
+	err := row.Scan(&u.Id, &u.Name, &u.DeskId, &u.Email, &u.ThumbnailUrl)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	return &u, nil
 }
 
 func Rooms() ([]Room, error) {
