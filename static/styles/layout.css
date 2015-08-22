@@ -19,6 +19,7 @@
 
 .squishWrapper {
   position:relative;
+  display:flex;
 }
 
 body {
