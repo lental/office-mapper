@@ -1,4 +1,4 @@
-var mapTemplate = _.template("<div class='mapListElement' data-id=<%= id%>>" +
+var mapTemplate = _.template("<div class='mapListElement <%= isSelected ? 'active': '' %>' data-id=<%= id %>>" +
   "<div class='mapName'>Map: <%= name %> </div>" +
   "</div>"
   ); 
@@ -6,6 +6,7 @@ var mapTemplate = _.template("<div class='mapListElement' data-id=<%= id%>>" +
 var MapListView = Backbone.View.extend({
   initialize: function(){
     this.render();
+    this.listenTo(pageState, 'change', this.render);
   },
 
   el: '#navigation-bar',
@@ -17,18 +18,21 @@ var MapListView = Backbone.View.extend({
   onMapClick: function(event) {
     element = event.currentTarget;
     console.log("map " + element.dataset.id + " click");
+    pageState.selectMapId(element.dataset.id);
+    pageState.selectObject(null);
   },
 
   template: _.template("<% maps.each( function(map) { %> \
-       <%= mapTemplate(map.attributes)%> \
+       <% map.attributes.isSelected = currentMapId == map.id %> \
+       <%= mapTemplate(map.attributes) %> \
     <% }); %> "),
 
   render: function() {
-    
-    this.$el.html(this.template({maps:this.model}));
+    console.log("re-rednering map");
+    this.$el.html(this.template({maps:this.model, currentMapId:pageState.get("currentMapId")}));
     return this;
   }
 });
 var renderMapSelecton = function() {
-  new MapListView({model:maps});
+  new MapListView({model:maps, pageState: pageState});
 };

@@ -1,4 +1,4 @@
-var roomTemplate = _.template("<div class='roomListElement' data-id=<%= id%>>" +
+var roomTemplate = _.template("<div class='roomListElement <%= isSelected ? 'active': '' %>' data-id=<%= id%>>" +
   "<div class='room-name'>Name: <%= name %> </div>" +
   "<div class='room-features'>Features: <%= JSON.stringify(features) %> </div>" +
   "</div>"
@@ -7,6 +7,7 @@ var roomTemplate = _.template("<div class='roomListElement' data-id=<%= id%>>" +
 var RoomListView = Backbone.View.extend({
   initialize: function(){
     this.render();
+    this.listenTo(pageState, 'change', this.render);
   },
 
   el: '#room-list',
@@ -22,8 +23,8 @@ var RoomListView = Backbone.View.extend({
   },
 
   template: _.template("<% rooms.each( function(room) { %> \
+       <% room.attributes.isSelected = room == pageState.get('selectedObject') %> \
        <%= roomTemplate(room.attributes)%> \
-        <br /> \
     <% }); %> "),
   render: function() {
     this.$el.html(this.template({rooms:this.model}));
@@ -31,5 +32,5 @@ var RoomListView = Backbone.View.extend({
   }
 });
 var renderRooms = function() {
-  new RoomListView({model:rooms});
+  new RoomListView({model:rooms, pageState: pageState});
 };

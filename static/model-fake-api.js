@@ -15,10 +15,13 @@ $( document ).ready(function(){
         renderRooms();
       }});
 
+    renderGPlusButton();
+    pageState = new PageState();
+    
     maps = new Maps();
     maps.fetch({success:function(){
       renderMapSelecton();
-      firstMap = maps.findWhere({"id":0});
+      firstMap = maps.findWhere({"id":pageState.get("currentMapId")});
       firstMap.url = firstMap.get("url");
       firstMap.fetch({success:function(){
         onMapsReady();
@@ -26,6 +29,4 @@ $( document ).ready(function(){
       }});
     }});
 
-    renderGPlusButton();
-    pageState = new PageState();
 });

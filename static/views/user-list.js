@@ -1,4 +1,4 @@
-var userTemplate = _.template("<div class='userListElement' data-id=<%= id%>>" + 
+var userTemplate = _.template("<div class='userListElement <%= isSelected ? 'active': '' %>' data-id=<%= id%>>" + 
   "<div class='userThumbnail'><img class='userThumbnailImage' src='<%= thumbnailUrl %>' /></div>" +
   "<div class='userName'>Name: <%= name %> </div>" + 
   "<div class='userEmail'>email: <%= email %> </div>" +  
@@ -10,6 +10,7 @@ var userTemplate = _.template("<div class='userListElement' data-id=<%= id%>>" +
 var UserListView = Backbone.View.extend({
   initialize: function(){
     this.render();
+    this.listenTo(pageState, 'change', this.render);
   },
 
   el: '#user-list',
@@ -25,8 +26,8 @@ var UserListView = Backbone.View.extend({
   },
 
   template: _.template("<% users.each( function(user) { %> \
+       <% user.attributes.isSelected = user == pageState.get('selectedObject') %> \
        <%= userTemplate(user.attributes)%> \
-        <br /> \
     <% }); %> "),
   render: function() {
     this.$el.html(this.template({users:this.model}));
@@ -35,5 +36,5 @@ var UserListView = Backbone.View.extend({
 });
 
 var renderUsers = function() {
-  new UserListView({model:users});
+  new UserListView({model:users, pageState: pageState});
 };

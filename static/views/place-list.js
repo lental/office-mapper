@@ -1,4 +1,4 @@
-var placeTemplate = _.template("<div class='placeListElement' data-id=<%= id%>>" +
+var placeTemplate = _.template("<div class='placeListElement <%= isSelected ? 'active': '' %>' data-id=<%= id%>>" +
   "<div class='place-name'>Name: <%= name %> </div>" +
   "</div>"
   ); 
@@ -6,6 +6,7 @@ var placeTemplate = _.template("<div class='placeListElement' data-id=<%= id%>>"
 var PlaceListView = Backbone.View.extend({
   initialize: function(){
     this.render();
+    this.listenTo(pageState, 'change', this.render);
   },
 
   el: '#place-list',
@@ -21,8 +22,8 @@ var PlaceListView = Backbone.View.extend({
   },
 
   template: _.template("<% places.each( function(place) { %> \
+       <% place.attributes.isSelected = place == pageState.get('selectedObject') %> \
        <%= placeTemplate(place.attributes)%> \
-        <br /> \
     <% }); %> "),
 
   render: function() {
@@ -32,5 +33,5 @@ var PlaceListView = Backbone.View.extend({
   }
 });
 var renderPlaces = function() {
-  new PlaceListView({model:places});
+  new PlaceListView({model:places, pageState: pageState});
 };

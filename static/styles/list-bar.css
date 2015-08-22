@@ -2,3 +2,21 @@
   max-width: 400px;
   word-wrap: break-word;
 }
+
+.mapListElement:hover,
+.roomListElement:hover,
+.userListElement:hover,
+.placeListElement:hover {
+  background-color:#DDD;
+}
+
+.roomListElement,
+.userListElement,
+.placeListElement {
+  padding:10px;
+}
+
+
+#list-bar .active { 
+  background-color:#889;
+}

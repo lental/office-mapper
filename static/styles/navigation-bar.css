@@ -1,4 +1,11 @@
 .mapListElement {
-  display:inline-block;
-  margin:10px;
+  display: inline-block;
+  padding: 10px;
+}
+.mapListElement:hover {
+  background-color:#DDD;
+}
+
+#navigation-bar .active { 
+  background-color:#889;
 }
