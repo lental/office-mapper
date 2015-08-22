@@ -25,6 +25,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/users", NewUserHandler).Methods("POST")
 	r.HandleFunc("/v1/users/{id}", UserHandler).Methods("GET")
 	r.HandleFunc("/v1/users/{id}", DeleteUserHandler).Methods("DELETE")
+	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PATCH")
 	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")   // All data
 	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET") // All data
 
@@ -93,7 +94,38 @@ func NewUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic("Error converting to JSON")
 	}
-  w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusCreated)
+	w.Write(resp)
+}
+
+func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad user id"}`, http.StatusBadRequest)
+		return
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	var u map[string]string
+	err = decoder.Decode(&u)
+	if err != nil {
+		http.Error(w, `{"error": "bad user data: `+err.Error()+`"}`, http.StatusBadRequest)
+		return
+	}
+
+	err = data.UpdateUser(id, u)
+	if err != nil {
+		panic("Error updating user")
+	}
+	user, err := data.GetUser(id)
+	if err != nil {
+		panic("Error getting user")
+	}
+	resp, err := json.Marshal(map[string]interface{}{"user": user})
+	if err != nil {
+		panic("Error converting to JSON")
+	}
 	w.Write(resp)
 }
 

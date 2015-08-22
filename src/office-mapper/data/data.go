@@ -3,6 +3,7 @@ package data
 import (
 	"database/sql"
 	"office-mapper/config"
+	"strings"
 )
 
 type Position struct {
@@ -133,6 +134,23 @@ func NewUser(u User) (int, error) {
 
 func DeleteUser(id int) error {
 	_, err := config.DB.Exec(`DELETE FROM users WHERE id = ?`, id)
+	return err
+}
+
+func UpdateUser(id int, values map[string]string) error {
+	fields := []string{"name", "desk_id", "email", "thumbnail", "admin"}
+	updateFields := []string{}
+	updateValues := []interface{}{}
+	for _, k := range fields {
+		if v, ok := values[k]; ok {
+			updateFields = append(updateFields, k+" = ?")
+			updateValues = append(updateValues, v)
+		}
+	}
+	updateValues = append(updateValues, id)
+	updateString := strings.Join(updateFields, ",")
+	_, err := config.DB.Exec(`UPDATE users SET `+updateString+` WHERE id = ?`,
+		updateValues...)
 	return err
 }
 
