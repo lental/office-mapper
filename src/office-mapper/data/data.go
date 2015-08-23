@@ -52,6 +52,7 @@ type User struct {
 	DeskId       int    `json:"deskId"`
 	Email        string `json:"email"`
 	ThumbnailUrl string `json:"thumbnailUrl"`
+	GplusId      string `json:"gplusId"`
 	Admin        bool   `json:"admin"`
 }
 
