@@ -1,6 +1,3 @@
-
-
-
 PageState =  Backbone.Model.extend({
     defaults: {
       currentMapId: 0,

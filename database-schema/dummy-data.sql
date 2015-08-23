@@ -4,7 +4,10 @@ INSERT INTO sections (id, name, map_id, xpos, ypos, width, height) VALUES
     (1, "Engineering Area", 1, 10, 10, 1350, 400),
     (2, "Walkway Area", 1, 10, 410, 1350, 400),
     (3, "Non-engineering Area", 1, 10, 810, 1350, 400),
-    (4, "Dallas Office", 2, 0, 0, 400, 500);
+    (4, "GDL Part 1", 2, 10, 10, 300, 500),
+    (5, "GDL Part 2", 2, 10, 310, 200, 400),
+    (6, "London Office", 3, 10, 10, 1000, 1000),
+    (7, "Dallas Office", 5, 10, 10, 400, 500);
 
 INSERT INTO users (id, name, desk_id, email, thumbnail_url, gplus_id, admin) VALUES
   (1, "Michael Len", 1, "michael.len@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECNn4_9WI4pz-nwEiC3ZjYXJkX3Bob3RvKigwMWJlMmFjZjk2YWFlMzkyODQ1MmZmYzc4OTQ1ZTQ0Y2UzMDM1MWRjMAHNy1tiC-4vJNOiL2aadmRRetRhNw", 111528215661046135897, 1),
@@ -28,8 +31,8 @@ INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, c
 
 INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height) VALUES
   (1, "Secondary kitchen", "Where we eat", 2, 40, 120, 100, 100),
-  (2, "Electrical room", "Where electrons eat", 1, 50, 60, 10, 20),
-  (3, "Bathroom", "Where baths eat", 2, 110, 110, 50, 50);
+  (2, "Electrical room", "Where electrons eat", 1, 200, 150, 100, 120),
+  (3, "Bathroom", "Where baths eat", 2, 210, 110, 100, 100);
 
 INSERT INTO desk_groups (id, name, section_id, xpos, ypos) VALUES
   (1, NULL, 1, 10, 160),
