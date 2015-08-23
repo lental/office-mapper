@@ -1,12 +1,12 @@
 package handlers
 
 import (
-	//"github.com/gorilla/context"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	_ "github.com/ziutek/mymysql/godrv"
 	"net/http"
 	"office-mapper/data"
+	"office-mapper/oauth"
 	"strconv"
 )
 
@@ -251,20 +251,40 @@ func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
 
 func UserHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		http.Error(w, `{"error": "bad user id"}`, http.StatusBadRequest)
-		return
-	}
-	user, err := data.GetUser(id)
+	var user map[string]interface{}
+	if vars["id"] == "me" {
+		r.ParseForm()
+		id_tokens := r.Form["id_token"]
+		if len(id_tokens) < 1 {
+			http.Error(w, `{"error": "No id_token provided"}`, http.StatusNotFound)
+			return
+		}
 
-	if err != nil {
-		panic("Error getting user data")
+		gplusId, err := oauth.GetMe(id_tokens[0])
+		if err != nil {
+			http.Error(w, `{"error": "error getting user from Google: `+err.Error()+`"}`, http.StatusNotFound)
+			return
+		}
+
+    // Look up by gplusId
+    _ = gplusId
+	} else {
+		id, err := strconv.Atoi(vars["id"])
+		if err != nil {
+			http.Error(w, `{"error": "bad user id"}`, http.StatusBadRequest)
+			return
+		}
+		user, err = data.GetUser(id)
+		if err != nil {
+			panic("Error getting user data")
+		}
 	}
+
 	if user == nil {
 		http.Error(w, `{"error": "user not found"}`, http.StatusNotFound)
 		return
 	}
+
 	respond(w, "user", user)
 }
 
