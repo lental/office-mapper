@@ -93,7 +93,7 @@ func loadAll(result interface{}) error {
 	return nil
 }
 
-func loadOne(id int, result interface{}) error {
+func loadOneBy(id string, idField string, result interface{}) error {
 	v := reflect.ValueOf(result)
 	if v.Kind() != reflect.Ptr {
 		panic("loadOne passed a non-pointer")
@@ -109,7 +109,7 @@ func loadOne(id int, result interface{}) error {
 
 	elemType := v.Type()
 	table := tableName(elemType.Name())
-	rows, err := config.DB.Query(`SELECT * FROM `+table+` WHERE id = ?`, id)
+	rows, err := config.DB.Query(`SELECT * FROM `+table+` WHERE `+idField+` = ?`, id)
 	if err != nil {
 		return err
 	}
@@ -127,6 +127,10 @@ func loadOne(id int, result interface{}) error {
 	}
 
 	return nil
+}
+
+func loadOne(id int, result interface{}) error {
+  return loadOneBy(strconv.Itoa(id), "id", result)
 }
 
 func extractStructureFieldValues(v reflect.Value, columnMaps map[string]interface{}) {

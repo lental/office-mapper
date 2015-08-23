@@ -256,6 +256,20 @@ func GetUser(id int) (map[string]interface{}, error) {
 	return userMap, nil
 }
 
+func GetUserByGplusId(id string) (map[string]interface{}, error) {
+	user := &User{}
+	err := loadOneBy(id, "gplus_id", &user)
+	if err != nil {
+		return nil, err
+	}
+	if user == nil {
+		return nil, nil
+	}
+	userMap := structToMap(user)
+	addMapId([]map[string]interface{}{userMap}, []string{"users", "desks", "desk_groups", "sections"})
+	return userMap, nil
+}
+
 func InsertFromJson(body io.Reader, obj interface{}) error {
 	decoder := json.NewDecoder(body)
 	err := decoder.Decode(&obj)

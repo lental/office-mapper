@@ -266,8 +266,10 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-    // Look up by gplusId
-    _ = gplusId
+		user, err = data.GetUserByGplusId(gplusId)
+		if err != nil {
+			panic("Error getting user data")
+		}
 	} else {
 		id, err := strconv.Atoi(vars["id"])
 		if err != nil {
