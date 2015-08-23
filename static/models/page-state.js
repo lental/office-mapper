@@ -56,5 +56,18 @@ PageState =  Backbone.Model.extend({
     setOnSelectedObject: function(key, val) {
         this.get("selectedObject").set(key, val);
         this.trigger('change', this);
+    },
+    setDeskOnUserSelectedObject: function(deskId) {
+      if (this.get("selectedObject") instanceof User) {
+        $.get( "v1/desks/" + deskId, _.bind(function( data ) {
+          console.log(JSON.stringify(data));
+          data = JSON.parse(data);
+        //  callback(data);
+          this.get("selectedObject").set("deskId", data.desk.id);
+          this.get("selectedObject").set("mapId", data.desk.mapId);
+          this.selectMapId(data.desk.mapId);
+          this.trigger('change', this);
+        },this));
+      }
     }
 });

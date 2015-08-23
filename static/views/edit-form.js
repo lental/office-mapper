@@ -8,7 +8,7 @@ var editUserTemplate = _.template("" +
   "<tr class='formRow' id='edit-id'><td class='inputLabel'>Id:</td><td class='inputField'><%= id %></td></tr>" +
   "<tr class='formRow' id='edit-name'><td class='inputLabel'>Name:</td><td class='inputField'><%= name %></td></tr>" +
   "<tr class='formRow' id='edit-email'><td class='inputLabel'>Email:</td><td class='inputField'><%= email %></td></tr>" +
-  "<tr class='formRow' id='edit-deskId'><td class='inputLabel'>DeskId:</td><td class='inputField'><input class='editInput' type='text' name='deskId' value='<%= deskId %>'></td></tr>"
+  "<tr class='formRow' id='edit-deskId'><td class='inputLabel'>DeskId:</td><td class='inputField'><input class='editDeskInput' type='text' name='deskId' value='<%= deskId %>'></td></tr>"
   );
 
 var editPositionTemplate = _.template("<table class='editPositionForm'>" +
@@ -70,7 +70,7 @@ var editDeskTemplate = _.template(""+
 var primaryEditTemplate =_.template("<div class='primaryEditForm'><%= innerForm %></div>");
 
 var subEditTemplate = _.template(""+ 
-  "<div class='subEditForm'>" +
+  "<div class='secondaryEditForm'>" +
   "<div class='editDeskTitle'> <%= title %> </div>" +
   "<%= innerForm %>" +
   "</div>"
@@ -96,9 +96,25 @@ var EditFormView= Backbone.View.extend({
     "change .primaryEditForm .editInput": "onFieldEdited",
     "change .primaryEditForm .editPosInput": "onPosFieldEdited",
     "change .primaryEditForm .editFeatInput": "onFeatFieldEdited",
-    "click .primaryEditForm #save": "saveSelectedObject"
+    "change .primaryEditForm .editUserForm #edit-deskId .editDeskInput": "onUserDeskChanged",
+    "click .primaryEditForm #save": "saveSelectedObject",
+
+    "change .secondaryEditForm .editInput": "onSecondaryFieldEdited",
+    "change .secondaryEditForm .editPosInput": "onSecondaryPosFieldEdited",
   },
 
+  onSecondaryFieldEdited: function(event) {
+    console.log("onSecondaryFieldEdited");
+  },
+  onSecondaryPosFieldEdited: function(event) {
+    console.log("onSecondaryPosFieldEdited");
+  },
+  onUserDeskChanged: function(event) {
+    element = event.currentTarget;
+
+    var value = !isNaN(element.value) ? Number(element.value) : element.value;
+    pageState.setDeskOnUserSelectedObject(value)
+  },
   onPosFieldEdited: function(event) {
     element = event.currentTarget;
     var newPos = {
