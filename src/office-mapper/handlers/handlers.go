@@ -6,7 +6,6 @@ import (
 	_ "github.com/ziutek/mymysql/godrv"
 	"net/http"
 	"office-mapper/data"
-	"office-mapper/oauth"
 	"strconv"
 )
 
@@ -260,15 +259,11 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		gplusId, err := oauth.GetMe(id_tokens[0])
+		var err error
+		user, err = data.GetUserByToken(id_tokens[0])
 		if err != nil {
-			http.Error(w, `{"error": "error getting user from Google: `+err.Error()+`"}`, http.StatusNotFound)
+			http.Error(w, `{"error": "`+err.Error()+`"}`, http.StatusNotFound)
 			return
-		}
-
-		user, err = data.GetUserByGplusId(gplusId)
-		if err != nil {
-			panic("Error getting user data")
 		}
 	} else {
 		id, err := strconv.Atoi(vars["id"])

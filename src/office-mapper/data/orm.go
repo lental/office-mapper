@@ -130,7 +130,7 @@ func loadOneBy(id string, idField string, result interface{}) error {
 }
 
 func loadOne(id int, result interface{}) error {
-  return loadOneBy(strconv.Itoa(id), "id", result)
+	return loadOneBy(strconv.Itoa(id), "id", result)
 }
 
 func extractStructureFieldValues(v reflect.Value, columnMaps map[string]interface{}) {

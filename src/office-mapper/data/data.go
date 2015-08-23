@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"office-mapper/config"
+	"office-mapper/oauth"
 	"strconv"
 	"strings"
 )
@@ -254,6 +255,19 @@ func GetUser(id int) (map[string]interface{}, error) {
 	userMap := structToMap(user)
 	addMapId([]map[string]interface{}{userMap}, []string{"users", "desks", "desk_groups", "sections"})
 	return userMap, nil
+}
+
+func GetUserByToken(token string) (map[string]interface{}, error) {
+	gplusId, err := oauth.GetMe(token)
+	if err != nil {
+		return nil, errors.New("error getting user from Google: " + err.Error())
+	}
+
+	user, err := GetUserByGplusId(gplusId)
+	if err != nil {
+		panic("Error getting user data")
+	}
+	return user, nil
 }
 
 func GetUserByGplusId(id string) (map[string]interface{}, error) {
