@@ -153,10 +153,32 @@ var MapPlaceView = Backbone.View.extend({
   }
 });
 
-function renderInitialMap(initialMap) {
-  $("#map_name").text(initialMap.attributes.name);
-  var sections = initialMap.attributes.sections;
-  sections.forEach(function(section){
-    $("#map").prepend((new MapSectionView({model: section})).el);
-  });
+var MapView = Backbone.View.extend({
+  initialize: function(){
+    this.render();
+    this.listenTo(pageState, 'change', this.render);
+  },
+
+  el: '#map',
+
+  render: function() {
+    if(pageState.get("currentMapLoaded")) {
+      var curMap = this.model.getCurrentMap()
+      this.$("#map_name").text(curMap.attributes.name);
+
+      var sections = curMap.attributes.sections;
+      sections.forEach(function(section){
+        $("#map").prepend((new MapSectionView({model: section})).el);
+      });
+    }
+    else
+    {
+      this.$("#map_name").text("loading...");
+    }
+    return this;
+  }
+});
+
+function renderMapView(pState) {
+  new MapView({model:pState});
 }

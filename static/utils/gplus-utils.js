@@ -1,5 +1,6 @@
 
 function renderButton() {
+  pageState.set("gplusLoaded", true);
   gapi.signin2.render('signin', {
     'scope': 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/admin.directory.user.readonly',
     'width': 230,

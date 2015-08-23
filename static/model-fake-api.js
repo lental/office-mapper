@@ -2,40 +2,41 @@ var users, plases, rooms, maps, pageState;
 
 gplus = new GPlus();
 gplusList = new GPlusUserList();
+pageState = new PageState();
 $( document ).ready(function(){
     users = new Users();
     users.fetch({success:function(){
-        renderUsers();
-      }});
+      pageState.set("usersLoaded", true);
+      renderUsers();
+    }});
 
     places = new Places();
     places.fetch({success:function(){
-        renderPlaces();
-      }});
+      pageState.set("placesLoaded", true);
+      renderPlaces();
+    }});
 
     rooms = new Rooms();
     rooms.fetch({success:function(){
-        renderRooms();
-      }});
+      pageState.set("roomsLoaded", true);
+      renderRooms();
+    }});
 
-    pageState = new PageState();
 
     maps = new Maps();
     maps.fetch({success:function(){
+      pageState.set("mapsLoaded", true);
       renderMapSelecton();
       firstMap = maps.first();
       pageState.selectMapId(firstMap.get("id"));
-      // firstMap.url = "json/map-sc.json"; // Use to get hard-coded map.  should use hard-coded apis in classes-fake-api
-      firstMap.url = "/v1/maps/" + firstMap.get("id");
-      firstMap.fetch({success:function(){
-        renderInitialMap(firstMap);
-      }});
     }});
 
     connectGPlusView();
 
+    renderLoadingOverlayView();
     renderEditForm();
     renderSearchBar();
     renderListBarSquishView();
     renderEditBarSquishView();
+    renderMapView(pageState);
 });

@@ -5,3 +5,7 @@
   width: 0px;
   /*margin:0px;*/
 }
+
+.invisible {
+  opacity:0;
+}

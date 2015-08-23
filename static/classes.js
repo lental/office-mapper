@@ -17,8 +17,13 @@ Map = Backbone.Model.extend({
         if (response.map) {
             response = response.map;
         }
-        response.sections = new Sections(response.sections, {parse: true});
+        if (response.sections) {
+            response.sections = new Sections(response.sections, {parse: true});
+        }
         return response;
+    },
+    isFullyLoaded : function() {
+        return this.get("sections");
     }
 });
 
@@ -139,7 +144,20 @@ PageState =  Backbone.Model.extend({
     defaults: {
       currentMapId: 0,
       selectedObject: null,
-      searchQuery: ''
+      searchQuery: '',
+
+      currentMapLoaded:false,
+      mapsLoaded:false,
+      usersLoaded:false,
+      roomsLoaded:false,
+      placesLoaded:false,
+      gplusLoaded:false,
+
+    },
+    isDataModelLoaded: function() {
+        return this.get('gplusLoaded') &&
+               this.get('placesLoaded') &&
+               this.get('roomsLoaded') && this.get('usersLoaded') && this.get('mapsLoaded');
     },
     selectObject: function(obj) {
         if(obj instanceof User) {
@@ -156,7 +174,21 @@ PageState =  Backbone.Model.extend({
     selectMapId: function(mapId) {
         console.log("map selected: " + mapId);
         //If mapId == currentMapId, don't clear selectedObject
+
+        var selectedMap = maps.get(mapId)
+        if(!selectedMap.isFullyLoaded()) {
+            console.log("map not loaded. fetching..");
+            this.set("currentMapLoaded", false);
+            selectedMap.url = "/v1/maps/" + mapId;
+            selectedMap.fetch({success:_.bind(function(){
+              this.set("currentMapLoaded", true);
+            },this)});
+        }
+        
         this.set({currentMapId: mapId});
+    },
+    getCurrentMap: function(){
+        return maps.get(this.get("currentMapId"));
     },
     changeSearch: function(search) {
         console.log("searchChanged: " + search);
