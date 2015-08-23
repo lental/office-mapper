@@ -297,42 +297,62 @@ func NewUser(u *User) error {
 	return err
 }
 
-func Rooms() ([]Room, error) {
+func Rooms() ([]map[string]interface{}, error) {
 	rooms := []Room{}
 	err := loadAll(&rooms)
 	if err != nil {
 		return nil, err
 	}
 
-	return rooms, nil
+	roomMap := []map[string]interface{}{}
+	for _, r := range rooms {
+		roomMap = append(roomMap, structToMap(r))
+	}
+	addMapId(roomMap, []string{"rooms", "sections"})
+	return roomMap, nil
 }
 
-func GetRoom(id int) (*Room, error) {
+func GetRoom(id int) (map[string]interface{}, error) {
 	room := &Room{}
 	err := loadOne(id, &room)
 	if err != nil {
 		return nil, err
 	}
-	return room, nil
+	if room == nil {
+		return nil, nil
+	}
+	roomMap := structToMap(room)
+	addMapId([]map[string]interface{}{roomMap}, []string{"rooms", "sections"})
+	return roomMap, nil
 }
 
-func Places() ([]Place, error) {
+func Places() ([]map[string]interface{}, error) {
 	places := []Place{}
 	err := loadAll(&places)
 	if err != nil {
 		return nil, err
 	}
 
-	return places, nil
+	placeMap := []map[string]interface{}{}
+	for _, r := range places {
+		placeMap = append(placeMap, structToMap(r))
+	}
+	addMapId(placeMap, []string{"places", "sections"})
+	return placeMap, nil
 }
 
-func GetPlace(id int) (*Place, error) {
+func GetPlace(id int) (map[string]interface{}, error) {
 	place := &Place{}
 	err := loadOne(id, &place)
 	if err != nil {
 		return nil, err
 	}
-	return place, nil
+	if place == nil {
+		return nil, nil
+	}
+	placeMap := structToMap(place)
+	addMapId([]map[string]interface{}{placeMap}, []string{"places", "sections"})
+	return placeMap, nil
 }
 
 func DeskGroups() ([]DeskGroup, error) {
