@@ -1,0 +1,31 @@
+@media screen and (max-width: 800px) {
+    #flexbox {
+      flex-flow: column;
+    }
+    #header {
+      min-width: 400px;
+    }
+    #list-squish {
+      -webkit-box-ordinal-group: 2;
+      -moz-box-ordinal-group: 2;
+      -ms-flex-order: 2;
+      order: 2;
+    }
+    #list-bar {
+      min-width: 300px;
+      width:100%;
+    }
+    #map {
+      -webkit-box-ordinal-group: 1;
+      -moz-box-ordinal-group: 1;
+      -ms-flex-order: 1;
+      order: 1;
+    }
+
+    .squished {
+      width:auto;
+    }
+    #edit-squish {
+      display:none;
+    }
+}
