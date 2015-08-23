@@ -20,6 +20,7 @@ CREATE TABLE users (
   desk_id INT,
   email VARCHAR(64) NOT NULL,
   thumbnail_url VARCHAR(1024),
+  gplus_id VARCHAR(128) NOT NULL,
   admin TINYINT NOT NULL
 );
 
