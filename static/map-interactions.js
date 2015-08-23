@@ -6,7 +6,12 @@ var MapSectionView = Backbone.View.extend({
     this.render();
     this.listenTo(pageState, 'change', this.render);
   },
-
+  events: {
+    "click ": "onClick"
+  },
+  onClick: function(){
+    pageState.selectObject(this.model);
+  },
   template: _.template(
     "<div class='mapSectionName'><%= attributes.name %></div>" +
     "<% deskGroups.forEach(function(group){ %>" +

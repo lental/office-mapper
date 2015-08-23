@@ -7,3 +7,12 @@ Backbone.Model.prototype.toJSON = function() {
   }
   return json;
 };
+
+Backbone.old_sync = Backbone.sync
+Backbone.sync = function(method, model, options) {
+  if(gplus.isLoggedIn()) {
+    options.headers = {"id-token": gplus.getIdToken()};
+    console.log("syncing with new token");
+  }
+  Backbone.old_sync(method, model, options);
+};
