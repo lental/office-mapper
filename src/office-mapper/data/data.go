@@ -51,7 +51,7 @@ type FullSection struct {
 type User struct {
 	Id           int    `json:"id"`
 	Name         string `json:"name"`
-	DeskId       int    `json:"deskId"`
+	DeskId       *int   `json:"deskId"`
 	Email        string `json:"email"`
 	ThumbnailUrl string `json:"thumbnailUrl"`
 	GplusId      string `json:"gplusId"`
