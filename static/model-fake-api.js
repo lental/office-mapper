@@ -1,7 +1,7 @@
 var users, plases, rooms, maps, pageState;
 
 gplus = new GPlus();
-
+gplusList = new GPlusUserList();
 $( document ).ready(function(){
     users = new Users();
     users.fetch({success:function(){

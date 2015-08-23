@@ -10,18 +10,7 @@ var GPlusButtonView = Backbone.View.extend({
   },
 
   updateUsers: function() {
-    gapi.client.load('admin', 'directory_v1', function() {
-            // Step 5: Assemble the API request
-            console.log(gapi.client);
-            var request = gapi.client.directory.users.list({
-              customer: "my_customer",
-              viewType: "domain_public"
-            });
-            // Step 6: Execute the API request
-            request.execute(function(resp) {
-              console.log('RESPONSE', resp);
-            });
-          });
+    gplusList.getUserList(function(){});
   },
   signout: function() {
     gapi.load('auth2', function(){
