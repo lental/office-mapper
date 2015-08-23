@@ -60,6 +60,10 @@ var RoomListView = Backbone.View.extend({
     this.$('.listHideButton').html(this.hiding ? "Show" : "Hide");
     this.$('#room-list').toggleClass("hiddenList", this.hiding);
     this.$("#room-list").html(this.template({rooms:this.model}));
+    var selectedObject = pageState.get('selectedObject');
+    if (selectedObject instanceof Room) {
+      this.$('#room-list  .listElement[data-id='+selectedObject.get('id')+']')[0].scrollIntoView();
+    }
     return this;
   }
 });

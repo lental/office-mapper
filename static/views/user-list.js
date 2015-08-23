@@ -54,6 +54,10 @@ var UserListView = Backbone.View.extend({
     this.$('.listHideButton').html(this.hiding ? "Show" : "Hide");
     this.$('#user-list').toggleClass("hiddenList", this.hiding);
     this.$('#user-list').html(this.template({users:this.model}));
+    var selectedObject = pageState.get('selectedObject');
+    if (selectedObject instanceof User) {
+      this.$('#user-list .listElement[data-id='+selectedObject.get('id')+']')[0].scrollIntoView();
+    }
     return this;
   }
 });

@@ -5,6 +5,9 @@
     #header {
       min-width: 400px;
     }
+    #logo #logo-img {
+      height:60px;
+    }
     #list-squish {
       -webkit-box-ordinal-group: 2;
       -moz-box-ordinal-group: 2;
@@ -28,4 +31,11 @@
     #edit-squish {
       display:none;
     }
+}
+
+@media screen and (max-height: 800px) {
+
+  #logo #logo-img {
+    height:60px;
+  }
 }
