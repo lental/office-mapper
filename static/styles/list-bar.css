@@ -92,11 +92,11 @@
 }
 
 .listElement:nth-child(odd) {
-  background-color:#EEE;
+  background-color:#CCD6DB;
 }
 
 .listElement:hover {
-  background-color:#DDD;
+  background-color:#8F96A9;
 }
 
 .listElement.active {
