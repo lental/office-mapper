@@ -403,22 +403,33 @@ func GetDeskGroup(id int) (*DeskGroup, error) {
 	return deskGroup, nil
 }
 
-func Desks() ([]Desk, error) {
+func Desks() ([]map[string]interface{}, error) {
 	desks := []Desk{}
 	err := loadAll(&desks)
 	if err != nil {
 		return nil, err
 	}
-	return desks, nil
+
+	deskMap := []map[string]interface{}{}
+	for _, r := range desks {
+		deskMap = append(deskMap, structToMap(r))
+	}
+	addMapId(deskMap, []string{"desks", "desk_groups", "sections"})
+	return deskMap, nil
 }
 
-func GetDesk(id int) (*Desk, error) {
+func GetDesk(id int) (map[string]interface{}, error) {
 	desk := &Desk{}
 	err := loadOne(id, &desk)
 	if err != nil {
 		return nil, err
 	}
-	return desk, nil
+	if desk == nil {
+		return nil, nil
+	}
+	deskMap := structToMap(desk)
+	addMapId([]map[string]interface{}{deskMap}, []string{"desks", "desk_groups", "sections"})
+	return deskMap, nil
 }
 
 type BatchUser struct {
