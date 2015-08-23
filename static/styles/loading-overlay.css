@@ -9,13 +9,22 @@
   text-align:center;
   display:flex;
   flex-flow:column;
-  -webkit-transition: opacity 600ms linear;
-  -moz-transition: opacity 600ms linear;
-  -o-transition: opacity 600ms linear;
-  -ms-transition: opacity 600ms linear;
-  transition: opacity 600ms linear;
+  -webkit-transition: opacity 600ms, visibility 600ms linear;
+  -moz-transition: opacity 600ms, visibility 600ms linear;
+  -o-transition: opacity 600ms, visibility 600ms linear;
+  -ms-transition: opacity 600ms, visibility 600ms linear;
+  transition: opacity 600ms linear, visibility 600ms linear;
 }
 
 .loadingFlex{
   flex:1;
+}
+
+#loading-logo-img {
+  -webkit-transition: opacity 100ms linear;
+  -moz-transition: opacity 100ms linear;
+  -o-transition: opacity 100ms linear;
+  -ms-transition: opacity 100ms linear;
+  transition: opacity 100ms linear;
+
 }

@@ -3,6 +3,7 @@ var LoadingOverlayView = Backbone.View.extend({
   initialize: function(){
     this.render();
     this.listenTo(pageState, 'change', this.render);
+    this.$("#loading-logo-img").removeClass("invisible");
   },
 
   el: '#loading-overlay',

@@ -157,19 +157,28 @@ var MapView = Backbone.View.extend({
   initialize: function(){
     this.render();
     this.listenTo(pageState, 'change', this.render);
+    this.currentlyDisplayedMapId = -1;
   },
 
   el: '#map',
 
   render: function() {
     if(pageState.get("currentMapLoaded")) {
-      var curMap = this.model.getCurrentMap()
-      this.$("#map_name").text(curMap.attributes.name);
+      if(this.currentlyDisplayedMapId != this.model.get('currentMapId')) {
+        console.log("rendering new map");
+        this.currentlyDisplayedMapId = this.model.get('currentMapId')
+        $("#map").empty();
 
-      var sections = curMap.attributes.sections;
-      sections.forEach(function(section){
-        $("#map").prepend((new MapSectionView({model: section})).el);
-      });
+        $("#map").append("<div id='map_name' class='shadowed'></div>");
+        $("#map").append("<div id='new_section_button' class='shadowed clickable'>+</div>");
+        var curMap = this.model.getCurrentMap()
+        this.$("#map_name").text(curMap.attributes.name);
+
+        var sections = curMap.attributes.sections;
+        sections.forEach(function(section){
+          $("#map").prepend((new MapSectionView({model: section})).el);
+        });
+      }
     }
     else
     {
