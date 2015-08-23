@@ -62,6 +62,9 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/desks/{id}", UpdateDeskHandler).Methods("PUT")
 	r.HandleFunc("/v1/desks/{id}", UpdateDeskHandler).Methods("PATCH")
 
+	// Batch data routes
+	r.HandleFunc("/v1/batch/gplus_users", BatchUsersHandler).Methods("PUT")
+
 	r.HandleFunc("/healthz", HealthzHandler).Methods("GET")
 	r.HandleFunc("/statusz", StatuszHandler).Methods("GET")
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
@@ -546,4 +549,21 @@ func DeskHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	respond(w, "desk", desk)
+}
+
+func BatchUsersHandler(w http.ResponseWriter, r *http.Request) {
+	decoder := json.NewDecoder(r.Body)
+	userData := []data.BatchUser{}
+	err := decoder.Decode(&userData)
+	if err != nil {
+		http.Error(w, `{"error": "Error parsing JSON: `+err.Error()+`"}`, http.StatusBadRequest)
+		return
+	}
+
+	err = data.BatchLoadUsers(userData)
+	if err != nil {
+		http.Error(w, `{"error": "Error updating users: `+err.Error()+`"}`, http.StatusInternalServerError)
+		return
+	}
+	http.Error(w, "", http.StatusNoContent)
 }

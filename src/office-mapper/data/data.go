@@ -3,11 +3,13 @@ package data
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/gorilla/mux"
 	"io"
 	"net/http"
 	"office-mapper/config"
 	"strconv"
+	"strings"
 )
 
 type Position struct {
@@ -389,4 +391,78 @@ func GetDesk(id int) (*Desk, error) {
 		return nil, err
 	}
 	return desk, nil
+}
+
+type BatchUser struct {
+	PrimaryEmail      string `json:"primaryEmail"`
+	ThumbnailPhotoUrl string `json:"thumbnailPhotoUrl"`
+	Id                string `json:"id"`
+	Name              struct {
+		GivenName  string `json:"givenName"`
+		FamilyName string `json:"familyName"`
+		FullName   string `json:"fullName"`
+	} `json:"name"`
+}
+
+func validateBatchUser(user BatchUser) string {
+	if len(user.Id) != 21 {
+		return "id isn't 21 digits"
+	}
+
+	if user.PrimaryEmail == "" {
+		return "Missing primaryEmail"
+	}
+
+	if user.Name.FullName == "" {
+		return "Missing fullName"
+	}
+
+	return ""
+}
+
+func BatchLoadUsers(userData []BatchUser) error {
+	var errorStrings = []string{}
+
+	for i, user := range userData {
+		if err := validateBatchUser(user); err != "" {
+			errorStrings = append(errorStrings, fmt.Sprintf("Bad user at position %d: %v", i, err))
+		}
+	}
+
+	if len(errorStrings) > 0 {
+		return errors.New(strings.Join(errorStrings, "; "))
+	}
+
+	tx, err := config.DB.Begin()
+	if err != nil {
+		return err
+	}
+
+	var validGplusIds = []string{}
+	stmt, err := tx.Prepare(`INSERT INTO users (name, email, thumbnail_url, gplus_id) VALUES (?, ?, ?, ?) ON
+  DUPLICATE KEY UPDATE name=VALUES(name), email=VALUES(email), thumbnail_url=VALUES(thumbnail_url)`)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	for _, user := range userData {
+		_, err := stmt.Exec(user.Name.FullName, user.PrimaryEmail, user.ThumbnailPhotoUrl, user.Id)
+		if err != nil {
+			stmt.Close()
+			tx.Rollback()
+			return err
+		}
+		validGplusIds = append(validGplusIds, user.Id)
+	}
+
+	tx.Exec(`DELETE FROM users WHERE gplus_id NOT IN (` + strings.Join(validGplusIds, ",") + `)`)
+
+	stmt.Close()
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
