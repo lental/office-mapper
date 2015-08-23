@@ -21,7 +21,7 @@ CREATE TABLE users (
   email VARCHAR(64) NOT NULL,
   thumbnail_url VARCHAR(1024),
   gplus_id VARCHAR(128) NOT NULL,
-  admin TINYINT NOT NULL,
+  admin TINYINT NOT NULL DEFAULT 0,
   UNIQUE KEY gplus_id (gplus_id)
 );
 
