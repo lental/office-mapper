@@ -32,6 +32,10 @@ type settings struct {
 			Username string   `json:"username"`
 			Password string   `json:"password"`
 		} `json:"mysql"`
+		OfficeMapperDeps struct {
+			GoogleApiId     string `json:"google_api_id"`
+			GoogleApiSecret string `json:"google_api_secret"`
+		} `json:"office-mapper-deps"`
 	} `json:"dependencies"`
 
 	StatusInfoDir string
@@ -64,6 +68,13 @@ func loadConfig() *settings {
 		s.StatusInfoDir = atlantisStatusDir
 	} else {
 		s.StatusInfoDir = localStatusDir
+	}
+
+	if v := os.Getenv("GOOGLE_API_ID"); v != "" {
+		s.Dependencies.OfficeMapperDeps.GoogleApiId = v
+	}
+	if v := os.Getenv("GOOGLE_API_SECRET"); v != "" {
+		s.Dependencies.OfficeMapperDeps.GoogleApiSecret = v
 	}
 
 	return s
