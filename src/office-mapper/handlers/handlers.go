@@ -17,50 +17,49 @@ func AppHandlers() http.Handler {
 	// request has been handled. Instead, use context.ClearHandler to clear the context after all the handlers
 	// have run
 	r.KeepContext = true
-
 	// App routes
-	r.HandleFunc("/v1/maps", MapsHandler).Methods("GET") // Sparse
-	r.HandleFunc("/v1/maps", NewMapHandler).Methods("POST")
+	r.HandleFunc("/v1/maps", MapsHandler).Methods("GET")
+	r.HandleFunc("/v1/maps", authorizeAdmin(NewMapHandler)).Methods("POST")
 	r.HandleFunc("/v1/maps/{id}", MapHandler).Methods("GET")
-	r.HandleFunc("/v1/maps/{id}", DeleteMapHandler).Methods("DELETE")
-	r.HandleFunc("/v1/maps/{id}", UpdateMapHandler).Methods("PUT")
-	r.HandleFunc("/v1/maps/{id}", UpdateMapHandler).Methods("PATCH")
-	r.HandleFunc("/v1/sections", SectionsHandler).Methods("GET") // Sparse
-	r.HandleFunc("/v1/sections", NewSectionHandler).Methods("POST")
+	r.HandleFunc("/v1/maps/{id}", authorizeAdmin(DeleteMapHandler)).Methods("DELETE")
+	r.HandleFunc("/v1/maps/{id}", authorizeAdmin(UpdateMapHandler)).Methods("PUT")
+	r.HandleFunc("/v1/maps/{id}", authorizeAdmin(UpdateMapHandler)).Methods("PATCH")
+	r.HandleFunc("/v1/sections", SectionsHandler).Methods("GET")
+	r.HandleFunc("/v1/sections", authorizeAdmin(NewSectionHandler)).Methods("POST")
 	r.HandleFunc("/v1/sections/{id}", SectionHandler).Methods("GET")
-	r.HandleFunc("/v1/sections/{id}", DeleteSectionHandler).Methods("DELETE")
-	r.HandleFunc("/v1/sections/{id}", UpdateSectionHandler).Methods("PUT")
-	r.HandleFunc("/v1/sections/{id}", UpdateSectionHandler).Methods("PATCH")
-	r.HandleFunc("/v1/users", UsersHandler).Methods("GET") // All data
-	r.HandleFunc("/v1/users", NewUserHandler).Methods("POST")
+	r.HandleFunc("/v1/sections/{id}", authorizeAdmin(DeleteSectionHandler)).Methods("DELETE")
+	r.HandleFunc("/v1/sections/{id}", authorizeAdmin(UpdateSectionHandler)).Methods("PUT")
+	r.HandleFunc("/v1/sections/{id}", authorizeAdmin(UpdateSectionHandler)).Methods("PATCH")
+	r.HandleFunc("/v1/users", UsersHandler).Methods("GET")
+	r.HandleFunc("/v1/users", authorizeAdmin(NewUserHandler)).Methods("POST")
 	r.HandleFunc("/v1/users/{id}", UserHandler).Methods("GET")
-	r.HandleFunc("/v1/users/{id}", DeleteUserHandler).Methods("DELETE")
-	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PUT")
-	r.HandleFunc("/v1/users/{id}", UpdateUserHandler).Methods("PATCH")
-	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET") // All data
-	r.HandleFunc("/v1/rooms", NewRoomHandler).Methods("POST")
+	r.HandleFunc("/v1/users/{id}", authorizeAdmin(DeleteUserHandler)).Methods("DELETE")
+	r.HandleFunc("/v1/users/{id}", authorizeAdmin(UpdateUserHandler)).Methods("PUT")
+	r.HandleFunc("/v1/users/{id}", authorizeAdmin(UpdateUserHandler)).Methods("PATCH")
+	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")
+	r.HandleFunc("/v1/rooms", authorizeAdmin(NewRoomHandler)).Methods("POST")
 	r.HandleFunc("/v1/rooms/{id}", RoomHandler).Methods("GET")
-	r.HandleFunc("/v1/rooms/{id}", DeleteRoomHandler).Methods("DELETE")
-	r.HandleFunc("/v1/rooms/{id}", UpdateRoomHandler).Methods("PUT")
-	r.HandleFunc("/v1/rooms/{id}", UpdateRoomHandler).Methods("PATCH")
-	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET") // All data
-	r.HandleFunc("/v1/places", NewPlaceHandler).Methods("POST")
+	r.HandleFunc("/v1/rooms/{id}", authorizeAdmin(DeleteRoomHandler)).Methods("DELETE")
+	r.HandleFunc("/v1/rooms/{id}", authorizeAdmin(UpdateRoomHandler)).Methods("PUT")
+	r.HandleFunc("/v1/rooms/{id}", authorizeAdmin(UpdateRoomHandler)).Methods("PATCH")
+	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET")
+	r.HandleFunc("/v1/places", authorizeAdmin(NewPlaceHandler)).Methods("POST")
 	r.HandleFunc("/v1/places/{id}", PlaceHandler).Methods("GET")
-	r.HandleFunc("/v1/places/{id}", DeletePlaceHandler).Methods("DELETE")
-	r.HandleFunc("/v1/places/{id}", UpdatePlaceHandler).Methods("PUT")
-	r.HandleFunc("/v1/places/{id}", UpdatePlaceHandler).Methods("PATCH")
-	r.HandleFunc("/v1/desk_groups", DeskGroupsHandler).Methods("GET") // All data
-	r.HandleFunc("/v1/desk_groups", NewDeskGroupHandler).Methods("POST")
+	r.HandleFunc("/v1/places/{id}", authorizeAdmin(DeletePlaceHandler)).Methods("DELETE")
+	r.HandleFunc("/v1/places/{id}", authorizeAdmin(UpdatePlaceHandler)).Methods("PUT")
+	r.HandleFunc("/v1/places/{id}", authorizeAdmin(UpdatePlaceHandler)).Methods("PATCH")
+	r.HandleFunc("/v1/desk_groups", DeskGroupsHandler).Methods("GET")
+	r.HandleFunc("/v1/desk_groups", authorizeAdmin(NewDeskGroupHandler)).Methods("POST")
 	r.HandleFunc("/v1/desk_groups/{id}", DeskGroupHandler).Methods("GET")
-	r.HandleFunc("/v1/desk_groups/{id}", DeleteDeskGroupHandler).Methods("DELETE")
-	r.HandleFunc("/v1/desk_groups/{id}", UpdateDeskGroupHandler).Methods("PUT")
-	r.HandleFunc("/v1/desk_groups/{id}", UpdateDeskGroupHandler).Methods("PATCH")
-	r.HandleFunc("/v1/desks", DesksHandler).Methods("GET") // All data
-	r.HandleFunc("/v1/desks", NewDeskHandler).Methods("POST")
+	r.HandleFunc("/v1/desk_groups/{id}", authorizeAdmin(DeleteDeskGroupHandler)).Methods("DELETE")
+	r.HandleFunc("/v1/desk_groups/{id}", authorizeAdmin(UpdateDeskGroupHandler)).Methods("PUT")
+	r.HandleFunc("/v1/desk_groups/{id}", authorizeAdmin(UpdateDeskGroupHandler)).Methods("PATCH")
+	r.HandleFunc("/v1/desks", DesksHandler).Methods("GET")
+	r.HandleFunc("/v1/desks", authorizeAdmin(NewDeskHandler)).Methods("POST")
 	r.HandleFunc("/v1/desks/{id}", DeskHandler).Methods("GET")
-	r.HandleFunc("/v1/desks/{id}", DeleteDeskHandler).Methods("DELETE")
-	r.HandleFunc("/v1/desks/{id}", UpdateDeskHandler).Methods("PUT")
-	r.HandleFunc("/v1/desks/{id}", UpdateDeskHandler).Methods("PATCH")
+	r.HandleFunc("/v1/desks/{id}", authorizeAdmin(DeleteDeskHandler)).Methods("DELETE")
+	r.HandleFunc("/v1/desks/{id}", authorizeAdmin(UpdateDeskHandler)).Methods("PUT")
+	r.HandleFunc("/v1/desks/{id}", authorizeAdmin(UpdateDeskHandler)).Methods("PATCH")
 
 	// Batch data routes
 	r.HandleFunc("/v1/batch/gplus_users", BatchUsersHandler).Methods("PUT")
@@ -83,6 +82,33 @@ func getIdToken(w http.ResponseWriter, r *http.Request) string {
 		return ""
 	}
 	return id_tokens[0]
+}
+
+type handlerFunction func(http.ResponseWriter, *http.Request)
+
+func authorizeAdmin(handler handlerFunction) handlerFunction {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id_token := getIdToken(w, r)
+		if id_token == "" {
+			return
+		}
+
+		user, err := data.GetUserByToken(id_token)
+		if err != nil {
+			http.Error(w, `{"error": "Error authorizing user: `+err.Error()+`"}`, http.StatusUnauthorized)
+			return
+		}
+		if admin, ok := user["admin"].(bool); ok {
+			if !admin {
+				http.Error(w, `{"error": "You are not an admin"}`, http.StatusUnauthorized)
+				return
+			}
+		} else {
+			http.Error(w, `{"error": "Error checking for user admin"}`, http.StatusInternalServerError)
+			return
+		}
+		handler(w, r)
+	}
 }
 
 func respond(w http.ResponseWriter, name string, data interface{}) {
