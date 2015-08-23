@@ -56,12 +56,19 @@ var editMapTemplate = _.template(""+
   // "<div class='' id='edit-mapId'>mapId: <%= mapId %> </div>" +
   // "<div class='' id='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
   );
+var unselectedTemplate = _.template(""+
+  "Select an object from either the List or the Map to begin editing" 
+  );
 
+var unAuthorizedTemplate = _.template(""+
+  "You must be logged in and authorized to modify the map" 
+  );
 
 var EditFormView= Backbone.View.extend({
   initialize: function(){
     this.render();
     this.listenTo(pageState, 'change', this.render);
+    this.listenTo(gplus, 'change', this.render);
   },
 
   el: '#edit-form',
@@ -112,19 +119,23 @@ var EditFormView= Backbone.View.extend({
 
   render: function() {
     var obj = pageState.get("selectedObject");
-    if(obj instanceof User) {
-      this.$el.html(formWrappingTemplate({divName:'editUserForm', innerForm:editUserTemplate(obj.attributes)}));
-    } else if (obj instanceof Room) {
-      this.$el.html(formWrappingTemplate({divName:'editRoomForm', innerForm:editRoomTemplate(obj.attributes)}));
-    } else if (obj instanceof Place) {
-      this.$el.html(formWrappingTemplate({divName:'editPlaceForm', innerForm:editPlaceTemplate(obj.attributes)}));
-    } else if (obj instanceof Section) {
-      this.$el.html(formWrappingTemplate({divName:'editSectionForm', innerForm:editSectionTemplate(obj.attributes)}));
-    } else if (obj instanceof  Map) {
-      this.$el.html(formWrappingTemplate({divName:'editMapForm', innerForm:editMapTemplate(obj.attributes)}));
-    }
-    else {
-      this.$el.html("");
+    if(gplus.isLoggedIn()) {
+      if(obj instanceof User) {
+        this.$el.html(formWrappingTemplate({divName:'editUserForm', innerForm:editUserTemplate(obj.attributes)}));
+      } else if (obj instanceof Room) {
+        this.$el.html(formWrappingTemplate({divName:'editRoomForm', innerForm:editRoomTemplate(obj.attributes)}));
+      } else if (obj instanceof Place) {
+        this.$el.html(formWrappingTemplate({divName:'editPlaceForm', innerForm:editPlaceTemplate(obj.attributes)}));
+      } else if (obj instanceof Section) {
+        this.$el.html(formWrappingTemplate({divName:'editSectionForm', innerForm:editSectionTemplate(obj.attributes)}));
+      } else if (obj instanceof  Map) {
+        this.$el.html(formWrappingTemplate({divName:'editMapForm', innerForm:editMapTemplate(obj.attributes)}));
+      }
+      else {
+        this.$el.html(unselectedTemplate());
+      }
+    } else {
+      this.$el.html(unAuthorizedTemplate());
     }
     return this;
   }

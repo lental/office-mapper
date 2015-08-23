@@ -36,13 +36,14 @@
     <script type='text/javascript' src='map-interactions.js'></script>
     <script type='text/javascript' src="model-fake-api.js"> </script>
 
+    <link rel="stylesheet" href="styles/loading-overlay.css"></link>
     <link rel='stylesheet' href='styles/map.css'></link>
     <link rel="stylesheet" href="styles/layout.css"></link>
-    <link rel="stylesheet" href="styles/list-bar.css"></link>
     <link rel="stylesheet" href="styles/navigation-bar.css"></link>
-    <link rel="stylesheet" href="styles/edit-bar.css"></link>
     <link rel="stylesheet" href="styles/search-bar.css"></link>
-    <link rel="stylesheet" href="styles/loading-overlay.css"></link>
+    <link rel="stylesheet" href="styles/list-bar.css"></link>
+    <link rel="stylesheet" href="styles/gplus.css"></link>
+    <link rel="stylesheet" href="styles/edit-bar.css"></link>
     <link rel="stylesheet" href="styles/action-enabled-classes.css"></link>
     <link rel="stylesheet" href="styles/media-queries-small.css"></link>
 
@@ -66,7 +67,7 @@
       </div>
       <div id='flexbox'>
         <div class='squishWrapper' id='list-squish'>
-          <div class='squishLeft' id='list-squish-button'><<</div>
+          <div class='squishLeft' id='list-squish-button'></div>
           <div class='flexElement leftBar' id='list-bar'>
             <div id="search-bar">
               <input type="text" id="search-input" class="searchBarText" name="q" placeholder="Search for Person/Place" />
@@ -91,18 +92,19 @@
         <div class='flexElement' id='map'>
         </div>
         <div class='squishWrapper' id='edit-squish'>
-          <div class='squishRight' id='edit-squish-button'>>></div>
+          <div class='squishRight' id='edit-squish-button'></div>
           <div class='flexElement rightBar' id='edit-bar'>
             <div id="gplus-container">
               <div id='loggedIn'>
                 <div id='signout'>Logout</div>
-                <div id='updateUsers'>Get Users</div>
+                <div id='updateUsers'>Sync Users w/ Google</div>
                 <div id='user-info'></div>
               </div>
               <div id='loggedOut'>
                 <div id='signin'></div>
               </div>
             </div>
+            <div class='editBarTitle' id='edit-title'>Edit<div class="listHideButton" id="users-list-hide"></div></div>
             <div id="edit-form"></div>
           </div>
         </div>

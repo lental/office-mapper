@@ -18,6 +18,6 @@ GPlus =  Backbone.Model.extend({
 
     isCurrentUserAnAdmin: function() {
       var user = users.getUserByGPlusId(this.getUserId());
-      return user.get('admin');
+      return user != null ? user.get('admin') : false ;
     }
 });

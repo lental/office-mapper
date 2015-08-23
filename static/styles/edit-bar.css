@@ -10,7 +10,9 @@
   width: 10px;
   top:20px;
   z-index: 1;
-  background-color:red;
+  background-color:#FF9933;
+  color:white;
+  font-weight:700;
   padding: 10px 0px 10px 0px;
   text-align:center;
   overflow:hidden;
@@ -42,11 +44,19 @@
   transition: width 400ms ease-in;
 }
 
+.editBarTitle {
+  text-align:center;
+  font-size:30px;
+  background-color:#2e335a;
+  color:white;
+  padding: 10px 0px;
+  position:relative;
+}
 #gplus-container {
     font-family: Roboto,arial,sans-serif;
     min-width:220px;
     margin-bottom:20px;
-    background-color:#bb2b29;
+    background-color:#2e335a;
     padding:10px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;

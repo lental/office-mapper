@@ -9,7 +9,9 @@
   width: 10px;
   top:20px;
   z-index: 1;
-  background-color:red;
+  background-color:#FF9933;
+  color:white;
+  font-weight:700;
   padding: 10px 0px 10px 0px;
   text-align:center;
   overflow:hidden;
@@ -66,7 +68,8 @@
 .listBarTitle {
   text-align:center;
   font-size:30px;
-  background-color:#CCF;
+  background-color:#2e335a;
+  color:white;
   padding: 10px 0px;
   position:relative;
 }
