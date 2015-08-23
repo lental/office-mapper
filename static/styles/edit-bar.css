@@ -77,6 +77,10 @@
 #edit-seats input {
     width:30px;
 }
+
+.editPosInput {
+    width:50px;
+}
 .inputLabel {
     text-align:right;
 }

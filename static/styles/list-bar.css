@@ -42,6 +42,10 @@
   margin-right:4px;
 }
 
+.userThumbnailImage {
+  max-height:70px;
+}
+
 /* Search bar styles in search-bar.css */
 
 #scrollable-list {
