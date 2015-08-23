@@ -18,6 +18,7 @@
   border-bottom: 10px solid #889;
   margin-bottom:0px;
   background: #79797C url('/images/gray-top-to-transparent.png') repeat-x top right;
+  box-shadow: 0px 2px 5px rgba(0,0,0,.60);
 }
 .mapListElement.active {
   background:#889;

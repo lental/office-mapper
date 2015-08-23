@@ -1,3 +1,7 @@
+#edit-squish {
+  box-shadow: -6px 0px 2px -4px rgba(0,0,0,.60);
+  z-index: 10;
+}
 
 
 #edit-squish-button {
