@@ -215,6 +215,15 @@ func Sections() ([]Section, error) {
 	return sections, nil
 }
 
+func GetSection(id int) (*Section, error) {
+	section := &Section{}
+	err := loadOne(id, &section)
+	if err != nil {
+		return nil, err
+	}
+	return section, nil
+}
+
 func Users() ([]User, error) {
 	var users []User
 	err := loadAll(&users)

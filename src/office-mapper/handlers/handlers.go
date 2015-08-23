@@ -26,6 +26,11 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/maps/{id}", UpdateMapHandler).Methods("PUT")
 	r.HandleFunc("/v1/maps/{id}", UpdateMapHandler).Methods("PATCH")
 	r.HandleFunc("/v1/sections", SectionsHandler).Methods("GET") // Sparse
+	r.HandleFunc("/v1/sections", NewSectionHandler).Methods("POST")
+	r.HandleFunc("/v1/sections/{id}", SectionHandler).Methods("GET")
+	r.HandleFunc("/v1/sections/{id}", DeleteSectionHandler).Methods("DELETE")
+	r.HandleFunc("/v1/sections/{id}", UpdateSectionHandler).Methods("PUT")
+	r.HandleFunc("/v1/sections/{id}", UpdateSectionHandler).Methods("PATCH")
 	r.HandleFunc("/v1/users", UsersHandler).Methods("GET")       // All data
 	r.HandleFunc("/v1/users", NewUserHandler).Methods("POST")
 	r.HandleFunc("/v1/users/{id}", UserHandler).Methods("GET")
@@ -148,6 +153,69 @@ func SectionsHandler(w http.ResponseWriter, r *http.Request) {
 		panic("Error getting sections data")
 	}
 	respond(w, "sections", sections)
+}
+
+func NewSectionHandler(w http.ResponseWriter, r *http.Request) {
+	var m data.Section
+
+	err := data.InsertFromJson(r.Body, &m)
+	if err != nil {
+		http.Error(w, `{"error": "error creating section: `+err.Error()+`"}`, http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	respond(w, "section", m)
+}
+
+func SectionHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad section id"}`, http.StatusBadRequest)
+		return
+	}
+
+	mp, err := data.GetSection(id)
+	if err != nil {
+		panic("Error getting sections data " + err.Error())
+	}
+	if mp == nil {
+		http.Error(w, `{"error": "section not found"}`, http.StatusNotFound)
+		return
+	}
+
+	resp, err := json.Marshal(map[string]*data.Section{"section": mp})
+	if err != nil {
+		panic("Error converting to JSON")
+	}
+	w.Write(resp)
+}
+
+func DeleteSectionHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad section id"}`, http.StatusBadRequest)
+		return
+	}
+
+	rowsAffected, err := data.DeleteRow("sections", id)
+	if err != nil {
+		panic("Error deleting section")
+	}
+	if rowsAffected == 0 {
+		http.Error(w, `{"error": "section not found"}`, http.StatusNotFound)
+		return
+	}
+	http.Error(w, "", http.StatusNoContent)
+}
+
+func UpdateSectionHandler(w http.ResponseWriter, r *http.Request) {
+	mp := &data.Section{}
+	if data.UpdateRowFromJson(w, r, &mp) {
+		respond(w, "mp", mp)
+	}
 }
 
 func UsersHandler(w http.ResponseWriter, r *http.Request) {
