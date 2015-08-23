@@ -225,14 +225,19 @@ func GetSection(id int) (*Section, error) {
 	return section, nil
 }
 
-func Users() ([]User, error) {
+func Users() ([]map[string]interface{}, error) {
 	var users []User
 	err := loadAll(&users)
 	if err != nil {
 		return nil, err
 	}
 
-	return users, nil
+	userMap := []map[string]interface{}{}
+	for _, u := range users {
+		userMap = append(userMap, structToMap(u))
+	}
+	addMapId(userMap, []string{"users", "desks", "desk_groups", "sections"})
+	return userMap, nil
 }
 
 func GetUser(id int) (map[string]interface{}, error) {
@@ -245,7 +250,7 @@ func GetUser(id int) (map[string]interface{}, error) {
 		return nil, nil
 	}
 	userMap := structToMap(user)
-	addMapId(userMap, []string{"users", "desks", "desk_groups", "sections"})
+	addMapId([]map[string]interface{}{userMap}, []string{"users", "desks", "desk_groups", "sections"})
 	return userMap, nil
 }
 

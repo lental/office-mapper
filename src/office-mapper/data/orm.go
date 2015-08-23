@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"office-mapper/config"
 	"reflect"
+	"strconv"
 	"strings"
 	"unicode"
 )
@@ -323,9 +324,11 @@ func structToMapAux(obj interface{}) interface{} {
 		}
 		return mp
 	case reflect.Slice, reflect.Array:
+		arr := make([]interface{}, v.Len())
 		for i := 0; i < v.Len(); i++ {
-			v.Index(i).Set(reflect.ValueOf(structToMapAux(v.Index(i).Interface())))
+			arr[i] = structToMap(v.Index(i).Interface())
 		}
+		return arr
 	}
 	return obj
 }
@@ -334,24 +337,30 @@ func structToMap(obj interface{}) map[string]interface{} {
 	return structToMapAux(obj).(map[string]interface{})
 }
 
-func addMapId(obj map[string]interface{}, chain []string) error {
+func addMapId(objs []map[string]interface{}, chain []string) error {
 	joins := ""
 	if len(chain) > 1 {
 		joins = chainToJoins(chain[0], chain[1:])
 	}
-	query := fmt.Sprintf(`SELECT map_id FROM %v %v WHERE %v.id = ?`, chain[0], joins, chain[0])
+	ids := []string{}
+	objMap := map[int]map[string]interface{}{}
+	for _, obj := range objs {
+		ids = append(ids, strconv.Itoa(obj["id"].(int)))
+		objMap[obj["id"].(int)] = obj
+		obj["mapId"] = nil
+	}
+	idList := "(" + strings.Join(ids, ", ") + ")"
+	query := fmt.Sprintf(`SELECT %v.id, map_id FROM %v %v WHERE %v.id IN %v`, chain[0], chain[0], joins, chain[0], idList)
 
-	obj["mapId"] = nil
-
-	rows, err := config.DB.Query(query, obj["id"])
+	rows, err := config.DB.Query(query)
 	if err != nil {
 		return err
 	}
 
 	for rows.Next() {
-		var mapId int
-		rows.Scan(&mapId)
-		obj["mapId"] = mapId
+		var id, mapId int
+		rows.Scan(&id, &mapId)
+		objMap[id]["mapId"] = mapId
 	}
 
 	return nil
