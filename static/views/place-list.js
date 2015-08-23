@@ -45,7 +45,6 @@ var PlaceListView = Backbone.View.extend({
     "<% }}); %> "),
 
   render: function() {
-
     this.$('.listHideButton').html(this.hiding ? "Show" : "Hide");
     this.$('#place-list').toggleClass("hiddenList", this.hiding);
     this.$("#place-list").html(this.template({places:this.model}));

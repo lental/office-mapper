@@ -20,6 +20,7 @@ PageState =  Backbone.Model.extend({
     selectObject: function(obj) {
         if(obj instanceof User) {
             console.log("User selected");
+            this.selectMapId(obj.get('mapId'));
         } else if(obj instanceof Room) {
             console.log("Room selected");
         } else if(obj instanceof Place) {

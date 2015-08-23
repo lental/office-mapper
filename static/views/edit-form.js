@@ -1,8 +1,8 @@
-var formWrappingTemplate = _.template("<form>" +
+var formWrappingTemplate = _.template("" +
   "<table class='<%= divName %>'><%= innerForm %></table>" +
   "<button type='button' id='save'>Save</button>" +
-  "</form>"
-  )
+  ""
+  );
 
 var editUserTemplate = _.template("" +
   "<tr class='formRow' id='edit-id'><td class='inputLabel'>Id:</td><td class='inputField'><%= id %></td></tr>" +
@@ -56,6 +56,25 @@ var editMapTemplate = _.template(""+
   // "<div class='' id='edit-mapId'>mapId: <%= mapId %> </div>" +
   // "<div class='' id='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
   );
+
+
+var editDeskTemplate = _.template(""+
+  "<tr class='formRow' id='edit-id'><td class='inputLabel'>id:</td><td class='inputField'><%= id %></td></tr>" +
+  "<tr class='formRow' id='edit-name'><td class='inputLabel'>Name:</td><td class='inputField'><input class='editInput' type='text' name='name' value='<%= name %>'></td></tr>" +
+  "<tr class='formRow' id='edit-position'><td class='inputLabel'>Position:</td><td class='inputField'><%= editPositionTemplate(position) %></td></tr>" +
+  "<tr class='formRow' id='edit-rotation'><td class='inputLabel'>Rotation:</td><td class='inputField'><input class='editInput' type='text' name='rotation' value='<%= rotation %>'></td></tr>" 
+  // "<div class='' id='edit-mapId'>mapId: <%= mapId %> </div>" +
+  // "<div class='' id='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
+  );
+
+var primaryEditTemplate =_.template("<div class='primaryEditForm'><%= innerForm %></div>");
+
+var subEditTemplate = _.template(""+ 
+  "<div class='subEditForm'>" +
+  "<div class='editDeskTitle'> <%= title %> </div>" +
+  "<%= innerForm %>" +
+  "</div>"
+  );
 var unselectedTemplate = _.template(""+
   "Select an object from either the List or the Map to begin editing" 
   );
@@ -74,10 +93,10 @@ var EditFormView= Backbone.View.extend({
   el: '#edit-form',
 
   events: {
-    "change .editInput": "onFieldEdited",
-    "change .editPosInput": "onPosFieldEdited",
-    "change .editFeatInput": "onFeatFieldEdited",
-    "click #save": "saveSelectedObject"
+    "change .primaryEditForm .editInput": "onFieldEdited",
+    "change .primaryEditForm .editPosInput": "onPosFieldEdited",
+    "change .primaryEditForm .editFeatInput": "onFeatFieldEdited",
+    "click .primaryEditForm #save": "saveSelectedObject"
   },
 
   onPosFieldEdited: function(event) {
@@ -121,15 +140,27 @@ var EditFormView= Backbone.View.extend({
     var obj = pageState.get("selectedObject");
     if(gplus.isLoggedIn()) {
       if(obj instanceof User) {
-        this.$el.html(formWrappingTemplate({divName:'editUserForm', innerForm:editUserTemplate(obj.attributes)}));
+        this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editUserForm', innerForm:editUserTemplate(obj.attributes)})}));
+
+        if (obj.mapIsLoadedAndVisible()) {
+          var desk = maps.get(obj.get('mapId')).getDeskById(obj.get('deskId'));
+          if (desk) {
+            this.$el.append(subEditTemplate({title:'Edit Associated Desk',
+              innerForm: formWrappingTemplate({divName:'editDeskForm', innerForm:editDeskTemplate(desk.attributes)})}));
+          } else {
+            this.$el.append("Desk is not found");
+          }
+        }
       } else if (obj instanceof Room) {
-        this.$el.html(formWrappingTemplate({divName:'editRoomForm', innerForm:editRoomTemplate(obj.attributes)}));
+        this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editRoomForm', innerForm:editRoomTemplate(obj.attributes)})}));
       } else if (obj instanceof Place) {
-        this.$el.html(formWrappingTemplate({divName:'editPlaceForm', innerForm:editPlaceTemplate(obj.attributes)}));
+        this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editPlaceForm', innerForm:editPlaceTemplate(obj.attributes)})}));
       } else if (obj instanceof Section) {
-        this.$el.html(formWrappingTemplate({divName:'editSectionForm', innerForm:editSectionTemplate(obj.attributes)}));
-      } else if (obj instanceof  Map) {
-        this.$el.html(formWrappingTemplate({divName:'editMapForm', innerForm:editMapTemplate(obj.attributes)}));
+        this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editSectionForm', innerForm:editSectionTemplate(obj.attributes)})}));
+      } else if (obj instanceof Map) {
+        this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editMapForm', innerForm:editMapTemplate(obj.attributes)})}));
+      } else if (obj instanceof Desk) {
+        this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editDeskForm', innerForm:editDeskTemplate(obj.attributes)})}));
       }
       else {
         this.$el.html(unselectedTemplate());

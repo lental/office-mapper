@@ -8,6 +8,9 @@ User = Backbone.Model.extend({
             return true;
         }
         return false;
+    },
+    mapIsLoadedAndVisible: function() {
+        return this.get("mapId") == pageState.get("currentMapId") && pageState.get("currentMapLoaded");
     }
 });
 

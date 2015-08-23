@@ -16,7 +16,7 @@ INSERT INTO users (id, name, desk_id, email, thumbnail_url, gplus_id, admin) VAL
   (4, "Aakash Desai", 5, "aakashd@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABDCK-D8sSEooTkOiILdmNhcmRfcGhvdG8qKDUzOWQ5ODAzMDYzZjEzZDY4YzE1NWEwZTBjNjQ3MGU5ZWY3NmRkNWEwASoMw93ae0IKgnvra5L_pssOEYYh", 104235654211177316783, 0),
   (5, "Aanal Bhatt", 6, "aanalbhatt@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECKT4mvKzvrbQrQEiC3ZjYXJkX3Bob3RvKigzY2I1ZmRjODI5MTBhOWRiNGM4MDJjZGEwY2YxYzU2ZDhlYWRhNmI1MAGXXraqMI1ApYCU3KX1M_6NJy5zsw", 112511239403580341284, 0),
   (6, "Aaron Carr", 7, "aaronc@ooyala.com", NULL, 105266251472533597991, 0),
-  (7, "Abel Rios", 10, "abelrios@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABDCNmJl4Cunf-aSyILdmNhcmRfcGhvdG8qKDg3OWJlZDY2MWZlNTU5YmNjYTBhYzMxMWFhM2RjM2UyOGRiMmVmNmMwAYqy3f5l36WA_z-rEcMkNEEGpaoN",105419515812321281241, 0);
+  (7, "Abel Rios", 36, "abelrios@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABDCNmJl4Cunf-aSyILdmNhcmRfcGhvdG8qKDg3OWJlZDY2MWZlNTU5YmNjYTBhYzMxMWFhM2RjM2UyOGRiMmVmNmMwAYqy3f5l36WA_z-rEcMkNEEGpaoN",105419515812321281241, 0);
 
 INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, chromecast, seats) VALUES
   (1, "Shawshank Redemption", 1,410, 20, 90, 90, 1, 1, 1, 4),
@@ -41,7 +41,8 @@ INSERT INTO desk_groups (name, section_id, xpos, ypos) VALUES
   (NULL, 1, 110, 110),
   (NULL, 1, 200, 20),
   (NULL, 1, 200, 130),
-  (NULL, 1, 260, 20);
+  (NULL, 1, 260, 20),
+  (NULL, 7, 260, 20);
 
 INSERT INTO desks (name, desk_group_id, xpos, ypos, width, height, rotation) VALUES
   (NULL, 1, 0, 0, 20, 30, 0),
@@ -77,6 +78,9 @@ INSERT INTO desks (name, desk_group_id, xpos, ypos, width, height, rotation) VAL
   (NULL, 5, 0, 0, 20, 30, 0),
   (NULL, 5, 0, 30, 20, 30, 0),
   (NULL, 5, 0, 60, 20, 30, 0),
+  (NULL, 6, 0, 0, 20, 30, 0),
+  (NULL, 6, 0, 30, 20, 30, 0),
+  (NULL, 6, 0, 60, 20, 30, 0),
   ("Cool", 500, 0, 0, 60, 20, 1),
   ("Cooler", 500, 0, 60, 60, 20, 1),
 

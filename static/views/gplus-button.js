@@ -15,15 +15,15 @@ var GPlusButtonView = Backbone.View.extend({
       buttons: [{
         text: "Ok",
         click: function() {
-          $(this).html("getting list...");
+          $(this).html("Getting list...");
           $("#confirm-dialog").dialog({
             buttons:[]
           });
           gplusList.getUserList(_.bind(function(list){
-          $(this).html("sending list...");
+          $(this).html("Sending list...");
             var jqxhr = $.ajax( "v1/batch/gplus_users?id_token=" + gplus.getIdToken(), {data: JSON.stringify(list), method:"PUT"})
               .done(_.bind(function() {
-                console.log( "second success" );
+                $(this).html("Process Finished");
               },this))
               .fail(_.bind(function() {
                 $(this).html("Error.");

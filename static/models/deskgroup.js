@@ -1,6 +1,6 @@
 DeskGroup = Backbone.Model.extend({
-    parse : function (response) {
-        response.desks =  new Desks(response.desks, {parse: true});
+    parse : function (response, options) {
+        response.desks =  new Desks(response.desks, {parse: true, allMapDesks: options.allMapDesks});
         return response;
     }
 });

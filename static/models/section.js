@@ -1,7 +1,7 @@
 Section = Backbone.Model.extend({
-    parse : function (response) {
+    parse : function (response, options) {
         if (places) {
-        response.deskGroups = new DeskGroups(response.deskGroups, {parse: true});
+        response.deskGroups = new DeskGroups(response.deskGroups, {parse: true, allMapDesks: options.allMapDesks});
         response.places = places.getSubsetFromJSONArray(response.places);
         response.rooms = rooms.getSubsetFromJSONArray(response.rooms);
         } else {

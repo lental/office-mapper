@@ -63,12 +63,25 @@
   background-color:#CCD6DB;
 }
 
+.subEditForm {
+  
+  border: 1px black solid;
+}
+
+.editDeskTitle {
+  text-align: center;
+  font-size:20px;
+  background-color:#2e335a;
+  color:white;
+  padding: 10px 0px;
+}
+
 .editPosInput {
-    width:50px;
+  width:50px;
 }
 .inputLabel {
-    text-align:right;
+  text-align:right;
 }
 .formRow > td{
-    /*border-bottom: 1px solid black;*/
+  /*border-bottom: 1px solid black;*/
 }
