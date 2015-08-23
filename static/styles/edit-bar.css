@@ -28,8 +28,7 @@
   width:40px;
 }
 .rightBar {
-  width:240px;
-  margin-left:4px;
+  width:250px;
 }
 
 #edit-bar {
@@ -49,6 +48,8 @@
     margin-bottom:20px;
     background-color:#bb2b29;
     padding:10px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 #signin {
@@ -67,7 +68,6 @@
   margin: 0px 0 10px 0px;
   color: white;
   font-weight: 700;
-  height:25px;
 }
 
 #updateUsers {

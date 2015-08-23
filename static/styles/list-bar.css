@@ -42,8 +42,7 @@
 }
 
 .leftBar {
-  width:350px;
-  margin-right:4px;
+  width:300px;
 }
 
 .userThumbnailImage {
@@ -113,7 +112,7 @@
 .roomName,
 .userName,
 .placeName {
-    font-size:24px;
+    font-size:20px;
 }
 
 .listHideButton {

@@ -2,7 +2,7 @@
 function renderButton() {
   gapi.signin2.render('signin', {
     'scope': 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/admin.directory.user.readonly',
-    'width': 200,
+    'width': 230,
     'height': 45,
     'longtitle': false,
     'theme': 'dark',
