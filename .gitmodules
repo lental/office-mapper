@@ -16,3 +16,15 @@
 [submodule "vendor/src/github.com/ziutek/mymysql"]
 	path = vendor/src/github.com/ziutek/mymysql
 	url = git://github.com/ziutek/mymysql
+[submodule "vendor/src/golang.org/x/net"]
+	path = vendor/src/golang.org/x/net
+	url = https://github.com/golang/net/
+[submodule "vendor/src/golang.org/x/oauth2"]
+	path = vendor/src/golang.org/x/oauth2
+	url = https://github.com/golang/oauth2
+[submodule "vendor/src/google.golang.org/api"]
+	path = vendor/src/google.golang.org/api
+	url = https://github.com/google/google-api-go-client
+[submodule "vendor/src/google.golang.org/cloud"]
+	path = vendor/src/google.golang.org/cloud
+	url = https://github.com/GoogleCloudPlatform/gcloud-golang
