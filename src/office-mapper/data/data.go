@@ -306,6 +306,16 @@ func Places() ([]Place, error) {
 	return places, nil
 }
 
+func GetPlace(id int) (*Place, error) {
+	place := &Place{}
+	err := loadOne(id, &place)
+	if err != nil {
+		return nil, err
+	}
+	return place, nil
+}
+
+
 func DeskGroups() ([]DeskGroup, error) {
 	deskGroups := []DeskGroup{}
 	err := loadAll(&deskGroups)

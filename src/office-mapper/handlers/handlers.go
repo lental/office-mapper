@@ -39,6 +39,11 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/rooms/{id}", UpdateRoomHandler).Methods("PUT")
 	r.HandleFunc("/v1/rooms/{id}", UpdateRoomHandler).Methods("PATCH")
 	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET")          // All data
+	r.HandleFunc("/v1/places", NewPlaceHandler).Methods("POST")
+	r.HandleFunc("/v1/places/{id}", PlaceHandler).Methods("GET")
+	r.HandleFunc("/v1/places/{id}", DeletePlaceHandler).Methods("DELETE")
+	r.HandleFunc("/v1/places/{id}", UpdatePlaceHandler).Methods("PUT")
+	r.HandleFunc("/v1/places/{id}", UpdatePlaceHandler).Methods("PATCH")
 	r.HandleFunc("/v1/desk_groups", DeskGroupsHandler).Methods("GET") // All data
 	r.HandleFunc("/v1/desks", DesksHandler).Methods("GET")            // All data
 
@@ -274,6 +279,65 @@ func PlacesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	respond(w, "places", places)
 }
+
+func NewPlaceHandler(w http.ResponseWriter, r *http.Request) {
+	var place data.Place
+
+	err := data.InsertFromJson(r.Body, &place)
+	if err != nil {
+		http.Error(w, `{"error": "error creating place: `+err.Error()+`"}`, http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	respond(w, "place", place)
+}
+
+func DeletePlaceHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad place id"}`, http.StatusBadRequest)
+		return
+	}
+
+	rowsAffected, err := data.DeleteRow("places", id)
+	if err != nil {
+		panic("Error deleting place")
+	}
+	if rowsAffected == 0 {
+		http.Error(w, `{"error": "place not found"}`, http.StatusNotFound)
+		return
+	}
+	http.Error(w, "", http.StatusNoContent)
+}
+
+func UpdatePlaceHandler(w http.ResponseWriter, r *http.Request) {
+	place := &data.Place{}
+	if data.UpdateRowFromJson(w, r, &place) {
+		respond(w, "place", place)
+	}
+}
+
+func PlaceHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad place id"}`, http.StatusBadRequest)
+		return
+	}
+	place, err := data.GetPlace(id)
+
+	if err != nil {
+		panic("Error getting place data")
+	}
+	if place == nil {
+		http.Error(w, `{"error": "place not found"}`, http.StatusNotFound)
+		return
+	}
+	respond(w, "place", place)
+}
+
 
 func DeskGroupsHandler(w http.ResponseWriter, r *http.Request) {
 	deskGroups, err := data.DeskGroups()
