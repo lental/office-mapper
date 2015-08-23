@@ -62,7 +62,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/desks/{id}", authorizeAdmin(UpdateDeskHandler)).Methods("PATCH")
 
 	// Batch data routes
-	r.HandleFunc("/v1/batch/gplus_users", BatchUsersHandler).Methods("PUT")
+	r.HandleFunc("/v1/batch/gplus_users", authorizeAdmin(BatchUsersHandler)).Methods("PUT")
 
 	r.HandleFunc("/healthz", HealthzHandler).Methods("GET")
 	r.HandleFunc("/statusz", StatuszHandler).Methods("GET")
