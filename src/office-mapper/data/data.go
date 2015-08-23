@@ -325,6 +325,16 @@ func DeskGroups() ([]DeskGroup, error) {
 	return deskGroups, nil
 }
 
+func GetDeskGroup(id int) (*DeskGroup, error) {
+	deskGroup := &DeskGroup{}
+	err := loadOne(id, &deskGroup)
+	if err != nil {
+		return nil, err
+	}
+	return deskGroup, nil
+}
+
+
 func Desks() ([]Desk, error) {
 	desks := []Desk{}
 	err := loadAll(&desks)

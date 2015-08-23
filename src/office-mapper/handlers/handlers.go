@@ -45,6 +45,11 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/places/{id}", UpdatePlaceHandler).Methods("PUT")
 	r.HandleFunc("/v1/places/{id}", UpdatePlaceHandler).Methods("PATCH")
 	r.HandleFunc("/v1/desk_groups", DeskGroupsHandler).Methods("GET") // All data
+	r.HandleFunc("/v1/desk_groups", NewDeskGroupHandler).Methods("POST")
+	r.HandleFunc("/v1/desk_groups/{id}", DeskGroupHandler).Methods("GET")
+	r.HandleFunc("/v1/desk_groups/{id}", DeleteDeskGroupHandler).Methods("DELETE")
+	r.HandleFunc("/v1/desk_groups/{id}", UpdateDeskGroupHandler).Methods("PUT")
+	r.HandleFunc("/v1/desk_groups/{id}", UpdateDeskGroupHandler).Methods("PATCH")
 	r.HandleFunc("/v1/desks", DesksHandler).Methods("GET")            // All data
 
 	r.HandleFunc("/healthz", HealthzHandler).Methods("GET")
@@ -345,6 +350,64 @@ func DeskGroupsHandler(w http.ResponseWriter, r *http.Request) {
 		panic("Error getting desk groups data")
 	}
 	respond(w, "desk_groups", deskGroups)
+}
+
+func NewDeskGroupHandler(w http.ResponseWriter, r *http.Request) {
+	var deskGroup data.DeskGroup
+
+	err := data.InsertFromJson(r.Body, &deskGroup)
+	if err != nil {
+		http.Error(w, `{"error": "error creating deskGroup: `+err.Error()+`"}`, http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	respond(w, "deskGroup", deskGroup)
+}
+
+func DeleteDeskGroupHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad deskGroup id"}`, http.StatusBadRequest)
+		return
+	}
+
+	rowsAffected, err := data.DeleteRow("desk_groups", id)
+	if err != nil {
+		panic("Error deleting deskGroup")
+	}
+	if rowsAffected == 0 {
+		http.Error(w, `{"error": "deskGroup not found"}`, http.StatusNotFound)
+		return
+	}
+	http.Error(w, "", http.StatusNoContent)
+}
+
+func UpdateDeskGroupHandler(w http.ResponseWriter, r *http.Request) {
+	deskGroup := &data.DeskGroup{}
+	if data.UpdateRowFromJson(w, r, &deskGroup) {
+		respond(w, "deskGroup", deskGroup)
+	}
+}
+
+func DeskGroupHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad deskGroup id"}`, http.StatusBadRequest)
+		return
+	}
+	deskGroup, err := data.GetDeskGroup(id)
+
+	if err != nil {
+		panic("Error getting deskGroup data")
+	}
+	if deskGroup == nil {
+		http.Error(w, `{"error": "deskGroup not found"}`, http.StatusNotFound)
+		return
+	}
+	respond(w, "deskGroup", deskGroup)
 }
 
 func DesksHandler(w http.ResponseWriter, r *http.Request) {
