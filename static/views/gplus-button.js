@@ -10,7 +10,49 @@ var GPlusButtonView = Backbone.View.extend({
   },
 
   updateUsers: function() {
-    gplusList.getUserList(function(){});
+    $("#confirm-dialog").html("Are you sure? This will update the user list to be up-to-date from Google Servers");
+    $("#confirm-dialog").dialog({appendTo:"#vertical-flexbox",   
+      buttons: [{
+        text: "Ok",
+        click: function() {
+          $(this).html("getting list...");
+          $("#confirm-dialog").dialog({
+            buttons:[]
+          });
+          gplusList.getUserList(_.bind(function(list){
+          $(this).html("sending list...");
+            var jqxhr = $.post( "/v1/batchUsers", JSON.stringify(list), function() {
+              console.log( "success" );
+            })
+              .done(_.bind(function() {
+                console.log( "second success" );
+              },this))
+              .fail(_.bind(function() {
+                $(this).html("Error.");
+                console.log( "error" );
+              },this))
+              .always(_.bind(function() {        
+                $("#confirm-dialog").dialog({
+                  buttons:[{
+                    text: "Close",
+                    click: function() {
+                      $(this).dialog( "close" );
+                    }  
+                  }]
+                });
+            },this));
+          },this));
+        }  
+      },
+      {
+        text: "Cancel",
+        click: function() {
+          $(this).dialog( "close" );
+        }  
+      }]
+ });
+ 
+
   },
   signout: function() {
     gapi.load('auth2', function(){
