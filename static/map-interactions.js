@@ -21,22 +21,22 @@ var MapSectionView = Backbone.View.extend({
   ),
 
   render: function() {
-    var deskGroups = [];
+    var localDeskGroups = [];
     this.model.attributes.deskGroups.forEach(function(group){
-      deskGroups.push(new MapDeskGroupView({model: group}));
+      localDeskGroups.push(new MapDeskGroupView({model: group}));
     });
 
-    var rooms = [];
+    var localRooms = [];
     this.model.attributes.rooms.forEach(function(room){
-      rooms.push(new MapRoomView({model: room}));
+      localRooms.push(new MapRoomView({model: room}));
     });
 
-    var places = [];
+    var localPlaces = [];
     this.model.attributes.places.forEach(function(place){
-      places.push(new MapPlaceView({model: place}));
+      localPlaces.push(new MapPlaceView({model: place}));
     });
 
-    this.$el.html(this.template({rooms: rooms, places:places , deskGroups: deskGroups}));
+    this.$el.html(this.template({rooms: localRooms, places: localPlaces , deskGroups: localDeskGroups}));
     this.$el.css({
       height: this.model.attributes.position.h,
       width: this.model.attributes.position.w,
@@ -46,7 +46,13 @@ var MapSectionView = Backbone.View.extend({
     this.$el.draggable({containment: "parent"}).resizable();
     this.$el.find(".mapDeskGroup").draggable({containment: "parent"}).resizable();
     this.$el.find(".mapRoom").draggable({containment: "parent"}).resizable();
+    this.$el.find(".mapRoom").click(function(evt){
+      pageState.selectObject(rooms.get(parseInt(this.id.split("_")[2])))
+    });
     this.$el.find(".mapPlace").draggable({containment: "parent"}).resizable();
+    this.$el.find(".mapPlace").click(function(evt){
+      pageState.selectObject(places.get(parseInt(this.id.split("_")[2])))
+    });
     this.$el.find(".mapDesk").draggable({containment: "parent"}).resizable();
     return this;
   }
@@ -111,6 +117,7 @@ var MapDeskView = Backbone.View.extend({
 var MapRoomView = Backbone.View.extend({
   tagName: "div",
   className: "mapRoom shadowed",
+  id: function() {return "map_room_" + this.model.id},
   initialize: function() {
     this.render();
     this.listenTo(pageState, 'change', this.render);
@@ -132,6 +139,7 @@ var MapRoomView = Backbone.View.extend({
 
 var MapPlaceView = Backbone.View.extend({
   tagName: "div",
+  id: function() {return "map_place_" + this.model.id},
   className: "mapPlace shadowed",
   initialize: function() {
     this.render();
