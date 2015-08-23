@@ -76,7 +76,7 @@ func loadAll(result interface{}) error {
 		panic("loadAll passed an slice of non-structs")
 	}
 
-	elemType := v.Type().Elem().Elem()
+	elemType := v.Type().Elem()
 	table := tableName(elemType.Name())
 	rows, err := config.DB.Query(`SELECT * FROM ` + table)
 	if err != nil {
