@@ -32,19 +32,21 @@ PageState =  Backbone.Model.extend({
     },
     selectMapId: function(mapId) {
         console.log("map selected: " + mapId);
-        //If mapId == currentMapId, don't clear selectedObject
+        if(mapId) {
+          //If mapId == currentMapId, don't clear selectedObject
 
-        var selectedMap = maps.get(mapId)
-        if(!selectedMap.isFullyLoaded()) {
-            console.log("map not loaded. fetching..");
-            this.set("currentMapLoaded", false);
-            selectedMap.url = "/v1/maps/" + mapId;
-            selectedMap.fetch({success:_.bind(function(){
-              this.set("currentMapLoaded", true);
-            },this)});
+          var selectedMap = maps.get(mapId)
+          if(!selectedMap.isFullyLoaded()) {
+              console.log("map not loaded. fetching..");
+              this.set("currentMapLoaded", false);
+              selectedMap.url = "/v1/maps/" + mapId;
+              selectedMap.fetch({success:_.bind(function(){
+                this.set("currentMapLoaded", true);
+              },this)});
+          }
+          
+          this.set({currentMapId: mapId});
         }
-        
-        this.set({currentMapId: mapId});
     },
     getCurrentMap: function(){
         return maps.get(this.get("currentMapId"));

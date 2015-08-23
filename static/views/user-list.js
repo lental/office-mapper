@@ -3,7 +3,7 @@ var userTemplate = _.template("<div class='listElement userListElement<%= isSele
   "<div class='userListInfo'>" +
   "<div class='userName'><%= name %> </div>" +
   "<div class='userEmail'><%= email %> </div>" +
-  "<div class='userDesk'>desk: <%= deskId %> </div>" +
+  "<div class='userDesk'>Map: <%= mapName %> </div>" +
   "</div>" +
   "</div>"
   );
@@ -45,9 +45,11 @@ var UserListView = Backbone.View.extend({
 
   template: _.template("<% users.each( function(user) { %>" +
        "<% var isSelected = user == pageState.get('selectedObject') %>" +
+       "<% var params = JSON.parse(JSON.stringify(user.attributes))%>" +
        "<% if (isSelected || user.searchMatches(pageState.get('searchQuery'))) { %>" +
-       "<% user.attributes.isSelected = isSelected %>" +
-       "<%= userTemplate(user.attributes)%>" +
+       "<% params.isSelected = isSelected %>" +
+       "<% params.mapName = user.get('mapId') ? maps.getMap(user.get('mapId')).get('name') : 'No Assigned Desk' %>" +
+       "<%= userTemplate(params) %>" +
     "<% }}); %> "),
 
   render: function() {

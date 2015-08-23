@@ -166,6 +166,8 @@ var EditFormView= Backbone.View.extend({
           } else {
             this.$el.append("Desk is not found");
           }
+        } else {
+            this.$el.append("This user is not associated to a desk");
         }
       } else if (obj instanceof Room) {
         this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editRoomForm', innerForm:editRoomTemplate(obj.attributes)})}));
