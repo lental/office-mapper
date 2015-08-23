@@ -3,8 +3,11 @@ package data
 import (
 	"encoding/json"
 	"errors"
+	"github.com/gorilla/mux"
 	"io"
+	"net/http"
 	"office-mapper/config"
+	"strconv"
 )
 
 type Position struct {
@@ -241,15 +244,32 @@ func InsertFromJson(body io.Reader, obj interface{}) error {
 	return insertOne(obj)
 }
 
-func UpdateRowFromJson(id int, body io.Reader, obj interface{}) error {
-	decoder := json.NewDecoder(body)
-	updateData := map[string]interface{}{}
-	err := decoder.Decode(&updateData)
+func UpdateRowFromJson(w http.ResponseWriter, r *http.Request, obj interface{}) bool {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		return errors.New("bad JSON data: " + err.Error())
+		http.Error(w, `{"error": "bad object id"}`, http.StatusBadRequest)
+		return false
 	}
 
-	return updateOne(id, updateData, obj)
+	decoder := json.NewDecoder(r.Body)
+	updateData := map[string]interface{}{}
+	err = decoder.Decode(&updateData)
+	if err != nil {
+		http.Error(w, `{"error": "Error parsing JSON: `+err.Error()+`"}`, http.StatusBadRequest)
+		return false
+	}
+
+	err = updateOne(id, updateData, obj)
+	if err != nil {
+		http.Error(w, `{"error": "error updating object"}`, http.StatusBadRequest)
+		return false
+	}
+	if isNil(obj) {
+		http.Error(w, `{"error": "object not found"}`, http.StatusNotFound)
+		return false
+	}
+	return true
 }
 
 func NewUser(u *User) error {

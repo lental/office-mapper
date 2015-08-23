@@ -242,9 +242,11 @@ func updateOne(id int, updateData map[string]interface{}, obj interface{}) error
 
 	setValues = append(setValues, id)
 
-	_, err := config.DB.Exec(`UPDATE `+table+` SET `+strings.Join(setFields, ", ")+` WHERE id = ?`, setValues...)
-	if err != nil {
-		return err
+	if len(setFields) > 0 {
+		_, err := config.DB.Exec(`UPDATE `+table+` SET `+strings.Join(setFields, ", ")+` WHERE id = ?`, setValues...)
+		if err != nil {
+			return err
+		}
 	}
 
 	return loadOne(id, obj)
@@ -291,4 +293,9 @@ func loadChain(chain []string, id_field string, id int, result interface{}) erro
 	}
 
 	return nil
+}
+
+func isNil(obj interface{}) bool {
+	v := reflect.ValueOf(obj)
+	return v.Elem().IsNil()
 }

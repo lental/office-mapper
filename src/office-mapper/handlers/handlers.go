@@ -23,6 +23,8 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/maps", NewMapHandler).Methods("POST")
 	r.HandleFunc("/v1/maps/{id}", MapHandler).Methods("GET")
 	r.HandleFunc("/v1/maps/{id}", DeleteMapHandler).Methods("DELETE")
+	r.HandleFunc("/v1/maps/{id}", UpdateMapHandler).Methods("PUT")
+	r.HandleFunc("/v1/maps/{id}", UpdateMapHandler).Methods("PATCH")
 	r.HandleFunc("/v1/sections", SectionsHandler).Methods("GET") // Sparse
 	r.HandleFunc("/v1/users", UsersHandler).Methods("GET")       // All data
 	r.HandleFunc("/v1/users", NewUserHandler).Methods("POST")
@@ -118,6 +120,13 @@ func DeleteMapHandler(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "", http.StatusNoContent)
 }
 
+func UpdateMapHandler(w http.ResponseWriter, r *http.Request) {
+	mp := &data.Map{}
+	if data.UpdateRowFromJson(w, r, &mp) {
+		respond(w, "mp", mp)
+	}
+}
+
 func SectionsHandler(w http.ResponseWriter, r *http.Request) {
 	sections, err := data.Sections()
 	if err != nil {
@@ -148,25 +157,10 @@ func NewUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		http.Error(w, `{"error": "bad user id"}`, http.StatusBadRequest)
-		return
-	}
-
 	user := &data.User{}
-	err = data.UpdateRowFromJson(id, r.Body, &user)
-	if err != nil {
-		http.Error(w, `{"error": "error updating user"}`, http.StatusBadRequest)
-		return
+	if data.UpdateRowFromJson(w, r, &user) {
+		respond(w, "user", user)
 	}
-	if user == nil {
-		http.Error(w, `{"error": "user not found"}`, http.StatusNotFound)
-		return
-	}
-
-	respond(w, "user", user)
 }
 
 func UserHandler(w http.ResponseWriter, r *http.Request) {
@@ -248,25 +242,10 @@ func DeleteRoomHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateRoomHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		http.Error(w, `{"error": "bad room id"}`, http.StatusBadRequest)
-		return
-	}
-
 	room := &data.Room{}
-	err = data.UpdateRowFromJson(id, r.Body, &room)
-	if err != nil {
-		http.Error(w, `{"error": "error updating room"}`, http.StatusBadRequest)
-		return
+	if data.UpdateRowFromJson(w, r, &room) {
+		respond(w, "room", room)
 	}
-	if room == nil {
-		http.Error(w, `{"error": "room not found"}`, http.StatusNotFound)
-		return
-	}
-
-	respond(w, "room", room)
 }
 
 func RoomHandler(w http.ResponseWriter, r *http.Request) {
