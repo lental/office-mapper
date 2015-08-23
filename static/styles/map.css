@@ -102,9 +102,7 @@ div {
   flex: 1 0 500px;
   position: relative;
   font-family: sans-serif;
-  overflow-x: scroll;
-  height: 900px;
-  width: 900px;
+  overflow: scroll;
 }
 
 #map_name {
