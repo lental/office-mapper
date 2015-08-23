@@ -21,7 +21,8 @@ CREATE TABLE users (
   email VARCHAR(64) NOT NULL,
   thumbnail_url VARCHAR(1024),
   gplus_id VARCHAR(128) NOT NULL,
-  admin TINYINT NOT NULL
+  admin TINYINT NOT NULL,
+  UNIQUE KEY gplus_id (gplus_id)
 );
 
 CREATE TABLE rooms (
