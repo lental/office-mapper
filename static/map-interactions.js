@@ -2,32 +2,52 @@ var MapSectionView = Backbone.View.extend({
   tagName: "div",
   className: "mapSection shadowed",
   initialize: function() {
-   this.render();
+    this.render();
     this.listenTo(pageState, 'change', this.render);
   },
 
   template: _.template(
     "<div class='mapSectionName'><%= name %></div>" +
     "<% deskGroups.forEach(function(group){ %>" +
-      "<%= (new MapDeskGroupView({model: group})).el.outerHTML %>" +
+      "<%= group.el.outerHTML %>" +
     "<% }); %>" +
     "<% rooms.forEach(function(room){ %>" +
-      "<%= (new MapRoomView({model: room})).el.outerHTML %>" +
+      "<%= room.el.outerHTML %>" +
     "<% }); %>" +
     "<% places.forEach(function(place){ %>" +
-      "<%= (new MapPlaceView({model: place})).el.outerHTML %>" +
+      "<%= place.el.outerHTML %>" +
     "<% }); %>" +
-    "<div class='mapSectionAddButton shadowed'>+</div>"
+    "<div class='mapSectionAddButton shadowed clickable'>+</div>"
   ),
 
   render: function() {
-    this.$el.html(this.template(this.model.attributes));
+    var deskGroups = [];
+    this.model.attributes.deskGroups.forEach(function(group){
+      deskGroups.push(new MapDeskGroupView({model: group}));
+    });
+
+    var rooms = [];
+    this.model.attributes.rooms.forEach(function(room){
+      rooms.push(new MapRoomView({model: room}));
+    });
+
+    var places = [];
+    this.model.attributes.places.forEach(function(place){
+      places.push(new MapPlaceView({model: place}));
+    });
+
+    this.$el.html(this.template({rooms: rooms, places:places , deskGroups: deskGroups}));
     this.$el.css({
       height: this.model.attributes.position.h,
       width: this.model.attributes.position.w,
       top: this.model.attributes.position.y,
       left: this.model.attributes.position.x
     });
+    this.$el.draggable({containment: "parent"}).resizable();
+    this.$el.find(".mapDeskGroup").draggable({containment: "parent"}).resizable();
+    this.$el.find(".mapRoom").draggable({containment: "parent"}).resizable();
+    this.$el.find(".mapPlace").draggable({containment: "parent"}).resizable();
+    this.$el.find(".mapDesk").draggable({containment: "parent"}).resizable();
     return this;
   }
 });
@@ -41,22 +61,25 @@ var MapDeskGroupView = Backbone.View.extend({
   },
   template: _.template(
     "<% desks.forEach(function(desk){ %>" +
-      "<%= (new MapDeskView({model: desk})).el.outerHTML %>" +
+      "<%= desk.el.outerHTML %>" +
     "<% }); %>" +
-    "<div class='mapDeskAddButton shadowed'>+</div>"
+    "<div class='mapDeskAddButton shadowed clickable'>+</div>"
   ),
   render: function() {
     var maxX = 0;
     var maxY = 0;
     var maxWidth = 0;
     var maxHeight = 0;
+    var desks = [];
     this.model.attributes.desks.forEach(function(desk){
       maxX = Math.max(maxX, desk.attributes.position.x);
       maxY = Math.max(maxX, desk.attributes.position.y);
       maxWidth = Math.max(maxX, desk.attributes.position.w);
       maxHeight = Math.max(maxX, desk.attributes.position.h);
+      desks.push(new MapDeskView({model: desk}));
     });
-    this.$el.html(this.template(this.model.attributes));
+
+    this.$el.html(this.template({desks: desks}));
     this.$el.css({
       top: this.model.attributes.xyPosition.y,
       left: this.model.attributes.xyPosition.x,
@@ -125,6 +148,7 @@ var MapPlaceView = Backbone.View.extend({
       top: this.model.attributes.position.y,
       left: this.model.attributes.position.x
     });
+    this.$el.click(function(){alert("bar");});
     return this;
   }
 });

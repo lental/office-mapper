@@ -2,8 +2,15 @@ div {
   border: 0px solid rgba(0,0,0,.25);
 }
 
+.clickable {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  cursor: pointer;
+}
+
 .mapDesk {
-  position: absolute;
+  position: absolute !important;
   background-color: coral;
   min-height: 10px;
   min-width: 10px;
@@ -12,28 +19,28 @@ div {
 
 .mapDeskAddButton {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 5px;
+  right: 5px;
   border-radius: 40px;
   background-color: palegreen;
   color: black;
-  height: 30px;
-  width: 30px;
-  font-size: 30px;
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
   text-align: center;
-  line-height: 25px;
+  line-height: 18px;
 }
 
 .mapDeskGroup {
-  position: absolute;
-  background-color: mediumpurple;
+  position: absolute !important;
+  background-color: rgba(147,112,219,0.5);
   border-radius: 10px;
   min-height: 20px;
   min-width: 20px;
 }
 
 .mapPlace {
-  position: absolute;
+  position: absolute !important;
   background-color: darkseagreen;
   border-radius: 10px;
   min-height: 20px;
@@ -41,7 +48,7 @@ div {
 }
 
 .mapRoom {
-  position: absolute;
+  position: absolute !important;
   background-color: darksalmon;
   overflow: hidden;
   border-radius: 10px;
@@ -58,7 +65,7 @@ div {
 }
 
 .mapSection {
-  position: absolute;
+  position: absolute !important;
   background-color: aquamarine;
   text-align: center;
   border-radius: 10px;
@@ -96,6 +103,8 @@ div {
   position: relative;
   font-family: sans-serif;
   overflow-x: scroll;
+  height: 900px;
+  width: 900px;
 }
 
 #map_name {
