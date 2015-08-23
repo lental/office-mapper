@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	_ "github.com/ziutek/mymysql/godrv"
 	"net/http"
+	"net/url"
 	"office-mapper/data"
 	"strconv"
 )
@@ -68,6 +69,20 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/statusz", StatuszHandler).Methods("GET")
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 	return r
+}
+
+func getIdToken(w http.ResponseWriter, r *http.Request) string {
+	params, err := url.ParseQuery(r.URL.RawQuery)
+	if err != nil {
+		http.Error(w, `{"error": "Error parsing query params: `+err.Error()+`"}`, http.StatusBadRequest)
+		return ""
+	}
+	id_tokens := params["id_token"]
+	if len(id_tokens) < 1 {
+		http.Error(w, `{"error": "No id_token provided"}`, http.StatusBadRequest)
+		return ""
+	}
+	return id_tokens[0]
 }
 
 func respond(w http.ResponseWriter, name string, data interface{}) {
@@ -252,15 +267,13 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	var user map[string]interface{}
 	if vars["id"] == "me" {
-		r.ParseForm()
-		id_tokens := r.Form["id_token"]
-		if len(id_tokens) < 1 {
-			http.Error(w, `{"error": "No id_token provided"}`, http.StatusNotFound)
+		id_token := getIdToken(w, r)
+		if id_token == "" {
 			return
 		}
 
 		var err error
-		user, err = data.GetUserByToken(id_tokens[0])
+		user, err = data.GetUserByToken(id_token)
 		if err != nil {
 			http.Error(w, `{"error": "`+err.Error()+`"}`, http.StatusNotFound)
 			return
