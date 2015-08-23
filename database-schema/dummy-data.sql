@@ -19,40 +19,70 @@ INSERT INTO users (id, name, desk_id, email, thumbnail_url, gplus_id, admin) VAL
   (7, "Abel Rios", 10, "abelrios@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABDCNmJl4Cunf-aSyILdmNhcmRfcGhvdG8qKDg3OWJlZDY2MWZlNTU5YmNjYTBhYzMxMWFhM2RjM2UyOGRiMmVmNmMwAYqy3f5l36WA_z-rEcMkNEEGpaoN",105419515812321281241, 0);
 
 INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, chromecast, seats) VALUES
-  (1, "Shawshank Redemption", 1, 110, 20, 90, 90, 1, 1, 1, 4),
-  (2, "Gattaca", 1, 200, 20, 90, 90, 1, 1, 1, 4),
+  (1, "Shawshank Redemption", 1,410, 20, 90, 90, 1, 1, 1, 4),
+  (2, "Gattaca", 1, 500, 20, 90, 90, 1, 1, 1, 4),
   (3, "Men In Black", 1, 400, 200, 40, 40, 1, 1, 1, 4),
   (4, "Time Bandits", 1, 440, 200, 40, 40, 1, 1, 1, 4),
   (5, "Playback Lab", 1, 400, 240, 80, 50, 1, 1, 1, 4),
   (6, "Wraith Of Khan", 1, 400, 290, 80, 50, 1, 1, 1, 4),
   (7, "The Matrix", 1, 480, 200, 100,70, 1, 1, 1, 4),
   (8, "Avatar", 1, 480, 270, 100,70, 1, 1, 1, 4),
+  (9, "Telstra1", 1, 0, 0, 100,100, 1, 1, 1, 4),
+  (10, "Telstra2", 1, 0, 100, 100,100, 1, 1, 1, 4),
   (12, "Zamba", 2, 40, 90, 30, 80, 1, 1, 1, 20);
 
 INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height) VALUES
   (1, "Secondary kitchen", "Where we eat", 2, 40, 120, 100, 100),
-  (2, "Electrical room", "Where electrons eat", 1, 200, 150, 100, 120),
+  (2, "Electrical room", "Where electrons eat", 1, 900, 150, 100, 120),
   (3, "Bathroom", "Where baths eat", 2, 210, 110, 100, 100);
 
-INSERT INTO desk_groups (id, name, section_id, xpos, ypos) VALUES
-  (1, NULL, 1, 10, 160),
-  (2, "Cool kids", 1, 40, 120),
-  (3, "HR or something", 2, 80, 20),
-  (4, NULL, 2, 100, 80),
-  (5, "Dallas eng cluster", 3, 40, 40);
+INSERT INTO desk_groups (name, section_id, xpos, ypos) VALUES
+  (NULL, 1, 110, 10),
+  (NULL, 1, 110, 110),
+  (NULL, 1, 200, 20),
+  (NULL, 1, 200, 130),
+  (NULL, 1, 260, 20);
 
-INSERT INTO desks (id, name, desk_group_id, xpos, ypos, width, height, rotation) VALUES
-  (1, NULL, 1, 0, 0, 60, 20, 0),
-  (2, NULL, 1, 60, 0, 60, 20, 0),
-  (3, NULL, 1, 0, 20, 60, 20, 0),
-  (4, NULL, 1, 60, 20, 60, 20, 0),
+INSERT INTO desks (name, desk_group_id, xpos, ypos, width, height, rotation) VALUES
+  (NULL, 1, 0, 0, 20, 30, 0),
+  (NULL, 1, 0, 30, 20, 30, 0),
+  (NULL, 1, 0, 60, 20, 30, 0),
+  (NULL, 1, 20, 0, 20, 30, 0),
+  (NULL, 1, 20, 30, 20, 30, 0),
+  (NULL, 1, 20, 60, 20, 30, 0),
+  (NULL, 2, 0, 0, 20, 30, 0),
+  (NULL, 2, 0, 30, 20, 30, 0),
+  (NULL, 2, 0, 60, 20, 30, 0),
+  (NULL, 2, 20, 0, 20, 30, 0),
+  (NULL, 2, 20, 30, 20, 30, 0),
+  (NULL, 2, 20, 60, 20, 30, 0),
+  (NULL, 3, 0, 0, 20, 30, 0),
+  (NULL, 3, 0, 30, 20, 30, 0),
+  (NULL, 3, 0, 60, 20, 30, 0),
+  (NULL, 3, 20, 0, 20, 30, 0),
+  (NULL, 3, 20, 30, 20, 30, 0),
+  (NULL, 3, 20, 60, 20, 30, 0),
+  (NULL, 4, 0, 0, 20, 30, 0),
+  (NULL, 4, 0, 30, 20, 30, 0),
+  (NULL, 4, 0, 60, 20, 30, 0),
+  (NULL, 4, 0, 90, 20, 30, 0),
+  (NULL, 4, 0, 120, 20, 30, 0),
+  (NULL, 4, 0, 150, 20, 30, 0),
+  (NULL, 4, 20, 0, 20, 30, 0),
+  (NULL, 4, 20, 30, 20, 30, 0),
+  (NULL, 4, 20, 60, 20, 30, 0),
+  (NULL, 4, 20, 90, 20, 30, 0),
+  (NULL, 4, 20, 120, 20, 30, 0),
+  (NULL, 4, 20, 150, 20, 30, 0),
+  (NULL, 5, 0, 0, 20, 30, 0),
+  (NULL, 5, 0, 30, 20, 30, 0),
+  (NULL, 5, 0, 60, 20, 30, 0),
+  ("Cool", 500, 0, 0, 60, 20, 1),
+  ("Cooler", 500, 0, 60, 60, 20, 1),
 
-  (5, "Cool", 2, 0, 0, 60, 20, 1),
-  (6, "Cooler", 2, 0, 60, 60, 20, 1),
+  ("Nice HR", 500, 0, 60, 20, 0, 0),
+  ( "Mean HR", 500, 20, 60, 20, 0, 0),
 
-  (7, "Nice HR", 3, 0, 60, 20, 0, 0),
-  (8, "Mean HR", 3, 20, 60, 20, 0, 0),
+  ( "Janky lonely small desk", 500, 0, 0, 50, 15, 0),
 
-  (9, "Janky lonely small desk", 4, 0, 0, 50, 15, 0),
-
-  (10, "Big Texas Desk", 5, 0, 0, 90, 30, 0);
+  ( "Big Texas Desk", 500, 0, 0, 90, 30, 0);
