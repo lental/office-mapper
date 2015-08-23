@@ -70,6 +70,9 @@ Users = Backbone.Collection.extend({
     getUser : function(id) {
         return this.get({"id":id});
     },
+    getUserByGPlusId : function(gplus_id) {
+        return this.findWhere({"gplusId":gplus_id});
+    },
     parse : function(response){
         return response.users;
     }

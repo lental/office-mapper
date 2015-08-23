@@ -1,4 +1,7 @@
 var users, plases, rooms, maps, pageState;
+
+gplus = new GPlus();
+
 $( document ).ready(function(){
     users = new Users();
     users.fetch({success:function(){
@@ -15,7 +18,6 @@ $( document ).ready(function(){
         renderRooms();
       }});
 
-    renderGPlusButton();
     pageState = new PageState();
 
     maps = new Maps();
@@ -29,6 +31,8 @@ $( document ).ready(function(){
         renderInitialMap(firstMap);
       }});
     }});
+
+    connectGPlusView();
 
     renderEditForm();
     renderSearchBar();
