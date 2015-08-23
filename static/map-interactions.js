@@ -21,32 +21,77 @@ var MapSectionView = Backbone.View.extend({
     "<div class='mapSectionAddButton clickable shadowed'>+</div>"
   ),
 
-  showCreateDialog: function(){
-    console.dir(this);
+  showCreateDialog: function() {
     if (this.showingCreateDialog) {
       this.$el.find(".mapSectionAddDialog").remove();
     }
     else {
       this.$el.append("<div class='mapSectionAddDialog shadowed'>" +
-        "<div class='clickable' >Place</div>" +
-        "<div class='clickable' >Room</div>" +
-        "<div class='clickable' >Desk Group</div>" +
+        "<div class='mapAddPlace clickable' >Place</div>" +
+        "<div class='mapAddRoom clickable' >Room</div>" +
+        "<div class='mapAddDeskGroup clickable' >Desk Group</div>" +
       "</div>"
       );
+
+      this.$el.find(".mapAddPlace").click(this.createPlace.bind(this));
+      this.$el.find(".mapAddRoom").click(this.createRoom.bind(this));
+      this.$el.find(".mapAddDeskGroup").click(this.createDeskGroup.bind(this));
     }
     this.showingCreateDialog = !this.showingCreateDialog;
   },
 
   createRoom: function() {
-
+    this.$el.find(".mapSectionAddDialog").remove();
+    this.showingCreateDialog = false;
+    var newRoom = this.model.attributes.rooms.create({
+        name: "New Room",
+        position: {x: 0, y:0, h: 100, w: 100},
+        mapId: pageState.attributes.currentMapId,
+        sectionId: this.model.attributes.id
+    });
+    new MapRoomView({model: newRoom});
+    this.render();
   },
 
   createPlace: function() {
-
+    this.$el.find(".mapSectionAddDialog").remove();
+    this.showingCreateDialog = false;
+    var newPlace = this.model.attributes.places.create({
+        name: "New Place",
+        position: {x: 0, y:0, h: 100, w: 100},
+        mapId: pageState.attributes.currentMapId,
+        sectionId: this.model.attributes.id
+    });
+    new MapPlaceView({model: newPlace});
+    this.render();
   },
 
   createDeskGroup: function() {
+    console.log("creating desk group");
+    this.$el.find(".mapSectionAddDialog").remove();
+    this.showingCreateDialog = false;
+    console.dir(this.model.attributes.deskGroups);
+    var newDeskGroup = this.model.attributes.deskGroups.create({
+        xyPosition: {x: 0, y:0},
+        mapId: pageState.attributes.currentMapId,
+        sectionId: this.model.attributes.id,
+        desks: new Desks()
+    });
+    new MapDeskGroupView({model: newDeskGroup});
+    this.render();
+  },
 
+  createDesk: function(evt) {
+    var deskGroupId = parseInt(evt.target.parentNode.id.split("_")[2]);
+    var clickedDeskGroup = this.model.attributes.deskGroups.get(deskGroupId);
+    console.dir(clickedDeskGroup.attributes.desks);
+    var newDesk = clickedDeskGroup.attributes.desks.create({
+      deskGroupId: deskGroupId,
+      position: {x:0, y:0, h:20, w:20},
+      rotation: 0
+    });
+    new MapDeskView({model: newDesk});
+    this.render();
   },
 
   render: function() {
@@ -85,6 +130,7 @@ var MapSectionView = Backbone.View.extend({
     });
     this.$el.find(".mapDesk").draggable({containment: "parent"}).resizable();
     this.$el.find(".mapSectionAddButton").click(this.showCreateDialog.bind(this));
+    this.$el.find(".mapDeskAddButton").click(this.createDesk.bind(this));
     return this;
   }
 });
@@ -92,6 +138,7 @@ var MapSectionView = Backbone.View.extend({
 var MapDeskGroupView = Backbone.View.extend({
   tagName: "div",
   className: "mapDeskGroup shadowed",
+  id: function() {return "map_deskgroup_" + this.model.attributes.id},
   initialize: function() {
     this.render();
     this.listenTo(pageState, 'change', this.render);

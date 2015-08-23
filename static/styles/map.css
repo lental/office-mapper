@@ -35,8 +35,8 @@ div {
   position: absolute !important;
   background-color: rgba(147,112,219,0.5);
   border-radius: 10px;
-  min-height: 20px;
-  min-width: 20px;
+  min-height: 40px;
+  min-width: 40px;
 }
 
 .mapPlace {

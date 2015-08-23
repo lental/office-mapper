@@ -14,3 +14,7 @@ Rooms.prototype.url = "/v1/rooms";
 Maps.prototype.url = "/v1/maps";
 
 Sections.prototype.url = "/v1/sections"
+
+DeskGroups.prototype.url = "/v1/desk_groups"
+
+Desks.prototype.url = "/v1/desks"
