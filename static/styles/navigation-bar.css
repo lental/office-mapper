@@ -8,6 +8,7 @@
   -o-transition: background-color 400ms ease-out;
   -ms-transition: background-color 400ms ease-out;
   transition: background-color 400ms ease-out;
+  background: rgba(140,140,140,.4);
 }
 .mapListElement:hover {
   background-color:#DDD;
@@ -16,7 +17,8 @@
 #navigation-bar {
   border-bottom: 10px solid #889;
   margin-bottom:0px;
+  background: #79797C url('/images/gray-top-to-transparent.png') repeat-x top right;
 }
 .mapListElement.active {
-  background-color:#889;
+  background:#889;
 }

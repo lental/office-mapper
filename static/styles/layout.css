@@ -1,6 +1,11 @@
 #logo {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 60px;
+  padding-bottom:9px;
+}
+
+#logo #logo-img {
+  height:150px;
 }
 
 #vertical-flexbox {
