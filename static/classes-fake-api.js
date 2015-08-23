@@ -12,3 +12,5 @@ Places.prototype.url = "/v1/places";
 Rooms.prototype.url = "/v1/rooms";
 
 Maps.prototype.url = "/v1/maps";
+
+Sections.prototype.url = "/v1/sections"

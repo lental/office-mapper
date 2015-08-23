@@ -85,6 +85,25 @@ div {
   line-height: 25px;
 }
 
+.mapSectionAddDialog {
+  position: absolute;
+  width: 100px;
+  top: 80px;
+  right: 10px;
+  background-color: #fefefe;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.mapSectionAddDialog div {
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.mapSectionAddDialog div:hover {
+  background-color: #dedede;
+}
+
 .mapSectionName {
   background-color: rgba(0,0,0,0.3);
   border-radius: 10px 10px 0 0;
@@ -95,6 +114,7 @@ div {
 
 .shadowed {
   box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.40);
+  border-left: 1px solid rgba(0,0,0,0.1);
 }
 
 .ui-icon-gripsmall-diagonal-se {
@@ -121,7 +141,6 @@ div {
 #new_section_button {
   position: absolute;
   top: 20px;
-  right: 20px;
   border-radius: 40px;
   background-color: palegreen;
   color: black;

@@ -1,13 +1,14 @@
 var MapSectionView = Backbone.View.extend({
   tagName: "div",
   className: "mapSection shadowed",
+  showingCreateDialog: false,
   initialize: function() {
     this.render();
     this.listenTo(pageState, 'change', this.render);
   },
 
   template: _.template(
-    "<div class='mapSectionName'><%= name %></div>" +
+    "<div class='mapSectionName'><%= attributes.name %></div>" +
     "<% deskGroups.forEach(function(group){ %>" +
       "<%= group.el.outerHTML %>" +
     "<% }); %>" +
@@ -17,8 +18,36 @@ var MapSectionView = Backbone.View.extend({
     "<% places.forEach(function(place){ %>" +
       "<%= place.el.outerHTML %>" +
     "<% }); %>" +
-    "<div class='mapSectionAddButton shadowed clickable'>+</div>"
+    "<div class='mapSectionAddButton clickable shadowed'>+</div>"
   ),
+
+  showCreateDialog: function(){
+    console.dir(this);
+    if (this.showingCreateDialog) {
+      this.$el.find(".mapSectionAddDialog").remove();
+    }
+    else {
+      this.$el.append("<div class='mapSectionAddDialog shadowed'>" +
+        "<div class='clickable' >Place</div>" +
+        "<div class='clickable' >Room</div>" +
+        "<div class='clickable' >Desk Group</div>" +
+      "</div>"
+      );
+    }
+    this.showingCreateDialog = !this.showingCreateDialog;
+  },
+
+  createRoom: function() {
+
+  },
+
+  createPlace: function() {
+
+  },
+
+  createDeskGroup: function() {
+
+  },
 
   render: function() {
     var localDeskGroups = [];
@@ -36,7 +65,8 @@ var MapSectionView = Backbone.View.extend({
       localPlaces.push(new MapPlaceView({model: place}));
     });
 
-    this.$el.html(this.template({rooms: localRooms, places: localPlaces , deskGroups: localDeskGroups}));
+    this.$el.html(this.template({attributes: this.model.attributes,
+      rooms: localRooms, places: localPlaces , deskGroups: localDeskGroups}));
     this.$el.css({
       height: this.model.attributes.position.h,
       width: this.model.attributes.position.w,
@@ -54,6 +84,7 @@ var MapSectionView = Backbone.View.extend({
       pageState.selectObject(places.get(parseInt(this.id.split("_")[2])))
     });
     this.$el.find(".mapDesk").draggable({containment: "parent"}).resizable();
+    this.$el.find(".mapSectionAddButton").click(this.showCreateDialog.bind(this));
     return this;
   }
 });
@@ -90,7 +121,7 @@ var MapDeskGroupView = Backbone.View.extend({
       top: this.model.attributes.xyPosition.y,
       left: this.model.attributes.xyPosition.x,
       height: (maxY + maxHeight + 5) + "px",
-      width: (maxX + maxWidth + 5) + "px",
+      width: (maxX + maxWidth + 30) + "px",
     });
     return this;
   }
@@ -174,18 +205,32 @@ var MapView = Backbone.View.extend({
     if(pageState.get("currentMapLoaded")) {
       if(this.currentlyDisplayedMapId != this.model.get('currentMapId')) {
         console.log("rendering new map");
+        this.listenTo(this.model.getCurrentMap().attributes.sections, 'change', this.render);
         this.currentlyDisplayedMapId = this.model.get('currentMapId')
         $("#map").empty();
-
-        $("#map").append("<div id='map_name' class='shadowed'></div>");
         $("#map").append("<div id='new_section_button' class='shadowed clickable'>+</div>");
         var curMap = this.model.getCurrentMap()
         this.$("#map_name").text(curMap.attributes.name);
-
         var sections = curMap.attributes.sections;
+        var maxX = 0;
+        var maxWidth = 0;
         sections.forEach(function(section){
+          maxX = Math.max(section.attributes.position.x, maxX);
+          maxWidth = Math.max(section.attributes.position.w, maxWidth);
           $("#map").prepend((new MapSectionView({model: section})).el);
         });
+        $("#map").css({width: (maxX+maxWidth+100) + "px"});
+        $("#new_section_button").css({left: ($("#map")[0].scrollWidth - 80)+"px"});
+        $("#new_section_button").click(function(){
+          var newSection = this.model.getCurrentMap().attributes.sections.create({map_id: this.model.attributes.currentMapId,
+            name: "New Section",
+            position: {x: 0, y: 0, w: 200, h: 200},
+            deskGroups: new DeskGroups([]),
+            places: new Places([]),
+            rooms: new Rooms([])
+          });
+          $("#map").prepend((new MapSectionView({model: newSection})).el);
+        }.bind(this));
       }
     }
     else
@@ -197,5 +242,5 @@ var MapView = Backbone.View.extend({
 });
 
 function renderMapView(pState) {
-  new MapView({model:pState});
+  mapView = new MapView({model:pState});
 }
