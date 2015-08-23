@@ -2,6 +2,7 @@ package data
 
 import (
 	"database/sql"
+	"fmt"
 	"office-mapper/config"
 	"reflect"
 	"strings"
@@ -19,8 +20,12 @@ func sqlCase(s string) string {
 	return s
 }
 
+func depluralize(s string) string {
+	return strings.TrimSuffix(s, "s")
+}
+
 func tableName(s string) string {
-	return sqlCase(s) + "s"
+	return strings.TrimPrefix(sqlCase(s), "full_") + "s"
 }
 
 func extractStructureFieldAddress(v reflect.Value, columnMaps map[string]interface{}) {
@@ -71,7 +76,7 @@ func loadAll(result interface{}) error {
 		panic("loadAll passed an slice of non-structs")
 	}
 
-	elemType := v.Type().Elem()
+	elemType := v.Type().Elem().Elem()
 	table := tableName(elemType.Name())
 	rows, err := config.DB.Query(`SELECT * FROM ` + table)
 	if err != nil {
@@ -90,15 +95,15 @@ func loadAll(result interface{}) error {
 func loadOne(id int, result interface{}) error {
 	v := reflect.ValueOf(result)
 	if v.Kind() != reflect.Ptr {
-		panic("loadAll passed a non-pointer")
+		panic("loadOne passed a non-pointer")
 	}
 	v = reflect.Indirect(v)
 	if v.Kind() != reflect.Ptr {
-		panic("loadAll passed a pointer to a non-pointer")
+		panic("loadOne passed a pointer to a non-pointer")
 	}
 	v = reflect.Indirect(v)
 	if v.Kind() != reflect.Struct {
-		panic("loadAll passed a pointer to a non-structure type " + v.Kind().String())
+		panic("loadOne passed a pointer to a non-structure type " + v.Kind().String())
 	}
 
 	elemType := v.Type()
@@ -243,4 +248,47 @@ func updateOne(id int, updateData map[string]interface{}, obj interface{}) error
 	}
 
 	return loadOne(id, obj)
+}
+
+func loadChain(chain []string, id_field string, id int, result interface{}) error {
+	v := reflect.ValueOf(result)
+	if v.Kind() != reflect.Ptr {
+		panic("loadChain passed a non-pointer")
+	}
+	v = reflect.Indirect(v)
+	if v.Kind() != reflect.Slice {
+		panic("loadChain passed a pointer to a non-slice type " + v.Kind().String())
+	}
+	if v.Type().Elem().Kind() != reflect.Ptr {
+		panic("loadChain passed an slice of non-pointers")
+	}
+	if v.Type().Elem().Elem().Kind() != reflect.Struct {
+		panic("loadChain passed an slice of pointers to non-structs")
+	}
+
+	elemType := v.Type().Elem().Elem()
+	table := tableName(elemType.Name())
+
+	lastTable := table
+	joins := ""
+	for _, t := range chain {
+		joins = joins + fmt.Sprintf(" JOIN %s ON (%s.%s_id = %s.id)", t, lastTable, depluralize(t), t)
+		lastTable = t
+	}
+
+	slect := "SELECT " + table + ".* FROM " + table
+	where := " WHERE " + chain[len(chain)-1] + "." + id_field + " = ?"
+
+	rows, err := config.DB.Query(slect+joins+where, id)
+	if err != nil {
+		return err
+	}
+
+	for rows.Next() {
+		rv := reflect.New(elemType).Elem()
+		extractRow(rv, rows)
+		v.Set(reflect.Append(v, rv.Addr()))
+	}
+
+	return nil
 }

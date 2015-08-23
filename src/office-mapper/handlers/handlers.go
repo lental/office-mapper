@@ -85,10 +85,11 @@ func MapHandler(w http.ResponseWriter, r *http.Request) {
 
 	mp, err := data.GetFullMap(id)
 	if err != nil {
-		panic("Error getting maps data")
+		panic("Error getting maps data " + err.Error())
 	}
 	if mp == nil {
 		http.Error(w, `{"error": "map not found"}`, http.StatusNotFound)
+		return
 	}
 
 	resp, err := json.Marshal(map[string]*data.FullMap{"map": mp})

@@ -1,7 +1,6 @@
 package data
 
 import (
-	"database/sql"
 	"encoding/json"
 	"errors"
 	"io"
@@ -107,18 +106,16 @@ func Maps() ([]Map, error) {
 }
 
 func GetFullMap(id int) (*FullMap, error) {
-	row := config.DB.QueryRow(`SELECT id, name FROM maps WHERE id = ?`, id)
-
-	m := FullMap{}
-	err := row.Scan(&m.Id, &m.Name)
-	m.Sections = []FullSection{}
-
-	if err == sql.ErrNoRows {
-		return nil, nil
-	}
+	m := &FullMap{}
+	err := loadOne(id, &m)
 	if err != nil {
 		return nil, err
 	}
+	if m == nil {
+		return nil, nil
+	}
+
+	m.Sections = []FullSection{}
 
 	rows, err := config.DB.Query(`SELECT id, name, xpos, ypos, width, height FROM sections WHERE map_id = ?`, id)
 	if err != nil {
@@ -137,70 +134,54 @@ func GetFullMap(id int) (*FullMap, error) {
 		sections[s.Id] = &s
 	}
 
-	rows, err = config.DB.Query(`SELECT sections.id, rooms.id, rooms.name, rooms.xpos, rooms.ypos, rooms.width,
-  rooms.height, rooms.tv, rooms.phone, rooms.chromecast, rooms.seats FROM sections JOIN rooms ON
-  (rooms.section_id = sections.id) WHERE sections.map_id = ?`, id)
+	rooms := []*Room{}
+	err = loadChain([]string{"sections"}, "map_id", id, &rooms)
 	if err != nil {
 		return nil, err
 	}
 
-	for rows.Next() {
-		r := Room{}
-		var s int
-		rows.Scan(&s, &r.Id, &r.Name, &r.Position.X, &r.Position.Y, &r.Position.W, &r.Position.H, &r.Features.Tv, &r.Features.Phone, &r.Features.Chromecast, &r.Features.Seats)
-		if section, ok := sections[s]; ok {
-			section.Rooms = append(section.Rooms, r)
+	for _, room := range rooms {
+		if section, ok := sections[room.SectionId]; ok {
+			section.Rooms = append(section.Rooms, *room)
 		}
 	}
 
-	rows, err = config.DB.Query(`SELECT sections.id, places.id, places.name, places.description, places.xpos,
-  places.ypos, places.width, places.height FROM sections JOIN places ON (places.section_id = sections.id)
-  WHERE sections.map_id = ?`, id)
+	places := []*Place{}
+	err = loadChain([]string{"sections"}, "map_id", id, &places)
 	if err != nil {
 		return nil, err
 	}
 
-	for rows.Next() {
-		p := Place{}
-		var s int
-		rows.Scan(&s, &p.Id, &p.Name, &p.Description, &p.Position.X, &p.Position.Y, &p.Position.W, &p.Position.H)
-		if section, ok := sections[s]; ok {
-			section.Places = append(section.Places, p)
+	for _, place := range places {
+		if section, ok := sections[place.SectionId]; ok {
+			section.Places = append(section.Places, *place)
 		}
 	}
 
-	rows, err = config.DB.Query(`SELECT desk_groups.id, desk_groups.name, desk_groups.section_id,
-  desk_groups.xpos, desk_groups.ypos FROM sections JOIN desk_groups ON (desk_groups.section_id = sections.id)
-  WHERE sections.map_id = ?`, id)
+	deskGroups := []*FullDeskGroup{}
+	err = loadChain([]string{"sections"}, "map_id", id, &deskGroups)
 	if err != nil {
 		return nil, err
 	}
 
-	deskGroups := map[int]*FullDeskGroup{}
-	for rows.Next() {
-		d := &FullDeskGroup{}
-		rows.Scan(&d.Id, &d.Name, &d.SectionId, &d.XyPosition.X, &d.XyPosition.Y)
-		d.Desks = []Desk{}
-		deskGroups[d.Id] = d
+	deskGroupsMap := map[int]*FullDeskGroup{}
+	for _, deskGroup := range deskGroups {
+		deskGroupsMap[deskGroup.Id] = deskGroup
 	}
 
-	rows, err = config.DB.Query(`SELECT desks.id, desks.name, desks.desk_group_id, desks.xpos, desks.ypos,
-  desks.width, desks.height, desks.rotation FROM sections JOIN desk_groups ON (desk_groups.section_id =
-  sections.id) JOIN desks ON (desks.desk_group_id = desk_groups.id) WHERE sections.map_id = ?`, id)
+	desks := []*Desk{}
+	err = loadChain([]string{"desk_groups", "sections"}, "map_id", id, &desks)
 	if err != nil {
 		return nil, err
 	}
 
-	for rows.Next() {
-		d := Desk{}
-		rows.Scan(&d.Id, &d.Name, &d.DeskGroupId, &d.Position.X, &d.Position.Y, &d.Position.W, &d.Position.H,
-			&d.Rotation)
-		if deskGroup, ok := deskGroups[d.DeskGroupId]; ok {
-			deskGroup.Desks = append(deskGroup.Desks, d)
+	for _, desk := range desks {
+		if deskGroup, ok := deskGroupsMap[desk.DeskGroupId]; ok {
+			deskGroup.Desks = append(deskGroup.Desks, *desk)
 		}
 	}
 
-	for _, d := range deskGroups {
+	for _, d := range deskGroupsMap {
 		if section, ok := sections[d.SectionId]; ok {
 			section.DeskGroups = append(section.DeskGroups, *d)
 		}
@@ -210,7 +191,7 @@ func GetFullMap(id int) (*FullMap, error) {
 		m.Sections = append(m.Sections, *s)
 	}
 
-	return &m, nil
+	return m, nil
 }
 
 func DeleteRow(table string, id int) (int64, error) {
