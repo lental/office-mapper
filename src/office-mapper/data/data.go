@@ -325,7 +325,6 @@ func GetPlace(id int) (*Place, error) {
 	return place, nil
 }
 
-
 func DeskGroups() ([]DeskGroup, error) {
 	deskGroups := []DeskGroup{}
 	err := loadAll(&deskGroups)
@@ -343,7 +342,6 @@ func GetDeskGroup(id int) (*DeskGroup, error) {
 	}
 	return deskGroup, nil
 }
-
 
 func Desks() ([]Desk, error) {
 	desks := []Desk{}

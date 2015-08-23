@@ -31,7 +31,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/sections/{id}", DeleteSectionHandler).Methods("DELETE")
 	r.HandleFunc("/v1/sections/{id}", UpdateSectionHandler).Methods("PUT")
 	r.HandleFunc("/v1/sections/{id}", UpdateSectionHandler).Methods("PATCH")
-	r.HandleFunc("/v1/users", UsersHandler).Methods("GET")       // All data
+	r.HandleFunc("/v1/users", UsersHandler).Methods("GET") // All data
 	r.HandleFunc("/v1/users", NewUserHandler).Methods("POST")
 	r.HandleFunc("/v1/users/{id}", UserHandler).Methods("GET")
 	r.HandleFunc("/v1/users/{id}", DeleteUserHandler).Methods("DELETE")
@@ -43,7 +43,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/rooms/{id}", DeleteRoomHandler).Methods("DELETE")
 	r.HandleFunc("/v1/rooms/{id}", UpdateRoomHandler).Methods("PUT")
 	r.HandleFunc("/v1/rooms/{id}", UpdateRoomHandler).Methods("PATCH")
-	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET")          // All data
+	r.HandleFunc("/v1/places", PlacesHandler).Methods("GET") // All data
 	r.HandleFunc("/v1/places", NewPlaceHandler).Methods("POST")
 	r.HandleFunc("/v1/places/{id}", PlaceHandler).Methods("GET")
 	r.HandleFunc("/v1/places/{id}", DeletePlaceHandler).Methods("DELETE")
@@ -55,7 +55,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/desk_groups/{id}", DeleteDeskGroupHandler).Methods("DELETE")
 	r.HandleFunc("/v1/desk_groups/{id}", UpdateDeskGroupHandler).Methods("PUT")
 	r.HandleFunc("/v1/desk_groups/{id}", UpdateDeskGroupHandler).Methods("PATCH")
-	r.HandleFunc("/v1/desks", DesksHandler).Methods("GET")            // All data
+	r.HandleFunc("/v1/desks", DesksHandler).Methods("GET") // All data
 	r.HandleFunc("/v1/desks", NewDeskHandler).Methods("POST")
 	r.HandleFunc("/v1/desks/{id}", DeskHandler).Methods("GET")
 	r.HandleFunc("/v1/desks/{id}", DeleteDeskHandler).Methods("DELETE")
@@ -415,7 +415,6 @@ func PlaceHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	respond(w, "place", place)
 }
-
 
 func DeskGroupsHandler(w http.ResponseWriter, r *http.Request) {
 	deskGroups, err := data.DeskGroups()
