@@ -235,13 +235,18 @@ func Users() ([]User, error) {
 	return users, nil
 }
 
-func GetUser(id int) (*User, error) {
+func GetUser(id int) (map[string]interface{}, error) {
 	user := &User{}
 	err := loadOne(id, &user)
 	if err != nil {
 		return nil, err
 	}
-	return user, nil
+	if user == nil {
+		return nil, nil
+	}
+	userMap := structToMap(user)
+	addMapId(userMap, []string{"users", "desks", "desk_groups", "sections"})
+	return userMap, nil
 }
 
 func InsertFromJson(body io.Reader, obj interface{}) error {

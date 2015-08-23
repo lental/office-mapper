@@ -252,6 +252,15 @@ func updateOne(id int, updateData map[string]interface{}, obj interface{}) error
 	return loadOne(id, obj)
 }
 
+func chainToJoins(lastTable string, chain []string) string {
+	joins := ""
+	for _, t := range chain {
+		joins = joins + fmt.Sprintf(" JOIN %s ON (%s.%s_id = %s.id)", t, lastTable, depluralize(t), t)
+		lastTable = t
+	}
+	return joins
+}
+
 func loadChain(chain []string, id_field string, id int, result interface{}) error {
 	v := reflect.ValueOf(result)
 	if v.Kind() != reflect.Ptr {
@@ -271,12 +280,7 @@ func loadChain(chain []string, id_field string, id int, result interface{}) erro
 	elemType := v.Type().Elem().Elem()
 	table := tableName(elemType.Name())
 
-	lastTable := table
-	joins := ""
-	for _, t := range chain {
-		joins = joins + fmt.Sprintf(" JOIN %s ON (%s.%s_id = %s.id)", t, lastTable, depluralize(t), t)
-		lastTable = t
-	}
+	joins := chainToJoins(table, chain)
 
 	slect := "SELECT " + table + ".* FROM " + table
 	where := " WHERE " + chain[len(chain)-1] + "." + id_field + " = ?"
@@ -298,4 +302,57 @@ func loadChain(chain []string, id_field string, id int, result interface{}) erro
 func isNil(obj interface{}) bool {
 	v := reflect.ValueOf(obj)
 	return v.Elem().IsNil()
+}
+
+func structToMapAux(obj interface{}) interface{} {
+	v := reflect.ValueOf(obj)
+	switch v.Kind() {
+	case reflect.Ptr:
+		if v.IsNil() {
+			return nil
+		}
+		return structToMapAux(v.Elem().Interface())
+	case reflect.Struct:
+		mp := map[string]interface{}{}
+		for i := 0; i < v.NumField(); i++ {
+			fieldName := v.Type().Field(i).Name
+			if tag := v.Type().Field(i).Tag.Get("json"); tag != "" {
+				fieldName = tag
+			}
+			mp[fieldName] = structToMapAux(v.Field(i).Interface())
+		}
+		return mp
+	case reflect.Slice, reflect.Array:
+		for i := 0; i < v.Len(); i++ {
+			v.Index(i).Set(reflect.ValueOf(structToMapAux(v.Index(i).Interface())))
+		}
+	}
+	return obj
+}
+
+func structToMap(obj interface{}) map[string]interface{} {
+	return structToMapAux(obj).(map[string]interface{})
+}
+
+func addMapId(obj map[string]interface{}, chain []string) error {
+	joins := ""
+	if len(chain) > 1 {
+		joins = chainToJoins(chain[0], chain[1:])
+	}
+	query := fmt.Sprintf(`SELECT map_id FROM %v %v WHERE %v.id = ?`, chain[0], joins, chain[0])
+
+	obj["mapId"] = nil
+
+	rows, err := config.DB.Query(query, obj["id"])
+	if err != nil {
+		return err
+	}
+
+	for rows.Next() {
+		var mapId int
+		rows.Scan(&mapId)
+		obj["mapId"] = mapId
+	}
+
+	return nil
 }
