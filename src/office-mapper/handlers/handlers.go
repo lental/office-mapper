@@ -78,8 +78,11 @@ func getIdToken(w http.ResponseWriter, r *http.Request) string {
 	}
 	id_tokens := params["id_token"]
 	if len(id_tokens) < 1 {
-		http.Error(w, `{"error": "No id_token provided"}`, http.StatusBadRequest)
-		return ""
+		id_tokens = r.Header["Id-Token"]
+		if len(id_tokens) < 1 {
+			http.Error(w, `{"error": "No id_token parametor or Id-Token header provided"}`, http.StatusBadRequest)
+			return ""
+		}
 	}
 	return id_tokens[0]
 }
