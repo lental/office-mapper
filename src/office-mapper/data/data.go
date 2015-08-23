@@ -343,3 +343,12 @@ func Desks() ([]Desk, error) {
 	}
 	return desks, nil
 }
+
+func GetDesk(id int) (*Desk, error) {
+	desk := &Desk{}
+	err := loadOne(id, &desk)
+	if err != nil {
+		return nil, err
+	}
+	return desk, nil
+}

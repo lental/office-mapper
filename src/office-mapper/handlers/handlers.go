@@ -51,6 +51,11 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/desk_groups/{id}", UpdateDeskGroupHandler).Methods("PUT")
 	r.HandleFunc("/v1/desk_groups/{id}", UpdateDeskGroupHandler).Methods("PATCH")
 	r.HandleFunc("/v1/desks", DesksHandler).Methods("GET")            // All data
+	r.HandleFunc("/v1/desks", NewDeskHandler).Methods("POST")
+	r.HandleFunc("/v1/desks/{id}", DeskHandler).Methods("GET")
+	r.HandleFunc("/v1/desks/{id}", DeleteDeskHandler).Methods("DELETE")
+	r.HandleFunc("/v1/desks/{id}", UpdateDeskHandler).Methods("PUT")
+	r.HandleFunc("/v1/desks/{id}", UpdateDeskHandler).Methods("PATCH")
 
 	r.HandleFunc("/healthz", HealthzHandler).Methods("GET")
 	r.HandleFunc("/statusz", StatuszHandler).Methods("GET")
@@ -416,4 +421,62 @@ func DesksHandler(w http.ResponseWriter, r *http.Request) {
 		panic("Error getting desks data")
 	}
 	respond(w, "desk", desks)
+}
+
+func NewDeskHandler(w http.ResponseWriter, r *http.Request) {
+	var desk data.Desk
+
+	err := data.InsertFromJson(r.Body, &desk)
+	if err != nil {
+		http.Error(w, `{"error": "error creating desk: `+err.Error()+`"}`, http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	respond(w, "desk", desk)
+}
+
+func DeleteDeskHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad desk id"}`, http.StatusBadRequest)
+		return
+	}
+
+	rowsAffected, err := data.DeleteRow("desks", id)
+	if err != nil {
+		panic("Error deleting desk")
+	}
+	if rowsAffected == 0 {
+		http.Error(w, `{"error": "desk not found"}`, http.StatusNotFound)
+		return
+	}
+	http.Error(w, "", http.StatusNoContent)
+}
+
+func UpdateDeskHandler(w http.ResponseWriter, r *http.Request) {
+	desk := &data.Desk{}
+	if data.UpdateRowFromJson(w, r, &desk) {
+		respond(w, "desk", desk)
+	}
+}
+
+func DeskHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad desk id"}`, http.StatusBadRequest)
+		return
+	}
+	desk, err := data.GetDesk(id)
+
+	if err != nil {
+		panic("Error getting desk data")
+	}
+	if desk == nil {
+		http.Error(w, `{"error": "desk not found"}`, http.StatusNotFound)
+		return
+	}
+	respond(w, "desk", desk)
 }
