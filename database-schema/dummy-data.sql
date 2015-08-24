@@ -8,8 +8,8 @@ INSERT INTO sections (id, name, map_id, xpos, ypos, width, height) VALUES
     (5, "GDL Part 2", 2, 10, 310, 200, 400),
     (6, "London Office", 3, 10, 10, 1000, 1000),
     (7, "Dallas Office", 5, 10, 10, 400, 500),
-    (8, "Kitchen", 1, 1560, 300, 1100, 790),
-    (9, "Lobby", 1, 1560, 1090, 1100, 550);
+    (8, "Kitchen", 1, 1560, 300, 1000, 790),
+    (9, "Lobby", 1, 1560, 1090, 1000, 550);
 
 INSERT INTO users (id, name, desk_id, email, thumbnail_url, gplus_id, admin) VALUES
   (1, "Michael Len", 1, "michael.len@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECNn4_9WI4pz-nwEiC3ZjYXJkX3Bob3RvKigwMWJlMmFjZjk2YWFlMzkyODQ1MmZmYzc4OTQ1ZTQ0Y2UzMDM1MWRjMAHNy1tiC-4vJNOiL2aadmRRetRhNw", 111528215661046135897, 1),
@@ -72,6 +72,21 @@ INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, c
 
   (40, "The Lost Boys", 2, 1450, 270, 100, 130, 1, 1, 1, 10),
 
+  (41, "Pulp Fiction", 8, 0, 420, 100, 90, 1, 1, 1, 6),
+
+  (42, "Goodfellas", 8, 140, 200, 150, 90, 1, 1, 1, 6),
+  (43, "The NeverEnding Story", 8, 280, 430, 90, 140, 1, 1, 1, 6),
+
+  (44, "The Shining", 8, 140, 610, 70, 80, 1, 1, 1, 4),
+  (45, "Say Anything", 8, 210, 610, 70, 80, 1, 1, 1, 4),
+  (46, "Rear Window", 8, 140, 690, 140, 90, 1, 1, 1, 8),
+  (47, "Jumanji", 8, 570, 610, 70, 80, 1, 1, 1, 4),
+  (48, "Fargo", 8, 570, 690, 70, 90, 1, 1, 1, 4),
+
+  (49, "Cocoon", 8, 00, 640, 100, 100, 1, 1, 1, 6),
+
+  (50, "Blazing Saddles", 3, 1400, 40, 100, 100, 1, 1, 1, 6),
+
   (99, "Zamba", 2, 40, 90, 30, 80, 1, 1, 1, 22);
 
 INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height) VALUES
@@ -80,7 +95,7 @@ INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height
   (3, "Men's restroom", "Where baths eat", 2, 380, 80, 80, 180),
   (4, "Telco Closet", "Where phones eat", 2, 460, 80, 80, 100),
   (5, "Mother's Room", "", 2, 460, 180, 80, 80),
-  (6, "Electrical Closet", "", 2, 540, 90, 80, 90),
+  (6, "Electrical", "", 2, 540, 90, 80, 90),
   (7, "Print/Copy", "", 2, 540, 180, 80, 80),
 
   (8, "Small Meetings", "", 2, 1120, 190, 100, 110),
@@ -90,7 +105,30 @@ INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height
 
   (12, "Electrical", "", 2, 1450, 90, 100, 90),
   (13, "Print/Copy", "", 2, 1450, 180, 70, 90),
-  (14, "Electrical", "", 2, 1520, 180, 30, 90)
+  (14, "Electrical", "", 2, 1520, 180, 30, 90),
+
+  (15, "Loading dock", "", 8, 0, 0, 100, 100),
+  (16, "Facilities storage", "", 8, 100, 0, 250, 100),
+  (17, "Control room", "", 8, 390, 0, 150, 30),
+
+  (18, "Zen room", "", 8, 0, 200, 100, 100),
+  (19, "Empty room?", "", 8, 0, 340, 100, 80),
+
+  (20, "Storage", "", 8, 290, 200, 50, 90),
+  (21, "IT Storage", "", 8, 140, 290, 90, 140),
+  (22, "Server Room", "", 8, 230, 290, 140, 140),
+  (23, "Video Studio", "", 8, 140, 430, 140, 140),
+  (24, "Women's restroom", "", 8, 370, 290, 90, 280),
+  (25, "Men's restroom", "", 8, 460, 290, 90, 280),
+  (26, "Electrical", "", 8, 550, 410, 90, 80),
+  (27, "Mother's Room", "", 8, 550, 490, 90, 80),
+
+  (28, "Empty room?", "", 8, 280, 610, 100, 170),
+  (29, "Empty room?", "", 8, 380, 610, 100, 170),
+  (30, "Empty room?", "", 8, 470, 610, 100, 170),
+
+  (31, "Gym", "", 8, 730, 480, 270, 130),
+  (32, "Game Room", "", 8, 730, 610, 270, 130)
   ;
 
 INSERT INTO desk_groups (name, section_id, xpos, ypos) VALUES
