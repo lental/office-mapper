@@ -20,7 +20,7 @@ INSERT INTO users (id, name, desk_id, email, thumbnail_url, gplus_id, admin) VAL
   (4, "Gone McLeaverson", 5, "gone@ooyala.com", "", 11111, 0),
   (5, "Aanal Bhatt", 6, "aanalbhatt@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECKT4mvKzvrbQrQEiC3ZjYXJkX3Bob3RvKigzY2I1ZmRjODI5MTBhOWRiNGM4MDJjZGEwY2YxYzU2ZDhlYWRhNmI1MAGXXraqMI1ApYCU3KX1M_6NJy5zsw", 112511239403580341284, 0),
   (6, "Aaron Carr", 7, "aaronc@ooyala.com", NULL, 105266251472533597991, 0),
-  (7, "Abel Rios", 36, "abelrios@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABDCNmJl4Cunf-aSyILdmNhcmRfcGhvdG8qKDg3OWJlZDY2MWZlNTU5YmNjYTBhYzMxMWFhM2RjM2UyOGRiMmVmNmMwAYqy3f5l36WA_z-rEcMkNEEGpaoN",105419515812321281241, 0),
+  (7, "Abel Rios", 55, "abelrios@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABDCNmJl4Cunf-aSyILdmNhcmRfcGhvdG8qKDg3OWJlZDY2MWZlNTU5YmNjYTBhYzMxMWFhM2RjM2UyOGRiMmVmNmMwAYqy3f5l36WA_z-rEcMkNEEGpaoN",105419515812321281241, 0),
   (8, "Archie Baltazar", 265, "archib@ooyala.com", "https://plus.google.com/_/focus/photos/private/AIbEiAIAAABDCMGln5Xj-ImfeyILdmNhcmRfcGhvdG8qKDU0ZGVjZjNkYmNjNmJhYTU1OTljNDA0N2UzZDUzZDcxOTY0NmIwYTcwAYnP8xRcSMmVkAZMqmK6WIs4CmHJ", 108880579247428063937, 1),
   (9, "Peter Yu", 272, "peteryu@ooyala.com", "https://plus.google.com/_/focus/photos/private/AIbEiAIAAABDCKTX4Oy4rdvVFiILdmNhcmRfcGhvdG8qKDJjNmIxNDA4MTA1ZTIzNTcyMDAwOGM1MGMxYjA1Nzc4YjI5MmFhNDEwAUMS0iNzNNEe3iiC2MNZiqpwa1Gd", 101633519598556425124, 1);
 
