@@ -23,6 +23,11 @@ var editPositionTemplate = _.template("<table class='editPositionForm'>" +
   "</table>"
   );
 
+var editXYPositionTemplate = _.template("<table class='editPositionForm'>" +
+  "<tr class='' id='edit-x'><td class='positionInputLabel'>x:</td><td class='positionInputField'><input class='editPosInput' type='text' name='x' value='<%= x %>'></td></tr>" +
+  "<tr class='' id='edit-y'><td class='positionInputLabel'>y:</td><td class='positionInputField'><input class='editPosInput' type='text' name='y' value='<%= y %>'></td></tr>" +
+  "</table>"
+  );
 var editFeaturesTemplate = _.template("<table class='editFeatureForm'>" +
   "<tr class='' id='edit-chromecast'><td class='featureInputLabel'>Chromecast:</td><td class='featureInputField'><input class='editFeatInput' type='checkbox' name='chromecast' value='chromecast' <%= chromecast ? 'checked' : '' %>></td></tr>" +
   "<tr class='' id='edit-phone'><td class='featureInputLabel'>Phone:</td><td class='featureInputField'><input class='editFeatInput' type='checkbox' name='phone' value='phone' <%= phone ? 'checked' : '' %>></td></tr>" +
@@ -67,6 +72,15 @@ var editDeskTemplate = _.template(""+
   "<tr class='formRow' id='edit-name'><td class='inputLabel'>Name:</td><td class='inputField'><input class='editInput' type='text' name='name' value='<%= name %>'></td></tr>" +
   "<tr class='formRow' id='edit-position'><td class='inputLabel'>Position:</td><td class='inputField'><%= editPositionTemplate(position) %></td></tr>" +
   "<tr class='formRow' id='edit-rotation'><td class='inputLabel'>Rotation:</td><td class='inputField'><input class='editInput' type='text' name='rotation' value='<%= rotation %>'></td></tr>" 
+  // "<div class='' id='edit-mapId'>mapId: <%= mapId %> </div>" +
+  // "<div class='' id='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
+  );
+
+var editDeskGroupTemplate = _.template(""+
+  "<tr class='formRow' id='edit-id'><td class='inputLabel'>id:</td><td class='inputField'><%= id %></td></tr>" +
+  "<tr class='formRow' id='edit-name'><td class='inputLabel'>Name:</td><td class='inputField'><input class='editInput' type='text' name='name' value='<%= name %>'></td></tr>" +
+  "<tr class='formRow' id='edit-position'><td class='inputLabel'>Position:</td><td class='inputField'><%= editXYPositionTemplate(xyPosition) %></td></tr>" +
+  "<tr class='formRow' id='edit-sectionId'><td class='inputLabel'>Section Id:</td><td class='inputField'><input class='editInput' type='text' name='sectionId' value='<%= sectionId %>'></td></tr>"
   // "<div class='' id='edit-mapId'>mapId: <%= mapId %> </div>" +
   // "<div class='' id='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
   );
@@ -188,6 +202,8 @@ var EditFormView= Backbone.View.extend({
         this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editMapForm', innerForm:editMapTemplate(obj.attributes)})}));
       } else if (obj instanceof Desk) {
         this.$el.html(primaryEditTemplate({innerForm:formDeleteWrappingTemplate({divName:'editDeskForm', innerForm:editDeskTemplate(obj.attributes)})}));
+      } else if (obj instanceof DeskGroup) {
+        this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editDeskForm', innerForm:editDeskGroupTemplate(obj.attributes)})}));
       }
       else {
         this.$el.html(unselectedTemplate());

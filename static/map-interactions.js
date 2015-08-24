@@ -6,13 +6,6 @@ var MapSectionView = Backbone.View.extend({
     this.render();
     this.listenTo(pageState, 'change', this.render);
   },
-  events: {
-    "click ": "onClick"
-  },
-  onClick: function(){
-    pageState.mapSelectionClick = true;
-    pageState.selectObject(this.model);
-  },
   template: _.template(
     "<div class='mapSectionName'><%= attributes.name %></div>" +
     "<% deskGroups.forEach(function(group){ %>" +
@@ -101,11 +94,11 @@ var MapSectionView = Backbone.View.extend({
     var deskGroupId = parseInt(evt.target.id.split("_")[2]);
     var deskGroup = this.model.attributes.deskGroups.get(deskGroupId);
     this.updatePageStateAfterModification(deskGroup,{
-      position: {
+      xyPosition: {
         x: parseInt(evt.target.style.left),
         y: parseInt(evt.target.style.top),
-        w: parseInt(evt.target.style.width),
-        h: parseInt(evt.target.style.height)
+        // w: parseInt(evt.target.style.width),
+        // h: parseInt(evt.target.style.height)
       }});
   },
 
@@ -201,6 +194,11 @@ var MapSectionView = Backbone.View.extend({
     if (this.$el.resizable("instance")) this.$el.resizable("destroy");
     this.$el.draggable({containment: "parent", stop: this.sectionModified.bind(this), drag: this.sectionDragged.bind(this)}).resizable({stop: this.sectionModified.bind(this)});
     this.$el.find(".mapDeskGroup").draggable({containment: "parent", stop: this.deskGroupModified.bind(this)}).resizable();
+    this.$el.find(".mapDeskGroup").click(function(evt){
+      pageState.mapSelectionClick = true;
+      pageState.selectObject(this.model.attributes.deskGroups.get(parseInt(evt.target.id.split("_")[2])));
+      evt.stopPropagation();
+    }.bind(this));
     this.$el.find(".mapRoom").draggable({containment: "parent", stop: this.roomModified.bind(this)}).resizable({stop: this.roomModified.bind(this)});
     this.$el.find(".mapRoom").click(function(evt){
       pageState.mapSelectionClick = true;
