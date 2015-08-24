@@ -7,7 +7,7 @@ INSERT INTO sections (id, name, map_id, xpos, ypos, width, height) VALUES
     (4, "GDL Part 1", 2, 10, 10, 300, 500),
     (5, "GDL Part 2", 2, 10, 310, 200, 400),
     (6, "London Office", 3, 10, 10, 1000, 1000),
-    (7, "Dallas Office", 5, 10, 10, 400, 500),
+    (7, "Dallas Office", 5, 10, 10, 450, 670),
     (8, "Kitchen", 1, 1560, 300, 1000, 790),
     (9, "Lobby", 1, 1560, 1090, 1000, 470);
 
@@ -96,7 +96,12 @@ INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, c
   (54, "Little Miss Sunshine", 9, 130, 340, 200, 130, 1, 1, 1, 16),
   (55, "Zamba", 9, 600, 340, 400, 130, 1, 1, 1, 22),
   (56, "Louise", 9, 760, 40, 240, 150, 1, 1, 1, 16),
-  (57, "Thelma", 9, 760, 190, 240, 150, 1, 1, 1, 16);
+  (57, "Thelma", 9, 760, 190, 240, 150, 1, 1, 1, 16),
+  (58, "Phone 1", 7, 360, 140, 90, 60, 0, 1, 0, 2),
+  (59, "Phone 2", 7, 360, 200, 90, 60, 0, 1, 0, 2),
+  (60, "Conference 1", 7, 360, 200, 90, 110, 1, 1, 1, 5),
+  (61, "Conference 2", 7, 360, 310, 90, 110, 1, 1, 1, 5),
+  (62, "Conference 3(Big)", 7, 360, 420, 90, 180, 1, 1, 1, 12);
 
 INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height) VALUES
   (1, "Secondary kitchen", "Where we eat", 2, 200, 80, 100, 180),
@@ -139,7 +144,10 @@ INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height
   (31, "Gym", "", 8, 730, 480, 270, 130),
   (32, "Game Room", "", 8, 730, 610, 270, 130),
 
-  (33, "Coffee Bar", "", 9, 0, 340, 130, 130)
+  (33, "Coffee Bar", "", 9, 0, 340, 130, 130),
+  (34, "Dallas Office Stairs", "",7, 0, 335, 250, 100),
+  (35, "Kitchen Area", "",7, 250, 280, 80, 150),
+  (36, "Reception","", 7, 250, 505, 80, 150)
   ;
 
 INSERT INTO desk_groups (name, section_id, xpos, ypos) VALUES
@@ -148,7 +156,12 @@ INSERT INTO desk_groups (name, section_id, xpos, ypos) VALUES
   (NULL, 1, 200, 20),
   (NULL, 1, 200, 130),
   (NULL, 1, 260, 20),
-  (NULL, 7, 260, 20);
+  (NULL, 7, 30, 0),
+  (NULL, 7, 130, 0),
+  (NULL, 7, 235, 0),
+  (NULL, 7, 330, 0),
+  (NULL, 7, 30, 215),
+  (NULL, 7, 150, 215);
 
 INSERT INTO desks (name, desk_group_id, xpos, ypos, width, height, rotation) VALUES
   (NULL, 1, 0, 0, 20, 30, 0),
@@ -184,9 +197,41 @@ INSERT INTO desks (name, desk_group_id, xpos, ypos, width, height, rotation) VAL
   (NULL, 5, 0, 0, 20, 30, 0),
   (NULL, 5, 0, 30, 20, 30, 0),
   (NULL, 5, 0, 60, 20, 30, 0),
-  (NULL, 6, 0, 0, 20, 30, 0),
-  (NULL, 6, 0, 30, 20, 30, 0),
-  (NULL, 6, 0, 60, 20, 30, 0),
+  (NULL, 6, 0, 0, 20, 40, 0),
+  (NULL, 6, 0, 40, 20, 40, 0),
+  (NULL, 6, 0, 80, 20, 40, 0),
+  (NULL, 6, 0, 120, 20, 40, 0),
+  (NULL, 6, 20, 0, 20, 40, 0),
+  (NULL, 6, 20, 40, 20, 40, 0),
+  (NULL, 6, 20, 80, 20, 40, 0),
+  (NULL, 6, 20, 120, 20, 40, 0),
+  (NULL, 7, 0, 0, 20, 40, 0),
+  (NULL, 7, 0, 40, 20, 40, 0),
+  (NULL, 7, 0, 80, 20, 40, 0),
+  (NULL, 7, 0, 120, 20, 40, 0),
+  (NULL, 7, 20, 0, 20, 40, 0),
+  (NULL, 7, 20, 40, 20, 40, 0),
+  (NULL, 7, 20, 80, 20, 40, 0),
+  (NULL, 7, 20, 120, 20, 40, 0),
+  (NULL, 8, 0, 0, 20, 40, 0),
+  (NULL, 8, 0, 40, 20, 40, 0),
+  (NULL, 8, 0, 80, 20, 40, 0),
+  (NULL, 8, 20, 0, 20, 40, 0),
+  (NULL, 8, 20, 40, 20, 40, 0),
+  (NULL, 8, 20, 80, 20, 40, 0),
+  (NULL, 9, 0, 0, 20, 40, 0),
+  (NULL, 9, 0, 40, 20, 40, 0),
+  (NULL, 9, 20, 0, 20, 40, 0),
+  (NULL, 9, 20, 40, 20, 40, 0),
+  (NULL, 10, 0, 0, 20, 40, 0),
+  (NULL, 10, 0, 40, 20, 40, 0),
+  (NULL, 10, 0, 80, 20, 40, 0),
+  (NULL, 10, 20, 0, 20, 40, 0),
+  (NULL, 10, 20, 40, 20, 40, 0),
+  (NULL, 10, 20, 80, 20, 40, 0),
+  (NULL, 11, 0, 0, 20, 30, 0),
+  (NULL, 11, 0, 30, 20, 30, 0),
+  (NULL, 11, 0, 60, 20, 30, 0),
   ("Cool", 500, 0, 0, 60, 20, 1),
   ("Cooler", 500, 0, 60, 60, 20, 1),
 
