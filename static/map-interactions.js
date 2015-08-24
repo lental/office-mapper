@@ -319,6 +319,10 @@ var MapRoomView = Backbone.View.extend({
       top: this.model.attributes.position.y,
       left: this.model.attributes.position.x
     });
+    if(this.model.attributes.color)
+      this.$el.css({
+        "background-color": this.model.attributes.color
+      });
     return this;
   }
 });
@@ -342,6 +346,10 @@ var MapPlaceView = Backbone.View.extend({
       top: this.model.attributes.position.y,
       left: this.model.attributes.position.x
     });
+    if(this.model.attributes.color)
+      this.$el.css({
+        "background-color": this.model.attributes.color
+      });
     this.$el.click(function(){alert("bar");});
     return this;
   }
