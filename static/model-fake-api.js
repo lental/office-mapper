@@ -7,7 +7,10 @@ $( document ).ready(function(){
     users = new Users();
     users.fetch({success:function(){
       pageState.set("usersLoaded", true);
-      renderUsers();
+      if (pageState.get("mapsLoaded"))
+        renderUsers();
+      else
+        setTimeout(renderUsers, 1000);
     }});
 
     places = new Places();
