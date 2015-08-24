@@ -216,6 +216,8 @@ INSERT INTO desk_groups (id, name, section_id, xpos, ypos, rotation) VALUES
   (47, NULL, 3, 1210, 110, 60),
   (48, NULL, 3, 1320, 110, 60),
 
+  (49, NULL, 2, 110, 280, -90),
+
 
   (6, NULL, 7, 30, 0, 0),
   (7, NULL, 7, 130, 0, 0),
@@ -538,5 +540,9 @@ INSERT INTO desks (name, desk_group_id, xpos, ypos, width, height, rotation) VAL
   (NULL, 48, 20, 0, 20, 40, 0),
   (NULL, 48, 20, 40, 20, 40, 0),
   (NULL, 48, 20, 80, 20, 40, 0),
+  (NULL, 49, 0, 0, 20, 40, 0),
+  (NULL, 49, 00, 40, 20, 40, 0),
+  (NULL, 49, 00, 80, 20, 40, 0),
+  (NULL, 49, 00, 120, 20, 40, 0),
 
   (NULL, 0, 0, 0, 0, 0, 0);
