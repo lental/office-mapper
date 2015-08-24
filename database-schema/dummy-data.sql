@@ -2,8 +2,8 @@ INSERT INTO maps (id, name) VALUES (1, "Santa Clara"), (2, "Guadalajara"), (3, "
 
 INSERT INTO sections (id, name, map_id, xpos, ypos, width, height) VALUES
     (1, "Engineering Area", 1, 10, 10, 1400, 400),
-    (2, "Walkway Area", 1, 10, 410, 1350, 400),
-    (3, "Non-engineering Area", 1, 10, 810, 1350, 400),
+    (2, "Walkway Area", 1, 10, 410, 1800, 440),
+    (3, "Non-engineering Area", 1, 10, 850, 1350, 400),
     (4, "GDL Part 1", 2, 10, 10, 300, 500),
     (5, "GDL Part 2", 2, 10, 310, 200, 400),
     (6, "London Office", 3, 10, 10, 1000, 1000),
@@ -39,12 +39,57 @@ INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, c
   (15, "Boogie Nights", 1, 1080, 20, 90, 90, 1, 1, 1, 4),
   (16, "Inception", 1, 1170, 20, 90, 90, 1, 1, 1, 4),
 
+
+  (17, "Risky Business", 2, 280, 320, 70, 80, 1, 1, 1, 4),
+  (18, "Fight Club", 2, 350, 320, 100, 80, 1, 1, 1, 4),
+  (19, "Mission Impossible", 2, 450, 320, 100, 80, 1, 1, 1, 4),
+  (20, "Jerry Maguire", 2, 550, 320, 70, 80, 1, 1, 1, 4),
+
+  (21, "Live and Let Die", 2, 660, 90, 50, 50, 1, 1, 1, 4),
+  (22, "Thunderball", 2, 660, 140, 50, 50, 1, 1, 1, 4),
+  (23, "Dr. No", 2, 660, 190, 50, 50, 1, 1, 1, 4),
+  (24, "Casino Royale", 2, 660, 240, 50, 80, 1, 1, 1, 4),
+  (25, "Cats and Dogs", 2, 660, 320, 50, 80, 1, 1, 1, 4),
+  (26, "Goodwill Hunting", 2, 710, 90, 100, 150, 1, 1, 1, 4),
+  (27, "Up", 2, 710, 240, 100, 160, 1, 1, 1, 4),
+
+  (28, "Sideways", 2, 930, 90, 100, 160, 1, 1, 1, 4),
+  (29, "Caddyshack", 2, 930, 240, 100, 160, 1, 1, 1, 4),
+  (30, "For Your Eyes Only", 2, 1030, 90, 50, 50, 1, 1, 1, 4),
+  (31, "Skyfall", 2, 1030, 140, 50, 50, 1, 1, 1, 4),
+  (32, "License to Kill", 2, 1030, 190, 50, 50, 1, 1, 1, 4),
+  (33, "Moon Raker", 2, 1030, 240, 50, 80, 1, 1, 1, 4),
+  (34, "The Spy Who Loved Me", 2, 1030, 320, 50, 80, 1, 1, 1, 4),
+
+  (35, "Limitless", 2, 1120, 90, 100, 100, 1, 1, 1, 4),
+  (36, "Moneyball", 2, 1120, 300, 100, 100, 1, 1, 1, 4),
+
+  (37, "Great Race", 2, 1310, 90, 100, 100, 1, 1, 1, 4),
+  (38, "Turner and Hooch", 2, 1310, 190, 100, 110, 1, 1, 1, 4),
+  (39, "The Firm", 2, 1310, 300, 100, 100, 1, 1, 1, 4),
+
+  (40, "The Lost Boys", 2, 1450, 270, 100, 130, 1, 1, 1, 4),
+
   (99, "Zamba", 2, 40, 90, 30, 80, 1, 1, 1, 20);
 
 INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height) VALUES
-  (1, "Secondary kitchen", "Where we eat", 2, 40, 120, 100, 100),
-  (2, "Electrical room", "Where electrons eat", 2, 900, 150, 100, 120),
-  (3, "Bathroom", "Where baths eat", 2, 210, 110, 100, 100);
+  (1, "Secondary kitchen", "Where we eat", 2, 200, 80, 100, 180),
+  (2, "Women's restroom", "Where baths eat", 2, 300, 80, 80, 180),
+  (3, "Men's restroom", "Where baths eat", 2, 380, 80, 80, 180),
+  (4, "Telco Closet", "Where phones eat", 2, 460, 80, 80, 100),
+  (5, "Mother's Room", "", 2, 460, 180, 80, 80),
+  (6, "Electrical Closet", "", 2, 540, 90, 80, 90),
+  (7, "Print/Copy", "", 2, 540, 180, 80, 80),
+
+  (8, "Small Meetings", "", 2, 1120, 190, 100, 110),
+  (9, "Workroom", "", 2, 1220, 90, 60, 100),
+  (10, "Storage", "", 2, 1280, 90, 40, 100),
+  (11, "Legal/Finance/HR Storage", "", 2, 1220, 190, 100, 210),
+
+  (12, "Electrical", "", 2, 1450, 90, 100, 90),
+  (13, "Print/Copy", "", 2, 1450, 180, 70, 90),
+  (14, "Electrical", "", 2, 1520, 180, 30, 90)
+  ;
 
 INSERT INTO desk_groups (name, section_id, xpos, ypos) VALUES
   (NULL, 1, 110, 10),
