@@ -80,7 +80,8 @@ var editDeskGroupTemplate = _.template(""+
   "<tr class='formRow' id='edit-id'><td class='inputLabel'>id:</td><td class='inputField'><%= id %></td></tr>" +
   "<tr class='formRow' id='edit-name'><td class='inputLabel'>Name:</td><td class='inputField'><input class='editInput' type='text' name='name' value='<%= name %>'></td></tr>" +
   "<tr class='formRow' id='edit-position'><td class='inputLabel'>Position:</td><td class='inputField'><%= editXYPositionTemplate(xyPosition) %></td></tr>" +
-  "<tr class='formRow' id='edit-sectionId'><td class='inputLabel'>Section Id:</td><td class='inputField'><input class='editInput' type='text' name='sectionId' value='<%= sectionId %>'></td></tr>"
+  "<tr class='formRow' id='edit-sectionId'><td class='inputLabel'>Section Id:</td><td class='inputField'><input class='editInput' type='text' name='sectionId' value='<%= sectionId %>'></td></tr>" +
+  "<tr class='formRow' id='edit-rotation'><td class='inputLabel'>Rotation:</td><td class='inputField'><input class='editInput' type='text' name='rotation' value='<%= rotation %>'></td></tr>" 
   // "<div class='' id='edit-mapId'>mapId: <%= mapId %> </div>" +
   // "<div class='' id='edit-position'>position: <%= editPositionTemplate(position) %> </div>" +
   );

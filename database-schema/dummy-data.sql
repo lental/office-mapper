@@ -103,9 +103,9 @@ INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, c
   (57, "Thelma", 9, 760, 190, 240, 150, 1, 1, 1, 16, NULL),
   (58, "Phone 1", 7, 360, 140, 90, 60, 0, 1, 0, 2, NULL),
   (59, "Phone 2", 7, 360, 200, 90, 60, 0, 1, 0, 2, NULL),
-  (60, "Conference 1", 7, 360, 200, 90, 110, 1, 1, 1, 5, NULL),
-  (61, "Conference 2", 7, 360, 310, 90, 110, 1, 1, 1, 5, NULL),
-  (62, "Conference 3(Big)", 7, 360, 420, 90, 180, 1, 1, 1, 12, NULL),
+  (60, "Conference 1", 7, 360, 260, 90, 110, 1, 1, 1, 5, NULL),
+  (61, "Conference 2", 7, 360, 370, 90, 110, 1, 1, 1, 5, NULL),
+  (62, "Conference 3(Big)", 7, 360, 480, 90, 180, 1, 1, 1, 12, NULL),
 
   (63, "Meeting Room 5", 6, 0, 0, 200, 125, 0, 0, 0, 12, NULL),
   (64, "Meeting Room 4", 6, 200, 0, 200, 125, 0, 0, 0, 8, NULL),
