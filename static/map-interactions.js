@@ -147,7 +147,7 @@ var MapSectionView = Backbone.View.extend({
   },
 
   sectionModified: function(evt) {
-    this.updatePageStateAfterModification(place,{
+    this.updatePageStateAfterModification(this.model,{
       position: {
         x: parseInt(evt.target.style.left),
         y: parseInt(evt.target.style.top),
@@ -164,23 +164,6 @@ var MapSectionView = Backbone.View.extend({
   sectionDragged: function(evt) {
     var map = $("#map");
     var section = evt.target;
-    console.log("map width: ", map.width());
-    console.log("section width: ", (section.style.left + section.style.width));
-    if (map.width() - (parseInt(section.style.left) + parseInt(section.style.width)) < 100) {
-      console.log("widening map");
-      map.width(map.width() + 200);
-    }
-    if (map.height() - (section.style.top + section.style.height) < 100) {
-      console.log("heightening map");
-      map.width(map.width() + 200);
-    }
-  },
-
-  sectionDragged: function(evt) {
-    var map = $("#map");
-    var section = evt.target;
-    console.log("map width: ", map.width());
-    console.log("section width: ", (section.style.left + section.style.width));
     if (map.width() - (parseInt(section.style.left) + parseInt(section.style.width)) < 100) {
       console.log("widening map");
       map.width(map.width() + 200);
@@ -414,7 +397,7 @@ var MapView = Backbone.View.extend({
           }
           $("#map").prepend((new MapSectionView({model: section})).el);
         });
-        //$("#map").css({width: (maxX+maxWidth+100) + "px", height: (maxY+maxHeight+100) + "px"});
+        $("#map").css({width: (maxX+maxWidth+100) + "px", height: (maxY+maxHeight+100) + "px"});
         $("#new_section_button").css({left: ($("#map")[0].scrollWidth - 80)+"px"});
         $("#new_section_button").click(function(){
           var newSection = this.model.getCurrentMap().attributes.sections.create({map_id: this.model.attributes.currentMapId,
