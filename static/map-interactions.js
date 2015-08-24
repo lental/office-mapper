@@ -161,9 +161,9 @@ var MapSectionView = Backbone.View.extend({
       console.log("widening map");
       map.width(map.width() + 200);
     }
-    if (map.height() - (section.style.top + section.style.height) < 100) {
+    if (map.height() - (parseInt(section.style.top) + parseInt(section.style.height)) < 100) {
       console.log("heightening map");
-      map.width(map.width() + 200);
+      map.height(map.height() + 200);
     }
   },
 
