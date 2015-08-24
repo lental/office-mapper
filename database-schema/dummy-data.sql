@@ -9,7 +9,7 @@ INSERT INTO sections (id, name, map_id, xpos, ypos, width, height) VALUES
     (6, "London Office", 3, 10, 10, 1000, 1000),
     (7, "Dallas Office", 5, 10, 10, 400, 500),
     (8, "Kitchen", 1, 1560, 300, 1000, 790),
-    (9, "Lobby", 1, 1560, 1090, 1000, 550);
+    (9, "Lobby", 1, 1560, 1090, 1000, 470);
 
 INSERT INTO users (id, name, desk_id, email, thumbnail_url, gplus_id, admin) VALUES
   (1, "Michael Len", 1, "michael.len@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECNn4_9WI4pz-nwEiC3ZjYXJkX3Bob3RvKigwMWJlMmFjZjk2YWFlMzkyODQ1MmZmYzc4OTQ1ZTQ0Y2UzMDM1MWRjMAHNy1tiC-4vJNOiL2aadmRRetRhNw", 111528215661046135897, 1),
@@ -72,6 +72,7 @@ INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, c
 
   (40, "The Lost Boys", 2, 1450, 270, 100, 130, 1, 1, 1, 10),
 
+
   (41, "Pulp Fiction", 8, 0, 420, 100, 90, 1, 1, 1, 6),
 
   (42, "Goodfellas", 8, 140, 200, 150, 90, 1, 1, 1, 6),
@@ -87,7 +88,15 @@ INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, c
 
   (50, "Blazing Saddles", 3, 1400, 40, 100, 100, 1, 1, 1, 6),
 
-  (99, "Zamba", 2, 40, 90, 30, 80, 1, 1, 1, 22);
+
+  (51, "Trading Places", 9, 0, 40, 100, 100, 1, 1, 1, 8),
+  (52, "Boiler Room", 9, 0, 140, 100, 100, 1, 1, 1, 8),
+  (53, "Starsky and Hutch", 9, 0, 240, 100, 100, 1, 1, 1, 8),
+
+  (54, "Little Miss Sunshine", 9, 130, 340, 200, 130, 1, 1, 1, 16),
+  (55, "Zamba", 9, 600, 340, 400, 130, 1, 1, 1, 22),
+  (56, "Louise", 9, 760, 40, 240, 150, 1, 1, 1, 16),
+  (57, "Thelma", 9, 760, 190, 240, 150, 1, 1, 1, 16);
 
 INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height) VALUES
   (1, "Secondary kitchen", "Where we eat", 2, 200, 80, 100, 180),
@@ -128,7 +137,9 @@ INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height
   (30, "Empty room?", "", 8, 470, 610, 100, 170),
 
   (31, "Gym", "", 8, 730, 480, 270, 130),
-  (32, "Game Room", "", 8, 730, 610, 270, 130)
+  (32, "Game Room", "", 8, 730, 610, 270, 130),
+
+  (33, "Coffee Bar", "", 9, 0, 340, 130, 130)
   ;
 
 INSERT INTO desk_groups (name, section_id, xpos, ypos) VALUES
