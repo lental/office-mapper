@@ -348,27 +348,31 @@ var MapView = Backbone.View.extend({
   el: '#map',
 
   highlightItem: function(pState) {
+    var selectedElement;
+    if (pState.attributes.selectedObject instanceof Place) {
+      selectedElement = $("#map_place_" + pState.attributes.selectedObject.attributes.id);
+    }
+    if (pState.attributes.selectedObject instanceof Room) {
+      selectedElement = $("#map_room_" + pState.attributes.selectedObject.attributes.id);
+    }
+    if (pState.attributes.selectedObject instanceof DeskGroup) {
+      selectedElement = $("#map_deskgroup_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
+    }
+    if (pState.attributes.selectedObject instanceof Desk) {
+      selectedElement = $("#map_desk_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
+    }
+    if (pState.attributes.selectedObject instanceof User) {
+      selectedElement = $("#map_desk_" + pState.attributes.selectedObject.attributes.deskId).addClass(classToAdd);
+    }
+
     var classToAdd = "mapSelectedItem";
     if (!pState.mapSelectionClick) {
       classToAdd += " mapAnimateSelectedItem";
+      selectedElement[0].scrollIntoView();
     }
-    pState.mapSelectionClick = false;
+    selectedElement.addClass(classToAdd);
 
-    if (pState.attributes.selectedObject instanceof Place) {
-      $("#map_place_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
-    }
-    if (pState.attributes.selectedObject instanceof Room) {
-      $("#map_room_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
-    }
-    if (pState.attributes.selectedObject instanceof DeskGroup) {
-      $("#map_deskgroup_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
-    }
-    if (pState.attributes.selectedObject instanceof Desk) {
-      $("#map_desk_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
-    }
-    if (pState.attributes.selectedObject instanceof User) {
-      $("#map_desk_" + pState.attributes.selectedObject.attributes.deskId).addClass(classToAdd);
-    }
+    pState.mapSelectionClick = false;
   },
 
   render: function() {
