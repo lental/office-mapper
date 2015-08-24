@@ -99,68 +99,65 @@ var MapSectionView = Backbone.View.extend({
   deskGroupModified: function(evt) {
     var deskGroupId = parseInt(evt.target.id.split("_")[2]);
     var deskGroup = this.model.attributes.deskGroups.get(deskGroupId);
-    deskGroup.set({
-      xyPosition: {
+    this.updatePageStateAfterModification(deskGroup,{
+      position: {
         x: parseInt(evt.target.style.left),
-        y: parseInt(evt.target.style.top)
-      }
-    });
-    deskGroup.save();
+        y: parseInt(evt.target.style.top),
+        w: parseInt(evt.target.style.width),
+        h: parseInt(evt.target.style.height)
+      }});
   },
 
   deskModified: function(evt) {
     var deskId = parseInt(evt.target.id.split("_")[2]);
     var deskGroupId = parseInt(evt.target.parentNode.id.split("_")[2]);
     var desk = this.model.attributes.deskGroups.get(deskGroupId).attributes.desks.get(deskId);
-    desk.set({
+    this.updatePageStateAfterModification(desk,{
       position: {
         x: parseInt(evt.target.style.left),
         y: parseInt(evt.target.style.top),
         w: parseInt(evt.target.style.width),
         h: parseInt(evt.target.style.height)
-      }
-    });
-    desk.save();
+      }});
   },
 
   roomModified: function(evt) {
     var roomId = parseInt(evt.target.id.split("_")[2]);
     var room = this.model.attributes.rooms.get(roomId);
-    room.set({
+    this.updatePageStateAfterModification(room,{
       position: {
         x: parseInt(evt.target.style.left),
         y: parseInt(evt.target.style.top),
         w: parseInt(evt.target.style.width),
         h: parseInt(evt.target.style.height)
-      }
-    });
-    room.save();
+      }});
   },
 
   placeModified: function(evt) {
     var placeId = parseInt(evt.target.id.split("_")[2]);
     var place = this.model.attributes.places.get(placeId);
-    place.set({
+    this.updatePageStateAfterModification(place,{
       position: {
         x: parseInt(evt.target.style.left),
         y: parseInt(evt.target.style.top),
         w: parseInt(evt.target.style.width),
         h: parseInt(evt.target.style.height)
-      }
-    });
-    place.save();
+      }});
   },
 
   sectionModified: function(evt) {
-    this.model.set({
+    this.updatePageStateAfterModification(place,{
       position: {
         x: parseInt(evt.target.style.left),
         y: parseInt(evt.target.style.top),
         w: parseInt(evt.target.style.width),
         h: parseInt(evt.target.style.height)
-      }
-    });
-    this.model.save();
+      }});
+  },
+
+  updatePageStateAfterModification: function(obj, change) {
+    pageState.selectObject(obj);
+    pageState.setOnSelectedObject(change);
   },
 
   render: function() {

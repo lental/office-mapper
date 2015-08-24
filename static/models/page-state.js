@@ -11,7 +11,7 @@ PageState =  Backbone.Model.extend({
       placesLoaded:false,
       gplusLoaded:false,
 
-      modifiedObjects: new Set()
+      modifiedObjects: new ModifiedObjects()
     },
     isDataModelLoaded: function() {
         return this.get('gplusLoaded') &&
@@ -57,8 +57,8 @@ PageState =  Backbone.Model.extend({
         this.set({searchQuery: search});
     },
     setOnSelectedObject: function(key, val) {
-        this.get("modifiedObjects").add(this.get("selectedObject"));
         this.get("selectedObject").set(key, val);
+        this.get("modifiedObjects").add(this.get("selectedObject"));
         this.trigger('change', this);
     },
     setDeskOnUserSelectedObject: function(deskId) {

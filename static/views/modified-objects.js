@@ -2,13 +2,13 @@ var ModifiedObjectsView = Backbone.View.extend({
   initialize: function(params){
     this.render();
     this.listenTo(pageState.get("modifiedObjects"), 'change', this.render);
-    this.listenTo(pageState, 'change', this.render);
+    this.listenTo(pageState, 'change:[modifiedObjects]', this.render);
   },
 
   el: '#modified-objects-wrapper',
 
   events: {
-    "click #save-all": "saveAll",
+    "click #modified-objects-save": "saveAll",
   },
   saveAll: function() {
     console.log("saving All Modified");
