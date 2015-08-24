@@ -1,7 +1,11 @@
 var formWrappingTemplate = _.template("" +
   "<table class='<%= divName %>'><%= innerForm %></table>" +
+  "<button type='button' id='save'>Save</button>"
+  );
+var formDeleteWrappingTemplate = _.template("" +
+  "<table class='<%= divName %>'><%= innerForm %></table>" +
   "<button type='button' id='save'>Save</button>" +
-  ""
+  "<button type='button' id='delete'>delete</button>"
   );
 
 var editUserTemplate = _.template("" +
@@ -98,6 +102,7 @@ var EditFormView= Backbone.View.extend({
     "change .primaryEditForm .editFeatInput": "onFeatFieldEdited",
     "change .primaryEditForm .editUserForm #edit-deskId .editDeskInput": "onUserDeskChanged",
     "click .primaryEditForm #save": "saveSelectedObject",
+    "click .primaryEditForm #delete": "deleteSelectedObject",
 
     "change .secondaryEditForm .editInput": "onSecondaryFieldEdited",
     "change .secondaryEditForm .editPosInput": "onSecondaryPosFieldEdited",
@@ -151,6 +156,10 @@ var EditFormView= Backbone.View.extend({
     console.log("saving!")
     pageState.get("selectedObject").save();
   },
+  deleteSelectedObject: function(event) {
+    console.log("deleting!")
+    pageState.get("selectedObject").destroy();
+  },
 
   render: function() {
     var obj = pageState.get("selectedObject");
@@ -170,15 +179,15 @@ var EditFormView= Backbone.View.extend({
             this.$el.append("This user is not associated to a desk");
         }
       } else if (obj instanceof Room) {
-        this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editRoomForm', innerForm:editRoomTemplate(obj.attributes)})}));
+        this.$el.html(primaryEditTemplate({innerForm:formDeleteWrappingTemplate({divName:'editRoomForm', innerForm:editRoomTemplate(obj.attributes)})}));
       } else if (obj instanceof Place) {
-        this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editPlaceForm', innerForm:editPlaceTemplate(obj.attributes)})}));
+        this.$el.html(primaryEditTemplate({innerForm:formDeleteWrappingTemplate({divName:'editPlaceForm', innerForm:editPlaceTemplate(obj.attributes)})}));
       } else if (obj instanceof Section) {
         this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editSectionForm', innerForm:editSectionTemplate(obj.attributes)})}));
       } else if (obj instanceof Map) {
         this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editMapForm', innerForm:editMapTemplate(obj.attributes)})}));
       } else if (obj instanceof Desk) {
-        this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editDeskForm', innerForm:editDeskTemplate(obj.attributes)})}));
+        this.$el.html(primaryEditTemplate({innerForm:formDeleteWrappingTemplate({divName:'editDeskForm', innerForm:editDeskTemplate(obj.attributes)})}));
       }
       else {
         this.$el.html(unselectedTemplate());
