@@ -12,6 +12,7 @@
   display: -webkit-flex;
   display: flex;
   flex-flow: column;
+  -webkit-flex-flow:column;
   height: 100%;
 }
 
@@ -19,18 +20,22 @@
   display: -webkit-flex;
   display: flex;
   flex: 1 0 500px;
+  -webkit-flex: 1 1 500px;
   min-height: 1px;
 }
 
 .squishWrapper {
   position:relative;
   display:flex;
+  display:-webkit-flex;
 }
 
 #header {
   box-shadow: 0px 2px 5px rgba(0,0,0,.60);
   z-index: 10;
   min-width:1000px;
+  display:-webkit-flex;
+  -webkit-flex-flow:column;
 }
 
 body {

@@ -43,7 +43,9 @@
   -ms-transition: width 400ms ease-in;
   transition: width 400ms ease-in;
   display:flex;
+  -webkit-flex:1 0;
   flex-flow:column;
+  -webkit-flex-flow:column;
 }
 
 .editBarTitle {
@@ -64,6 +66,7 @@
   border: 1px black solid;
   background-color:#CCD6DB;
   flex: 1;
+  -webkit-flex: 1;
   overflow:scroll;
 }
 

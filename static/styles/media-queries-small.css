@@ -1,6 +1,7 @@
 @media screen and (max-width: 800px) {
     #flexbox {
       flex-flow: column;
+      -webkit-flex-flow:column;
     }
     #header {
       min-width: 400px;

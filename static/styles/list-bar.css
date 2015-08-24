@@ -33,7 +33,9 @@
   word-wrap: break-word;
   margin-left: 0px;
   display: flex;
+  display:-webkit-flex;
   flex-flow: column;
+  -webkit-flex-flow:column;
   overflow:hidden;
   -webkit-transition: width 400ms ease-in;
   -moz-transition: width 400ms ease-in;
@@ -105,6 +107,7 @@
 
 .userListElement {
   display:flex;
+  display:-webkit-flex;
 }
 
 .userListInfo {

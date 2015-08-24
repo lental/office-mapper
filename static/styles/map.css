@@ -128,6 +128,7 @@
 }
 #map-wrapper {
   flex: 1 0 450px;
+  -webkit-flex: 1 0 450px;
   overflow: scroll;
 }
 #map {
