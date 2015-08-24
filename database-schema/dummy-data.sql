@@ -160,7 +160,19 @@ INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height
   (33, "Coffee Bar", "", 9, 0, 340, 130, 130),
   (34, "Dallas Office Stairs", "",7, 0, 335, 250, 100),
   (35, "Kitchen Area", "",7, 250, 280, 80, 150),
-  (36, "Reception","", 7, 250, 505, 80, 150);
+  (36, "Reception","", 7, 250, 505, 80, 150),
+
+  (37, "Welcome Area", "", 11, 0, 0, 150, 175),
+  (38, "Demo Room", "", 11, 350, 0, 150, 175),
+  (39, "Meeting/Store Room", "", 11, 350, 325, 150, 175),
+  (40, "Main Entrance", "", 11, 50, 276, 190, 190),
+  (41, "Bathrooms", "", 6, 300, 425, 175, 200),
+  (42, "Server Room", "", 6, 300, 625, 175, 100),
+  (43, "Breakout Area 1", "", 6, 300, 725, 175, 100),
+  (44, "Elevators", "", 6, 475, 425, 120, 200),
+  (45, "Tea Point", "", 6, 475, 625, 120, 200),
+  (46, "Breakout Area 2", "", 6, 400, 825, 200, 175),
+  (47, "Printers", "", 10, 50, 200, 100, 50);
 
 INSERT INTO desk_groups (id, name, section_id, xpos, ypos, rotation) VALUES
   (2, NULL, 1, 140, 10, 0),
