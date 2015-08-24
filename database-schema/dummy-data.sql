@@ -10,8 +10,8 @@ INSERT INTO sections (id, name, map_id, xpos, ypos, width, height) VALUES
     (7, "Dallas Office", 5, 10, 10, 450, 670),
     (8, "Kitchen", 1, 1560, 300, 1000, 790),
     (9, "Lobby", 1, 1560, 1090, 1000, 470),
-    (10, "London East Wing", 3, 10, 170, 500, 500),
-    (11, "London West Wing", 3, 1110, 170, 500, 500);
+    (10, "London West Wing", 3, 10, 170, 500, 500),
+    (11, "London East Wing", 3, 1110, 170, 500, 500);
 
 INSERT INTO users (id, name, desk_id, email, thumbnail_url, gplus_id, admin) VALUES
   (1, "Michael Len", 22, "michael.len@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECNn4_9WI4pz-nwEiC3ZjYXJkX3Bob3RvKigwMWJlMmFjZjk2YWFlMzkyODQ1MmZmYzc4OTQ1ZTQ0Y2UzMDM1MWRjMAHNy1tiC-4vJNOiL2aadmRRetRhNw", 111528215661046135897, 1),
@@ -105,7 +105,16 @@ INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, c
   (59, "Phone 2", 7, 360, 200, 90, 60, 0, 1, 0, 2),
   (60, "Conference 1", 7, 360, 200, 90, 110, 1, 1, 1, 5),
   (61, "Conference 2", 7, 360, 310, 90, 110, 1, 1, 1, 5),
-  (62, "Conference 3(Big)", 7, 360, 420, 90, 180, 1, 1, 1, 12);
+  (62, "Conference 3(Big)", 7, 360, 420, 90, 180, 1, 1, 1, 12),
+
+  (63, "Meeting Room 5", 6, 0, 0, 200, 125, 0, 0, 0, 12),
+  (64, "Meeting Room 4", 6, 200, 0, 200, 125, 0, 0, 0, 8),
+  (65, "Meeting Room 3A", 6, 400, 0, 200, 175, 0, 0, 0, 12),
+  (66, "Meeting Room 3B", 6, 400, 175, 200, 175, 0, 0, 0, 12),
+  (67, "Meeting Room 6", 10, 0, 250, 200, 125, 0, 0, 0, 8),
+  (68, "Meeting Room 7", 10, 0, 375, 200, 125, 0, 0, 0, 8),
+  (69, "Meeting Room 1", 11, 150, 0, 100, 175, 0, 0, 0, 10),
+  (70, "Meeting Room 2", 11, 250, 0, 100, 175, 0, 0, 0, 6);
 
 INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height) VALUES
   (1, "Secondary kitchen", "Where we eat", 2, 200, 80, 100, 180),
