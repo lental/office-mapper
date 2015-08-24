@@ -13,11 +13,12 @@ var ModifiedObjectsView = Backbone.View.extend({
   saveAll: function() {
     console.log("saving All Modified");
     pageState.get("modifiedObjects").forEach(function(i, o, set) {o.save()});
+    pageState.trigger('change', pageState); //HACK 1 of the weekend: need to trigger to update everyone
   },
 
 
   template: _.template("<% modifiedObjects.forEach( function(i, o, set) { %>" +
-       "<div><%= o.toSimpleString() %></div>" + //.getSimpleName()
+       "<div><%= o.toSimpleString() %></div>" +
     "<% }); %> "),
 
   render: function() {

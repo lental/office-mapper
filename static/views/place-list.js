@@ -49,8 +49,11 @@ var PlaceListView = Backbone.View.extend({
     this.$('#place-list').toggleClass("hiddenList", this.hiding);
     this.$("#place-list").html(this.template({places:this.model}));
     var selectedObject = pageState.get('selectedObject');
-    if (selectedObject instanceof Place) {
-      this.$('#place-list .listElement[data-id='+selectedObject.get('id')+']')[0].scrollIntoView();
+
+    if (!this.hiding) {
+      if (selectedObject instanceof Place) {
+        this.$('#place-list .listElement[data-id='+selectedObject.get('id')+']')[0].scrollIntoView();
+      }
     }
     return this;
   }

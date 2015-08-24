@@ -61,8 +61,11 @@ var RoomListView = Backbone.View.extend({
     this.$('#room-list').toggleClass("hiddenList", this.hiding);
     this.$("#room-list").html(this.template({rooms:this.model}));
     var selectedObject = pageState.get('selectedObject');
-    if (selectedObject instanceof Room) {
-      this.$('#room-list .listElement[data-id='+selectedObject.get('id')+']')[0].scrollIntoView();
+
+    if (!this.hiding) {
+      if (selectedObject instanceof Room) {
+        this.$('#room-list .listElement[data-id='+selectedObject.get('id')+']')[0].scrollIntoView();
+      }
     }
     return this;
   }
