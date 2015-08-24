@@ -37,6 +37,7 @@ CREATE TABLE rooms (
   phone TINYINT NOT NULL,
   chromecast TINYINT NOT NULL,
   seats INT NOT NULL,
+  color VARCHAR(6),
   KEY section_id (section_id),
   KEY tv (tv),
   KEY phone (phone),
@@ -52,7 +53,8 @@ CREATE TABLE places (
   xpos INT NOT NULL,
   ypos INT NOT NULL,
   width INT NOT NULL,
-  height INT NOT NULL
+  height INT NOT NULL,
+  color VARCHAR(6)
 );
 -- TODO(edanaher): key/value pairs for metadata
 

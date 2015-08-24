@@ -72,6 +72,7 @@ type Room struct {
 	SectionId int      `json:"sectionId"`
 	Position  Position `json:"position"`
 	Features  Features `json:"features"`
+	Color       *string  `json:"color"`
 }
 
 type Place struct {
@@ -80,6 +81,7 @@ type Place struct {
 	SectionId   int      `json:"sectionId"`
 	Description string   `json:"description"`
 	Position    Position `json:"position"`
+	Color       *string  `json:"color"`
 }
 
 type DeskGroup struct {
