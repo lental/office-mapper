@@ -120,13 +120,15 @@ div {
 .ui-icon-gripsmall-diagonal-se {
   z-index: inherit !important;
 }
-
+#map-wrapper {
+  flex: 1 0 450px;
+  overflow: scroll;
+}
 #map {
   background-color: rgba(0,0,0,0.8);
-  flex: 1 0 450px;
   position: relative;
   font-family: sans-serif;
-  overflow: scroll;
+  overflow:visible;
 }
 
 #map_name {
