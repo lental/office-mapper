@@ -11,7 +11,10 @@ User = Backbone.Model.extend({
     },
     mapIsLoadedAndVisible: function() {
         return this.get("mapId") == pageState.get("currentMapId") && pageState.get("currentMapLoaded");
-    }
+    },
+  toSimpleString: function() {
+    return "User " + this.get('id') + ": " + this.get('name');
+  }
 });
 
 Users = Backbone.Collection.extend({

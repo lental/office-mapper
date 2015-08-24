@@ -4,6 +4,10 @@ Desk = Backbone.Model.extend({
       options.allMapDesks.add(this);
     }
     return resp
+  },
+
+  toSimpleString: function() {
+    return "Desk " + this.get('id') + ": " + this.get('name');
   }
 });
 

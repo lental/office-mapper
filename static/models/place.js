@@ -6,7 +6,10 @@ Place = Backbone.Model.extend({
             return true;
         }
         return false;
-    }
+    },
+  toSimpleString: function() {
+    return "Place " + this.get('id') + ": " + this.get('name');
+  }
 });
 
 Places = Backbone.Collection.extend({

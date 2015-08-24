@@ -6,7 +6,10 @@ Room = Backbone.Model.extend({
             return true;
         }
         return false;
-    }
+    },
+  toSimpleString: function() {
+    return "Room " + this.get('id') + ": " + this.get('name');
+  }
 });
 
 Rooms = Backbone.Collection.extend({

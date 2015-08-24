@@ -19,8 +19,8 @@
   display: -webkit-flex;
   display: flex;
   flex: 1 0 500px;
+  min-height: 1px;
 }
-
 
 .squishWrapper {
   position:relative;

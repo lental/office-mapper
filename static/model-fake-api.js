@@ -42,4 +42,5 @@ $( document ).ready(function(){
     renderListBarSquishView();
     renderEditBarSquishView();
     renderMapView(pageState);
+    renderModifiedObjectsView();
 });

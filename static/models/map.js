@@ -18,7 +18,10 @@ Map = Backbone.Model.extend({
     },
     getDeskById: function(deskId) {
       return this.get("allMapDesks").findWhere({"id": deskId});
-    }
+    },
+  toSimpleString: function() {
+    return "Map " + this.get('id') + ": " + this.get('name');
+  }
 });
 
 Maps = Backbone.Collection.extend({

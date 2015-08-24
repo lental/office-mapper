@@ -42,6 +42,8 @@
   -o-transition: width 400ms ease-in;
   -ms-transition: width 400ms ease-in;
   transition: width 400ms ease-in;
+  display:flex;
+  flex-flow:column;
 }
 
 .editBarTitle {
@@ -61,6 +63,8 @@
   margin:5px;
   border: 1px black solid;
   background-color:#CCD6DB;
+  flex: 1;
+  overflow:scroll;
 }
 
 .secondaryEditForm {
@@ -84,4 +88,8 @@
 }
 .formRow > td{
   /*border-bottom: 1px solid black;*/
+}
+
+#modified-objects-wrapper {
+  flex: 0 0 150px;
 }

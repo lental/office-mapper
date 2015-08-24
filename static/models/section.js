@@ -14,7 +14,10 @@ Section = Backbone.Model.extend({
             console.log("Tried to parse a section without places");
         }
         return response;
-    }
+    },
+  toSimpleString: function() {
+    return "Section " + this.get('id') + ": " + this.get('name');
+  }
 });
 
 Sections = Backbone.Collection.extend({
