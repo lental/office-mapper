@@ -52,7 +52,10 @@ var PlaceListView = Backbone.View.extend({
 
     if (!this.hiding) {
       if (selectedObject instanceof Place) {
-        this.$('#place-list .listElement[data-id='+selectedObject.get('id')+']')[0].scrollIntoView();
+        var element = this.$('#place-list .listElement[data-id='+selectedObject.get('id')+']');
+        if (isChildPartiallyOutsideOfParent(element[0], $("#scrollable-list")[0])) {
+          element[0].scrollIntoView();
+        }
       }
     }
     return this;

@@ -364,9 +364,9 @@ var MapView = Backbone.View.extend({
     }
 
     if (selectedElement) {
-      var classToAdd = "mapSelectedItem";
-      if (!pState.mapSelectionClick) {
-        classToAdd += " mapAnimateSelectedItem";
+      var classToAdd = "mapSelectedItem mapAnimateSelectedItem";
+      if (!pState.mapSelectionClick && isChildPartiallyOutsideOfParent(selectedElement[0], $("#map-wrapper")[0])) {
+
         selectedElement[0].scrollIntoView();
       }
       selectedElement.addClass(classToAdd);

@@ -59,7 +59,10 @@ var UserListView = Backbone.View.extend({
     var selectedObject = pageState.get('selectedObject');
     if (!this.hiding) {
       if (selectedObject instanceof User) {
-        this.$('#user-list .listElement[data-id='+selectedObject.get('id')+']')[0].scrollIntoView();
+        var element = this.$('#user-list .listElement[data-id='+selectedObject.get('id')+']');
+        if (isChildPartiallyOutsideOfParent(element[0], $("#scrollable-list")[0])) {
+          element[0].scrollIntoView();
+        }
       }
     }
     return this;

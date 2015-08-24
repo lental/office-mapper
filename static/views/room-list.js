@@ -64,7 +64,10 @@ var RoomListView = Backbone.View.extend({
 
     if (!this.hiding) {
       if (selectedObject instanceof Room) {
-        this.$('#room-list .listElement[data-id='+selectedObject.get('id')+']')[0].scrollIntoView();
+        var element = this.$('#room-list .listElement[data-id='+selectedObject.get('id')+']');
+        if (isChildPartiallyOutsideOfParent(element[0], $("#scrollable-list")[0])) {
+          element[0].scrollIntoView();
+        }
       }
     }
     return this;
