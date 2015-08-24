@@ -1,7 +1,7 @@
 INSERT INTO maps (id, name) VALUES (1, "Santa Clara"), (2, "Guadalajara"), (3, "London"), (4, "Stockholm"), (5, "Dallas");
 
 INSERT INTO sections (id, name, map_id, xpos, ypos, width, height) VALUES
-    (1, "Engineering Area", 1, 10, 10, 1350, 400),
+    (1, "Engineering Area", 1, 10, 10, 1400, 400),
     (2, "Walkway Area", 1, 10, 410, 1350, 400),
     (3, "Non-engineering Area", 1, 10, 810, 1350, 400),
     (4, "GDL Part 1", 2, 10, 10, 300, 500),
@@ -19,21 +19,31 @@ INSERT INTO users (id, name, desk_id, email, thumbnail_url, gplus_id, admin) VAL
   (7, "Abel Rios", 36, "abelrios@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABDCNmJl4Cunf-aSyILdmNhcmRfcGhvdG8qKDg3OWJlZDY2MWZlNTU5YmNjYTBhYzMxMWFhM2RjM2UyOGRiMmVmNmMwAYqy3f5l36WA_z-rEcMkNEEGpaoN",105419515812321281241, 0);
 
 INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, chromecast, seats) VALUES
-  (1, "Shawshank Redemption", 1,410, 20, 90, 90, 1, 1, 1, 4),
-  (2, "Gattaca", 1, 500, 20, 90, 90, 1, 1, 1, 4),
-  (3, "Men In Black", 1, 400, 200, 40, 40, 1, 1, 1, 4),
-  (4, "Time Bandits", 1, 440, 200, 40, 40, 1, 1, 1, 4),
-  (5, "Playback Lab", 1, 400, 240, 80, 50, 1, 1, 1, 4),
-  (6, "Wraith Of Khan", 1, 400, 290, 80, 50, 1, 1, 1, 4),
-  (7, "The Matrix", 1, 480, 200, 100,70, 1, 1, 1, 4),
-  (8, "Avatar", 1, 480, 270, 100,70, 1, 1, 1, 4),
   (9, "Telstra1", 1, 0, 0, 100,100, 1, 1, 1, 4),
   (10, "Telstra2", 1, 0, 100, 100,100, 1, 1, 1, 4),
-  (12, "Zamba", 2, 40, 90, 30, 80, 1, 1, 1, 20);
+
+  (1, "Shawshank Redemption", 1,410, 20, 90, 90, 1, 1, 1, 4),
+  (2, "Gattaca", 1, 500, 20, 90, 90, 1, 1, 1, 4),
+
+  (3, "Men In Black", 1, 700, 200, 40, 40, 1, 1, 1, 4),
+  (4, "Time Bandits", 1, 740, 200, 40, 40, 1, 1, 1, 4),
+  (5, "Playback Lab", 1, 700, 240, 80, 50, 1, 1, 1, 4),
+  (6, "Wraith Of Khan", 1, 700, 290, 80, 50, 1, 1, 1, 4),
+  (7, "The Matrix", 1, 780, 200, 100,70, 1, 1, 1, 4),
+  (8, "Avatar", 1, 780, 270, 100,70, 1, 1, 1, 4),
+  (11, "Return of the Jedi", 1, 880, 200, 40, 40, 1, 1, 1, 4),
+  (12, "The Empire Strikes Back", 1, 920, 200, 40, 40, 1, 1, 1, 4),
+  (13, "Best in Show", 1, 880, 240, 80, 50, 1, 1, 1, 4),
+  (14, "Aliens", 1, 880, 290, 80, 50, 1, 1, 1, 4),
+
+  (15, "Boogie Nights", 1, 1080, 20, 90, 90, 1, 1, 1, 4),
+  (16, "Inception", 1, 1170, 20, 90, 90, 1, 1, 1, 4),
+
+  (99, "Zamba", 2, 40, 90, 30, 80, 1, 1, 1, 20);
 
 INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height) VALUES
   (1, "Secondary kitchen", "Where we eat", 2, 40, 120, 100, 100),
-  (2, "Electrical room", "Where electrons eat", 1, 900, 150, 100, 120),
+  (2, "Electrical room", "Where electrons eat", 2, 900, 150, 100, 120),
   (3, "Bathroom", "Where baths eat", 2, 210, 110, 100, 100);
 
 INSERT INTO desk_groups (name, section_id, xpos, ypos) VALUES
