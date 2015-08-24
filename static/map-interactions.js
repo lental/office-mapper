@@ -72,10 +72,8 @@ var MapSectionView = Backbone.View.extend({
   },
 
   createDeskGroup: function() {
-    console.log("creating desk group");
     this.$el.find(".mapSectionAddDialog").remove();
     this.showingCreateDialog = false;
-    console.dir(this.model.attributes.deskGroups);
     var newDeskGroup = this.model.attributes.deskGroups.create({
         xyPosition: {x: 0, y:0},
         mapId: pageState.attributes.currentMapId,
@@ -89,7 +87,6 @@ var MapSectionView = Backbone.View.extend({
   createDesk: function(evt) {
     var deskGroupId = parseInt(evt.target.parentNode.id.split("_")[2]);
     var clickedDeskGroup = this.model.attributes.deskGroups.get(deskGroupId);
-    console.dir(clickedDeskGroup.attributes.desks);
     var newDesk = clickedDeskGroup.attributes.desks.create({
       deskGroupId: deskGroupId,
       position: {x:0, y:0, h:20, w:20},
@@ -97,6 +94,73 @@ var MapSectionView = Backbone.View.extend({
     });
     new MapDeskView({model: newDesk});
     this.render();
+  },
+
+  deskGroupModified: function(evt) {
+    var deskGroupId = parseInt(evt.target.id.split("_")[2]);
+    var deskGroup = this.model.attributes.deskGroups.get(deskGroupId);
+    deskGroup.set({
+      xyPosition: {
+        x: parseInt(evt.target.style.left),
+        y: parseInt(evt.target.style.top)
+      }
+    });
+    deskGroup.save();
+  },
+
+  deskModified: function(evt) {
+    var deskId = parseInt(evt.target.id.split("_")[2]);
+    var deskGroupId = parseInt(evt.target.parentNode.id.split("_")[2]);
+    var desk = this.model.attributes.deskGroups.get(deskGroupId).attributes.desks.get(deskId);
+    desk.set({
+      position: {
+        x: parseInt(evt.target.style.left),
+        y: parseInt(evt.target.style.top),
+        w: parseInt(evt.target.style.width),
+        h: parseInt(evt.target.style.height)
+      }
+    });
+    desk.save();
+  },
+
+  roomModified: function(evt) {
+    var roomId = parseInt(evt.target.id.split("_")[2]);
+    var room = this.model.attributes.rooms.get(roomId);
+    room.set({
+      position: {
+        x: parseInt(evt.target.style.left),
+        y: parseInt(evt.target.style.top),
+        w: parseInt(evt.target.style.width),
+        h: parseInt(evt.target.style.height)
+      }
+    });
+    room.save();
+  },
+
+  placeModified: function(evt) {
+    var placeId = parseInt(evt.target.id.split("_")[2]);
+    var place = this.model.attributes.places.get(placeId);
+    place.set({
+      position: {
+        x: parseInt(evt.target.style.left),
+        y: parseInt(evt.target.style.top),
+        w: parseInt(evt.target.style.width),
+        h: parseInt(evt.target.style.height)
+      }
+    });
+    place.save();
+  },
+
+  sectionModified: function(evt) {
+    this.model.set({
+      position: {
+        x: parseInt(evt.target.style.left),
+        y: parseInt(evt.target.style.top),
+        w: parseInt(evt.target.style.width),
+        h: parseInt(evt.target.style.height)
+      }
+    });
+    this.model.save();
   },
 
   render: function() {
@@ -123,17 +187,18 @@ var MapSectionView = Backbone.View.extend({
       top: this.model.attributes.position.y,
       left: this.model.attributes.position.x
     });
-    this.$el.draggable({containment: "parent"}).resizable();
-    this.$el.find(".mapDeskGroup").draggable({containment: "parent"}).resizable();
-    this.$el.find(".mapRoom").draggable({containment: "parent"}).resizable();
+    if (this.$el.resizable("instance")) this.$el.resizable("destroy");
+    this.$el.draggable({containment: "parent", stop: this.sectionModified.bind(this)}).resizable({stop: this.sectionModified.bind(this)});
+    this.$el.find(".mapDeskGroup").draggable({containment: "parent", stop: this.deskGroupModified.bind(this)}).resizable();
+    this.$el.find(".mapRoom").draggable({containment: "parent", stop: this.roomModified.bind(this)}).resizable({stop: this.roomModified.bind(this)});
     this.$el.find(".mapRoom").click(function(evt){
       pageState.selectObject(rooms.get(parseInt(this.id.split("_")[2])))
     });
-    this.$el.find(".mapPlace").draggable({containment: "parent"}).resizable();
+    this.$el.find(".mapPlace").draggable({containment: "parent", stop: this.placeModified.bind(this)}).resizable({stop: this.placeModified.bind(this)});
     this.$el.find(".mapPlace").click(function(evt){
       pageState.selectObject(places.get(parseInt(this.id.split("_")[2])))
     });
-    this.$el.find(".mapDesk").draggable({containment: "parent"}).resizable();
+    this.$el.find(".mapDesk").draggable({containment: "parent", stop: this.deskModified.bind(this)}).resizable({stop: this.deskModified.bind(this)});
     this.$el.find(".mapSectionAddButton").click(this.showCreateDialog.bind(this));
     this.$el.find(".mapDeskAddButton").click(this.createDesk.bind(this));
     return this;
@@ -161,10 +226,14 @@ var MapDeskGroupView = Backbone.View.extend({
     var maxHeight = 0;
     var desks = [];
     this.model.attributes.desks.forEach(function(desk){
-      maxX = Math.max(maxX, desk.attributes.position.x);
-      maxY = Math.max(maxX, desk.attributes.position.y);
-      maxWidth = Math.max(maxX, desk.attributes.position.w);
-      maxHeight = Math.max(maxX, desk.attributes.position.h);
+      if (desk.attributes.position.x > maxX) {
+        maxX = desk.attributes.position.x;
+        maxWidth = desk.attributes.position.w;
+      }
+      if (desk.attributes.position.y > maxY) {
+        maxY = desk.attributes.position.y;
+        maxHeight = desk.attributes.position.h;
+      }
       desks.push(new MapDeskView({model: desk}));
     });
 
@@ -182,6 +251,7 @@ var MapDeskGroupView = Backbone.View.extend({
 var MapDeskView = Backbone.View.extend({
   tagName: "div",
   className: "mapDesk shadowed",
+  id: function() {return "map_desk_" + this.model.attributes.id;},
   initialize: function() {
     this.render();
     this.listenTo(pageState, 'change', this.render);
@@ -266,12 +336,20 @@ var MapView = Backbone.View.extend({
         var sections = curMap.attributes.sections;
         var maxX = 0;
         var maxWidth = 0;
+        var maxY = 0;
+        var maxHeight = 0;
         sections.forEach(function(section){
-          maxX = Math.max(section.attributes.position.x, maxX);
-          maxWidth = Math.max(section.attributes.position.w, maxWidth);
+          if (section.attributes.position.x > maxX) {
+            maxX = section.attributes.position.x;
+            maxWidth = section.attributes.position.w;
+          }
+          if (section.attributes.position.y > maxY) {
+            maxY = section.attributes.position.y;
+            maxHeight = section.attributes.position.h;
+          }
           $("#map").prepend((new MapSectionView({model: section})).el);
         });
-        $("#map").css({width: (maxX+maxWidth+100) + "px"});
+        $("#map").css({width: (maxX+maxWidth+100) + "px", height: (maxY+maxHeight+100) + "px"});
         $("#new_section_button").css({left: ($("#map")[0].scrollWidth - 80)+"px"});
         $("#new_section_button").click(function(){
           var newSection = this.model.getCurrentMap().attributes.sections.create({map_id: this.model.attributes.currentMapId,
