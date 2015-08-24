@@ -21,7 +21,7 @@ var GPlusButtonView = Backbone.View.extend({
           });
           gplusList.getUserList(_.bind(function(list){
           $(this).html("Sending list...");
-            var jqxhr = $.ajax( "v1/batch/gplus_users?id_token=" + gplus.getIdToken(), {data: JSON.stringify(list), method:"PUT"})
+            var jqxhr = $.ajax( "v1/batch/gplus_users?id_token=" + gplus.getAccessToken(), {data: JSON.stringify(list), method:"PUT"})
               .done(_.bind(function() {
                 $(this).html("Process Finished");
               },this))
