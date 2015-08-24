@@ -1,15 +1,15 @@
 INSERT INTO maps (id, name) VALUES (1, "Santa Clara"), (2, "Guadalajara"), (3, "London"), (4, "Stockholm"), (5, "Dallas");
 
 INSERT INTO sections (id, name, map_id, xpos, ypos, width, height) VALUES
-    (1, "Engineering Area", 1, 10, 10, 1550, 400),
-    (2, "Walkway Area", 1, 10, 410, 1550, 440),
-    (3, "Non-engineering Area", 1, 10, 850, 1550, 240),
+    (1, "Engineering", 1, 10, 10, 1550, 400),
+    (2, "Walkway", 1, 10, 410, 1550, 440),
+    (3, "Business", 1, 10, 850, 1550, 240),
     (4, "GDL Part 1", 2, 10, 10, 300, 500),
     (5, "GDL Part 2", 2, 10, 310, 200, 400),
     (6, "London Office", 3, 10, 10, 1000, 1000),
     (7, "Dallas Office", 5, 10, 10, 400, 500),
-    (8, "Kitchen Area", 1, 1560, 300, 1100, 790),
-    (9, "Lobby Area", 1, 1560, 1090, 1100, 550);
+    (8, "Kitchen", 1, 1560, 300, 1100, 790),
+    (9, "Lobby", 1, 1560, 1090, 1100, 550);
 
 INSERT INTO users (id, name, desk_id, email, thumbnail_url, gplus_id, admin) VALUES
   (1, "Michael Len", 1, "michael.len@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECNn4_9WI4pz-nwEiC3ZjYXJkX3Bob3RvKigwMWJlMmFjZjk2YWFlMzkyODQ1MmZmYzc4OTQ1ZTQ0Y2UzMDM1MWRjMAHNy1tiC-4vJNOiL2aadmRRetRhNw", 111528215661046135897, 1),
