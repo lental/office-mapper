@@ -6,10 +6,12 @@ INSERT INTO sections (id, name, map_id, xpos, ypos, width, height) VALUES
     (3, "Business", 1, 10, 850, 1550, 240),
     (4, "GDL Part 1", 2, 10, 10, 300, 500),
     (5, "GDL Part 2", 2, 10, 310, 200, 400),
-    (6, "London Office", 3, 10, 10, 1000, 1000),
+    (6, "London Office", 3, 510, 10, 600, 1000),
     (7, "Dallas Office", 5, 10, 10, 450, 670),
     (8, "Kitchen", 1, 1560, 300, 1000, 790),
-    (9, "Lobby", 1, 1560, 1090, 1000, 470);
+    (9, "Lobby", 1, 1560, 1090, 1000, 470),
+    (10, "London East Wing", 3, 10, 170, 500, 500),
+    (11, "London West Wing", 3, 1110, 170, 500, 500);
 
 INSERT INTO users (id, name, desk_id, email, thumbnail_url, gplus_id, admin) VALUES
   (1, "Michael Len", 1, "michael.len@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECNn4_9WI4pz-nwEiC3ZjYXJkX3Bob3RvKigwMWJlMmFjZjk2YWFlMzkyODQ1MmZmYzc4OTQ1ZTQ0Y2UzMDM1MWRjMAHNy1tiC-4vJNOiL2aadmRRetRhNw", 111528215661046135897, 1),
@@ -147,8 +149,7 @@ INSERT INTO places (id, name, description, section_id, xpos, ypos, width, height
   (33, "Coffee Bar", "", 9, 0, 340, 130, 130),
   (34, "Dallas Office Stairs", "",7, 0, 335, 250, 100),
   (35, "Kitchen Area", "",7, 250, 280, 80, 150),
-  (36, "Reception","", 7, 250, 505, 80, 150)
-  ;
+  (36, "Reception","", 7, 250, 505, 80, 150);
 
 INSERT INTO desk_groups (id, name, section_id, xpos, ypos, rotation) VALUES
   (2, NULL, 1, 140, 10, 0),
@@ -411,4 +412,3 @@ INSERT INTO desks (name, desk_group_id, xpos, ypos, width, height, rotation) VAL
   (NULL, 27, 20, 40, 20, 40, 0),
   (NULL, 27, 20, 80, 20, 40, 0),
   (NULL, 0, 0, 0, 0, 0, 0);
-

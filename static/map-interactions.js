@@ -264,6 +264,7 @@ var MapDeskGroupView = Backbone.View.extend({
       left: this.model.attributes.xyPosition.x,
       height: (maxY + maxHeight + 5) + "px",
       width: (maxX + maxWidth + 30) + "px",
+      transform: "rotate(" + this.model.attributes.rotation + "deg)"
     });
     return this;
   }
