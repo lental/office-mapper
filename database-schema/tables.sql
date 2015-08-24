@@ -61,7 +61,8 @@ CREATE TABLE desk_groups (
   name VARCHAR(64), -- Optional - can be null
   section_id INT NOT NULL,
   xpos INT NOT NULL,
-  ypos INT NOT NULL
+  ypos INT NOT NULL,
+  rotation INT NOT NULL
   -- Width and height are computed from contained desks
 );
 
