@@ -14,13 +14,15 @@ INSERT INTO sections (id, name, map_id, xpos, ypos, width, height) VALUES
     (11, "London West Wing", 3, 1110, 170, 500, 500);
 
 INSERT INTO users (id, name, desk_id, email, thumbnail_url, gplus_id, admin) VALUES
-  (1, "Michael Len", 1, "michael.len@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECNn4_9WI4pz-nwEiC3ZjYXJkX3Bob3RvKigwMWJlMmFjZjk2YWFlMzkyODQ1MmZmYzc4OTQ1ZTQ0Y2UzMDM1MWRjMAHNy1tiC-4vJNOiL2aadmRRetRhNw", 111528215661046135897, 1),
-  (2, "Evan Danaher", 3, "edanaher@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECK_gsp7dy8m9rgEiC3ZjYXJkX3Bob3RvKig1NDg4OWY0MGRhMmVhY2JlMWQxYjIzZDhhODEwYmRiYjRlOWY0YTE2MAHOrq89PJK7IN_axRHXyfdI2l9EYw", 112572684969162092591, 1),
-  (3, "Dustin Preuss", 2, "dustin@ooyala.com", "https://plus.google.com/_/focus/photos/private/AIbEiAIAAABDCOflwJPz89jUCiILdmNhcmRfcGhvdG8qKDJiODcxOWU0OWRjYzNkODBlYzQ3OWE0ZjA3ZGZhNmVlYThjMjY1NzQwAVbjtYb5KNg9HaM3FMlxZtTKGtkm", 100768254746840543975, 1),
+  (1, "Michael Len", 22, "michael.len@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECNn4_9WI4pz-nwEiC3ZjYXJkX3Bob3RvKigwMWJlMmFjZjk2YWFlMzkyODQ1MmZmYzc4OTQ1ZTQ0Y2UzMDM1MWRjMAHNy1tiC-4vJNOiL2aadmRRetRhNw", 111528215661046135897, 1),
+  (2, "Evan Danaher", 201, "edanaher@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECK_gsp7dy8m9rgEiC3ZjYXJkX3Bob3RvKig1NDg4OWY0MGRhMmVhY2JlMWQxYjIzZDhhODEwYmRiYjRlOWY0YTE2MAHOrq89PJK7IN_axRHXyfdI2l9EYw", 112572684969162092591, 1),
+  (3, "Dustin Preuss", 99, "dustin@ooyala.com", "https://plus.google.com/_/focus/photos/private/AIbEiAIAAABDCOflwJPz89jUCiILdmNhcmRfcGhvdG8qKDJiODcxOWU0OWRjYzNkODBlYzQ3OWE0ZjA3ZGZhNmVlYThjMjY1NzQwAVbjtYb5KNg9HaM3FMlxZtTKGtkm", 100768254746840543975, 1),
   (4, "Gone McLeaverson", 5, "gone@ooyala.com", "", 11111, 0),
   (5, "Aanal Bhatt", 6, "aanalbhatt@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABECKT4mvKzvrbQrQEiC3ZjYXJkX3Bob3RvKigzY2I1ZmRjODI5MTBhOWRiNGM4MDJjZGEwY2YxYzU2ZDhlYWRhNmI1MAGXXraqMI1ApYCU3KX1M_6NJy5zsw", 112511239403580341284, 0),
   (6, "Aaron Carr", 7, "aaronc@ooyala.com", NULL, 105266251472533597991, 0),
-  (7, "Abel Rios", 36, "abelrios@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABDCNmJl4Cunf-aSyILdmNhcmRfcGhvdG8qKDg3OWJlZDY2MWZlNTU5YmNjYTBhYzMxMWFhM2RjM2UyOGRiMmVmNmMwAYqy3f5l36WA_z-rEcMkNEEGpaoN",105419515812321281241, 0);
+  (7, "Abel Rios", 36, "abelrios@ooyala.com", "https://plus.google.com/_/focus/photos/public/AIbEiAIAAABDCNmJl4Cunf-aSyILdmNhcmRfcGhvdG8qKDg3OWJlZDY2MWZlNTU5YmNjYTBhYzMxMWFhM2RjM2UyOGRiMmVmNmMwAYqy3f5l36WA_z-rEcMkNEEGpaoN",105419515812321281241, 0),
+  (8, "Archie Baltazar", 265, "archib@ooyala.com", "https://plus.google.com/_/focus/photos/private/AIbEiAIAAABDCMGln5Xj-ImfeyILdmNhcmRfcGhvdG8qKDU0ZGVjZjNkYmNjNmJhYTU1OTljNDA0N2UzZDUzZDcxOTY0NmIwYTcwAYnP8xRcSMmVkAZMqmK6WIs4CmHJ", 108880579247428063937, 1),
+  (9, "Peter Yu", 272, "peteryu@ooyala.com", "https://plus.google.com/_/focus/photos/private/AIbEiAIAAABDCKTX4Oy4rdvVFiILdmNhcmRfcGhvdG8qKDJjNmIxNDA4MTA1ZTIzNTcyMDAwOGM1MGMxYjA1Nzc4YjI5MmFhNDEwAUMS0iNzNNEe3iiC2MNZiqpwa1Gd", 101633519598556425124, 1);
 
 INSERT INTO rooms (id, name, section_id, xpos, ypos, width, height, tv, phone, chromecast, seats) VALUES
   (9, "Telstra1", 1, 0, 0, 120,120, 1, 1, 1, 4),
