@@ -91,5 +91,23 @@
 }
 
 #modified-objects-wrapper {
-  flex: 0 0 150px;
+  padding: 0px 10px 10px 10px;
+  min-height: 200px;
+}
+
+#modified-objects-title {
+  text-align: center;
+  font-size: 18px;
+  background-color: #2e335a;
+  color: white;
+  padding: 10px 0px;
+  position: relative;
+}
+#modified-objects-save {
+  text-align: center;
+  padding: 10px;
+  background-color: #dd4b39;
+  margin: 10px;
+  color: white;
+  font-weight: 700;
 }

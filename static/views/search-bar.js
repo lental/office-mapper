@@ -8,7 +8,15 @@ var SeachBarView = Backbone.View.extend({
 
   events: {
     "click #search-clear": "clearSearchQuery",
-    "input #search-input": "updateSearchValue"
+    "blur #search-input": "updateSearchValue",
+    "keypress #search-input": "onKeyPress",
+  },
+
+  onKeyPress: function(event) {
+    if (event.keyCode == 13) {
+      pageState.changeSearch(event.target.value);
+      return false;
+    }
   },
 
   updateSearchValue: function(event) {
