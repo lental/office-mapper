@@ -16,15 +16,15 @@ Backbone.sync = function(method, model, options) {
   }
   var oldSuccess = options.success;
   options.success = 
-  function(model, result, xhr) {
-    if(pageState.get('modifiedObjects').has(model)) {
+  _.bind(function(model, result, xhr) {
+    if(pageState.get('modifiedObjects').has(this)) {
       console.log("deleted from modified objects");
-      pageState.get('modifiedObjects').delete(model);
+      pageState.get('modifiedObjects').delete(this);
     }
     if(oldSuccess) {
       oldSuccess(model, result, xhr);
     }
-  };
+  },this);
 
   var oldError = options.error;
   options.error = 
