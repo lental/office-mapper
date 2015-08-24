@@ -10,6 +10,7 @@ var MapSectionView = Backbone.View.extend({
     "click ": "onClick"
   },
   onClick: function(){
+    pageState.mapSelectionClick = true;
     pageState.selectObject(this.model);
   },
   template: _.template(
@@ -118,7 +119,7 @@ var MapSectionView = Backbone.View.extend({
         y: parseInt(evt.target.style.top),
         w: parseInt(evt.target.style.width),
         h: parseInt(evt.target.style.height)
-      }});
+    }});
   },
 
   roomModified: function(evt) {
@@ -160,6 +161,36 @@ var MapSectionView = Backbone.View.extend({
     pageState.setOnSelectedObject(change);
   },
 
+  sectionDragged: function(evt) {
+    var map = $("#map");
+    var section = evt.target;
+    console.log("map width: ", map.width());
+    console.log("section width: ", (section.style.left + section.style.width));
+    if (map.width() - (parseInt(section.style.left) + parseInt(section.style.width)) < 100) {
+      console.log("widening map");
+      map.width(map.width() + 200);
+    }
+    if (map.height() - (section.style.top + section.style.height) < 100) {
+      console.log("heightening map");
+      map.width(map.width() + 200);
+    }
+  },
+
+  sectionDragged: function(evt) {
+    var map = $("#map");
+    var section = evt.target;
+    console.log("map width: ", map.width());
+    console.log("section width: ", (section.style.left + section.style.width));
+    if (map.width() - (parseInt(section.style.left) + parseInt(section.style.width)) < 100) {
+      console.log("widening map");
+      map.width(map.width() + 200);
+    }
+    if (map.height() - (section.style.top + section.style.height) < 100) {
+      console.log("heightening map");
+      map.width(map.width() + 200);
+    }
+  },
+
   render: function() {
     var localDeskGroups = [];
     this.model.attributes.deskGroups.forEach(function(group){
@@ -185,17 +216,29 @@ var MapSectionView = Backbone.View.extend({
       left: this.model.attributes.position.x
     });
     if (this.$el.resizable("instance")) this.$el.resizable("destroy");
-    this.$el.draggable({containment: "parent", stop: this.sectionModified.bind(this)}).resizable({stop: this.sectionModified.bind(this)});
+    this.$el.draggable({containment: "parent", stop: this.sectionModified.bind(this), drag: this.sectionDragged.bind(this)}).resizable({stop: this.sectionModified.bind(this)});
     this.$el.find(".mapDeskGroup").draggable({containment: "parent", stop: this.deskGroupModified.bind(this)}).resizable();
     this.$el.find(".mapRoom").draggable({containment: "parent", stop: this.roomModified.bind(this)}).resizable({stop: this.roomModified.bind(this)});
     this.$el.find(".mapRoom").click(function(evt){
-      pageState.selectObject(rooms.get(parseInt(this.id.split("_")[2])))
-    });
+      pageState.mapSelectionClick = true;
+      pageState.selectObject(this.model.attributes.rooms.get(parseInt(evt.target.id.split("_")[2])));
+      evt.stopPropagation();
+    }.bind(this));
     this.$el.find(".mapPlace").draggable({containment: "parent", stop: this.placeModified.bind(this)}).resizable({stop: this.placeModified.bind(this)});
     this.$el.find(".mapPlace").click(function(evt){
-      pageState.selectObject(places.get(parseInt(this.id.split("_")[2])))
-    });
+      pageState.mapSelectionClick = true;
+      pageState.selectObject(this.model.attributes.places.get(parseInt(evt.target.id.split("_")[2])));
+      evt.stopPropagation();
+    }.bind(this));
     this.$el.find(".mapDesk").draggable({containment: "parent", stop: this.deskModified.bind(this)}).resizable({stop: this.deskModified.bind(this)});
+    this.$el.find(".mapDesk").click(function(evt){
+      var deskId = parseInt(evt.target.id.split("_")[2]);
+      var deskGroupId = parseInt(evt.target.parentNode.id.split("_")[2]);
+      var desk = this.model.attributes.deskGroups.get(deskGroupId).attributes.desks.get(deskId);
+      pageState.mapSelectionClick = true;
+      pageState.selectObject(desk);
+      evt.stopPropagation();
+    }.bind(this));
     this.$el.find(".mapSectionAddButton").click(this.showCreateDialog.bind(this));
     this.$el.find(".mapDeskAddButton").click(this.createDesk.bind(this));
     return this;
@@ -315,10 +358,35 @@ var MapView = Backbone.View.extend({
   initialize: function(){
     this.render();
     this.listenTo(pageState, 'change', this.render);
+    this.listenTo(pageState, 'change', setTimeout.bind(window, this.highlightItem, 1));
     this.currentlyDisplayedMapId = -1;
   },
 
   el: '#map',
+
+  highlightItem: function(pState) {
+    var classToAdd = "mapSelectedItem";
+    if (!pState.mapSelectionClick) {
+      classToAdd += " mapAnimateSelectedItem";
+    }
+    pState.mapSelectionClick = false;
+
+    if (pState.attributes.selectedObject instanceof Place) {
+      $("#map_place_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
+    }
+    if (pState.attributes.selectedObject instanceof Room) {
+      $("#map_room_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
+    }
+    if (pState.attributes.selectedObject instanceof DeskGroup) {
+      $("#map_deskgroup_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
+    }
+    if (pState.attributes.selectedObject instanceof Desk) {
+      $("#map_desk_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
+    }
+    if (pState.attributes.selectedObject instanceof User) {
+      $("#map_desk_" + pState.attributes.selectedObject.attributes.deskId).addClass(classToAdd);
+    }
+  },
 
   render: function() {
     if(pageState.get("currentMapLoaded")) {
@@ -346,7 +414,7 @@ var MapView = Backbone.View.extend({
           }
           $("#map").prepend((new MapSectionView({model: section})).el);
         });
-        $("#map").css({width: (maxX+maxWidth+100) + "px", height: (maxY+maxHeight+100) + "px"});
+        //$("#map").css({width: (maxX+maxWidth+100) + "px", height: (maxY+maxHeight+100) + "px"});
         $("#new_section_button").css({left: ($("#map")[0].scrollWidth - 80)+"px"});
         $("#new_section_button").click(function(){
           var newSection = this.model.getCurrentMap().attributes.sections.create({map_id: this.model.attributes.currentMapId,
