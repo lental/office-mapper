@@ -46,3 +46,7 @@ function onFailure(error) {
   console.log(error);
   gplus.set('error',error);
 }
+
+function gplusSignOut() {
+  gapi.auth2.getAuthInstance().signOut();
+}

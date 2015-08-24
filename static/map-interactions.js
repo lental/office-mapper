@@ -363,13 +363,14 @@ var MapView = Backbone.View.extend({
       selectedElement = $("#map_desk_" + pState.attributes.selectedObject.attributes.deskId).addClass(classToAdd);
     }
 
-    var classToAdd = "mapSelectedItem";
-    if (!pState.mapSelectionClick) {
-      classToAdd += " mapAnimateSelectedItem";
-      selectedElement[0].scrollIntoView();
+    if (selectedElement) {
+      var classToAdd = "mapSelectedItem";
+      if (!pState.mapSelectionClick) {
+        classToAdd += " mapAnimateSelectedItem";
+        selectedElement[0].scrollIntoView();
+      }
+      selectedElement.addClass(classToAdd);
     }
-    selectedElement.addClass(classToAdd);
-
     pState.mapSelectionClick = false;
   },
 
