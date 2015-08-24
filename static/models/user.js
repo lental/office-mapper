@@ -25,6 +25,9 @@ Users = Backbone.Collection.extend({
     getUserByGPlusId : function(gplus_id) {
         return this.findWhere({"gplusId":gplus_id});
     },
+    getUserByDeskId : function(deskId) {
+        return this.findWhere({"deskId":deskId});
+    },
     parse : function(response){
         return response.users;
     }

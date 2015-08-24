@@ -13,6 +13,10 @@
   border-radius: 4px;
 }
 
+.mapDeskFull{
+  background-color:#B25938;
+}
+
 .mapDeskAddButton {
   position: absolute;
   top: 5px;
@@ -109,7 +113,7 @@
 }
 
 .mapSelectedItem {
-  background-color: #a3e8ff;
+  background-color: #a3e8ff !important;
 }
 
 .mapAnimateSelectedItem {
