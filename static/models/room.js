@@ -1,4 +1,11 @@
 Room = Backbone.Model.extend({
+  parse: function(response, options){
+    if (response.room) {
+      response = response.room;
+    }
+    return response;
+  },
+
     searchMatches: function(query) {
         if(query == '') {
             return true;

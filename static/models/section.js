@@ -1,5 +1,8 @@
 Section = Backbone.Model.extend({
     parse : function (response, options) {
+      if (response.section) {
+        response = response.section;
+      }
         if (places) {
           if (response.deskGroups) {
             response.deskGroups = new DeskGroups(response.deskGroups, {parse: true, allMapDesks: options.allMapDesks});

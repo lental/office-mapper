@@ -1,9 +1,12 @@
 Desk = Backbone.Model.extend({
-  parse: function(resp, options){
+  parse: function(response, options){
+    if (response.desk) {
+      response = response.desk;
+    }
     if(options.allMapDesks) {
       options.allMapDesks.add(this);
     }
-    return resp
+    return response
   },
 
   toSimpleString: function() {

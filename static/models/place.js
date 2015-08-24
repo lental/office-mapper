@@ -1,4 +1,11 @@
 Place = Backbone.Model.extend({
+  parse: function(response, options){
+    if (response.place) {
+      response = response.place;
+    }
+    return response;
+  },
+
     searchMatches: function(query) {
         if(query == '') {
             return true;
