@@ -2,6 +2,7 @@ GPlus =  Backbone.Model.extend({
     defaults: {
       googleUser: null,
       error: null,
+      authToken: null
     },
     isLoggedIn: function() {
       return this.get("googleUser") != null;
@@ -16,13 +17,8 @@ GPlus =  Backbone.Model.extend({
       }
     },
     
-    getIdToken: function() {
-      if (this.get("googleUser") && this.get("googleUser").getAuthResponse()) {
-        return this.get("googleUser").getAuthResponse().id_token;
-      } else {
-        console.log("not properly logged in!");
-        return null
-      }
+    getAccessToken: function() {
+      return this.get('authToken');
     },
     isCurrentUserAnAdmin: function() {
       var user = users.getUserByGPlusId(this.getUserId());
