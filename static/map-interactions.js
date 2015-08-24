@@ -197,38 +197,40 @@ var MapSectionView = Backbone.View.extend({
       this.$el.draggable({containment: "parent", stop: this.sectionModified.bind(this), drag: this.sectionDragged.bind(this)}).resizable({stop: this.sectionModified.bind(this)});
       this.$el.draggable( 'enable' );
       this.$el.find(".mapDeskGroup").draggable({containment: "parent", stop: this.deskGroupModified.bind(this)}).resizable();
-      this.$el.find(".mapDeskGroup").click(function(evt){
-        pageState.mapSelectionClick = true;
-        pageState.selectObject(this.model.attributes.deskGroups.get(parseInt(evt.target.id.split("_")[2])));
-        evt.stopPropagation();
-      }.bind(this));
       this.$el.find(".mapRoom").draggable({containment: "parent", stop: this.roomModified.bind(this)}).resizable({stop: this.roomModified.bind(this)});
-      this.$el.find(".mapRoom").click(function(evt){
-        pageState.mapSelectionClick = true;
-        pageState.selectObject(this.model.attributes.rooms.get(parseInt(evt.target.id.split("_")[2])));
-        evt.stopPropagation();
-      }.bind(this));
-      this.$el.find(".mapPlace").draggable({containment: "parent", stop: this.placeModified.bind(this)}).resizable({stop: this.placeModified.bind(this)});
-      this.$el.find(".mapPlace").click(function(evt){
-        pageState.mapSelectionClick = true;
-        pageState.selectObject(this.model.attributes.places.get(parseInt(evt.target.id.split("_")[2])));
-        evt.stopPropagation();
-      }.bind(this));
-      this.$el.find(".mapDesk").draggable({containment: "parent", stop: this.deskModified.bind(this)}).resizable({stop: this.deskModified.bind(this)});
-      this.$el.find(".mapDesk").click(function(evt){
-        var deskId = parseInt(evt.target.id.split("_")[2]);
-        var deskGroupId = parseInt(evt.target.parentNode.id.split("_")[2]);
-        var desk = this.model.attributes.deskGroups.get(deskGroupId).attributes.desks.get(deskId);
-        pageState.mapSelectionClick = true;
-        pageState.selectObject(desk);
-        evt.stopPropagation();
-      }.bind(this));
-      this.$el.find(".mapSectionAddButton").click(this.showCreateDialog.bind(this));
-      this.$el.find(".mapDeskAddButton").click(this.createDesk.bind(this));
+      this.$el.find(".mapPlace").draggable({containment: "parent", stop: this.placeModified.bind(this)}).resizable({stop: this.placeModified.bind(this)});this.$el.find(".mapDesk").draggable({containment: "parent", stop: this.deskModified.bind(this)}).resizable({stop: this.deskModified.bind(this)});
     } else {
-      this.$el.draggable({});
-      this.$el.draggable( 'disable' );
+      // this.$el.draggable({});
+      // this.$el.draggable( 'disable' );
     }
+      
+    this.$el.find(".mapDeskGroup").click(function(evt){
+      pageState.mapSelectionClick = true;
+      pageState.selectObject(this.model.attributes.deskGroups.get(parseInt(evt.target.id.split("_")[2])));
+      evt.stopPropagation();
+    }.bind(this));
+
+    this.$el.find(".mapRoom").click(function(evt){
+      pageState.mapSelectionClick = true;
+      pageState.selectObject(this.model.attributes.rooms.get(parseInt(evt.target.id.split("_")[2])));
+      evt.stopPropagation();
+    }.bind(this));
+    this.$el.find(".mapPlace").click(function(evt){
+      pageState.mapSelectionClick = true;
+      pageState.selectObject(this.model.attributes.places.get(parseInt(evt.target.id.split("_")[2])));
+      evt.stopPropagation();
+    }.bind(this));
+    this.$el.find(".mapDesk").click(function(evt){
+      var deskId = parseInt(evt.target.id.split("_")[2]);
+      var deskGroupId = parseInt(evt.target.parentNode.id.split("_")[2]);
+      var desk = this.model.attributes.deskGroups.get(deskGroupId).attributes.desks.get(deskId);
+      pageState.mapSelectionClick = true;
+      pageState.selectObject(desk);
+      evt.stopPropagation();
+    }.bind(this));
+    this.$el.find(".mapSectionAddButton").click(this.showCreateDialog.bind(this));
+    this.$el.find(".mapDeskAddButton").click(this.createDesk.bind(this));
+   
     return this;
   }
 });

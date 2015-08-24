@@ -1,4 +1,14 @@
+
+@media screen and (max-width: 1200px) {
+
+    #loading-logo-img {
+      width:800px;
+    }
+}
 @media screen and (max-width: 800px) {
+    #loading-logo-img {
+      width:400px;
+    }
     #flexbox {
       flex-flow: column;
       -webkit-flex-flow:column;
