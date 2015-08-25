@@ -1,11 +1,13 @@
 var formWrappingTemplate = _.template("" +
   "<table class='<%= divName %>'><%= innerForm %></table>" +
-  "<button type='button' id='save'>Save</button>"
+  "<button type='button' id='save'>Save</button>" +
+  "<button type='button' id='reset'>reset</button>"
   );
 var formDeleteWrappingTemplate = _.template("" +
   "<table class='<%= divName %>'><%= innerForm %></table>" +
   "<button type='button' id='save'>Save</button>" +
-  "<button type='button' id='delete'>delete</button>"
+  "<button type='button' id='delete'>delete</button>" +
+  "<button type='button' id='reset'>reset</button>"
   );
 
 var editUserTemplate = _.template("" +
@@ -116,8 +118,10 @@ var EditFormView= Backbone.View.extend({
     "change .primaryEditForm .editPosInput": "onPosFieldEdited",
     "change .primaryEditForm .editFeatInput": "onFeatFieldEdited",
     "change .primaryEditForm .editUserForm #edit-deskId .editDeskInput": "onUserDeskChanged",
+
     "click .primaryEditForm #save": "saveSelectedObject",
     "click .primaryEditForm #delete": "deleteSelectedObject",
+    "click .primaryEditForm #reset": "resetSelectedObject",
 
     "change .secondaryEditForm .editInput": "onSecondaryFieldEdited",
     "change .secondaryEditForm .editPosInput": "onSecondaryPosFieldEdited",
@@ -174,6 +178,9 @@ var EditFormView= Backbone.View.extend({
   deleteSelectedObject: function(event) {
     console.log("deleting!")
     pageState.get("selectedObject").destroy();
+  },resetSelectedObject: function(event) {
+    console.log("resetting!")
+    pageState.get("selectedObject").fetch();
   },
 
   render: function() {

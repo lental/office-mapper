@@ -3,21 +3,46 @@ var MapSectionView = Backbone.View.extend({
   className: "mapSection shadowed",
   showingCreateDialog: false,
   initialize: function() {
+    this.initialRender();
     this.render();
     this.listenTo(gplus, 'change', this.render);
   },
+
+  initialRender: function() {
+    var localDeskGroups = [];
+    this.model.attributes.deskGroups.forEach(function(group){
+      localDeskGroups.push(new MapDeskGroupView({model: group}));
+    });
+
+    var localRooms = [];
+    this.model.attributes.rooms.forEach(function(room){
+      localRooms.push(new MapRoomView({model: room}));
+    });
+
+    var localPlaces = [];
+    this.model.attributes.places.forEach(function(place){
+      localPlaces.push(new MapPlaceView({model: place}));
+    });
+
+    this.$el.html(this.template({attributes: this.model.attributes}));
+
+    localDeskGroups.forEach(_.bind(function(group){
+      this.$el.append(group.el);
+    },this));
+
+    localRooms.forEach(_.bind(function(room){
+      this.$el.append(room.el);
+    },this));
+
+    localPlaces.forEach(_.bind(function(place){
+      this.$el.append(place.el);
+    },this));
+
+    this.$el.append("<div class='mapSectionAddButton clickable shadowed'>+</div>");
+
+  },
   template: _.template(
-    "<div class='mapSectionName'><%= attributes.name %></div>" +
-    "<% deskGroups.forEach(function(group){ %>" +
-      "<%= group.el.outerHTML %>" +
-    "<% }); %>" +
-    "<% rooms.forEach(function(room){ %>" +
-      "<%= room.el.outerHTML %>" +
-    "<% }); %>" +
-    "<% places.forEach(function(place){ %>" +
-      "<%= place.el.outerHTML %>" +
-    "<% }); %>" +
-    "<div class='mapSectionAddButton clickable shadowed'>+</div>"
+    "<div class='mapSectionName'><%= attributes.name %></div>" 
   ),
 
   showCreateDialog: function() {
@@ -168,23 +193,7 @@ var MapSectionView = Backbone.View.extend({
   },
 
   render: function() {
-    var localDeskGroups = [];
-    this.model.attributes.deskGroups.forEach(function(group){
-      localDeskGroups.push(new MapDeskGroupView({model: group}));
-    });
 
-    var localRooms = [];
-    this.model.attributes.rooms.forEach(function(room){
-      localRooms.push(new MapRoomView({model: room}));
-    });
-
-    var localPlaces = [];
-    this.model.attributes.places.forEach(function(place){
-      localPlaces.push(new MapPlaceView({model: place}));
-    });
-
-    this.$el.html(this.template({attributes: this.model.attributes,
-      rooms: localRooms, places: localPlaces , deskGroups: localDeskGroups}));
     this.$el.css({
       height: this.model.attributes.position.h,
       width: this.model.attributes.position.w,

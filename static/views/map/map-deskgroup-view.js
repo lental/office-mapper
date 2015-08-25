@@ -7,9 +7,6 @@ var MapDeskGroupView = Backbone.View.extend({
     this.render();
   },
   template: _.template(
-    "<% desks.forEach(function(desk){ %>" +
-      "<%= desk.el.outerHTML %>" +
-    "<% }); %>" +
     "<div class='mapDeskAddButton shadowed clickable'>+</div>"
   ),
   render: function() {
@@ -31,6 +28,9 @@ var MapDeskGroupView = Backbone.View.extend({
     });
 
     this.$el.html(this.template({desks: desks}));
+    desks.forEach(_.bind(function(desk){
+     this.$el.prepend(desk.el);
+    },this));
     this.$el.css({
       top: this.model.attributes.xyPosition.y,
       left: this.model.attributes.xyPosition.x,
