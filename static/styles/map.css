@@ -71,6 +71,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   border-radius: 4px 4px 0 0;
+  pointer-events: none;
 }
 .mapSection {
   position: absolute !important;
