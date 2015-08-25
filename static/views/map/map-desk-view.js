@@ -8,6 +8,7 @@ var MapDeskView = Backbone.View.extend({
     this.user = users.getUserByDeskId(this.model.attributes.id);
     this.listenTo(this.model, 'sync', this.sync);
     this.listenTo(this.model, 'change', this.render);
+    this.listenToOnce(pageState, 'change:usersLoaded', this.render);
     this.listenTo(gplus, 'change', this.render);
   },
 
