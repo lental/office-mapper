@@ -86,7 +86,7 @@ var MapSectionView = Backbone.View.extend({
         sectionId: this.model.attributes.id
     });
     new MapRoomView({model: newRoom});
-    this.render();
+    location.reload();
   },
 
   createPlace: function() {
@@ -99,7 +99,7 @@ var MapSectionView = Backbone.View.extend({
         sectionId: this.model.attributes.id
     });
     new MapPlaceView({model: newPlace});
-    this.render();
+    location.reload();
   },
 
   createDeskGroup: function() {
@@ -112,7 +112,7 @@ var MapSectionView = Backbone.View.extend({
         desks: new Desks()
     });
     new MapDeskGroupView({model: newDeskGroup});
-    this.render();
+    location.reload();
   },
 
   createDesk: function(evt) {
@@ -120,11 +120,11 @@ var MapSectionView = Backbone.View.extend({
     var clickedDeskGroup = this.model.attributes.deskGroups.findWhere({id:deskGroupId});
     var newDesk = clickedDeskGroup.attributes.desks.create({
       deskGroupId: deskGroupId,
-      position: {x:0, y:0, h:20, w:20},
+      position: {x:0, y:0, h:40, w:20},
       rotation: 0
     });
     new MapDeskView({model: newDesk});
-    this.render();
+    location.reload();
   },
 
   deskGroupModified: function(evt) {

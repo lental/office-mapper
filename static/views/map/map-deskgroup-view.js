@@ -39,7 +39,7 @@ var MapDeskGroupView = Backbone.View.extend({
 
     this.$el.html(this.template({desks: desks}));
     desks.forEach(_.bind(function(desk){
-     this.$el.prepend(desk.el);
+     this.$el.append(desk.el);
     },this));
     this.$el.css({
       top: this.model.attributes.xyPosition.y,
