@@ -14,7 +14,10 @@ var editUserTemplate = _.template("" +
   "<tr class='formRow' id='edit-id'><td class='inputLabel'>Id:</td><td class='inputField'><%= id %></td></tr>" +
   "<tr class='formRow' id='edit-name'><td class='inputLabel'>Name:</td><td class='inputField'><%= name %></td></tr>" +
   "<tr class='formRow' id='edit-email'><td class='inputLabel'>Email:</td><td class='inputField'><%= email %></td></tr>" +
-  "<tr class='formRow' id='edit-deskId'><td class='inputLabel'>DeskId:</td><td class='inputField'><input class='editDeskInput' type='text' name='deskId' value='<%= deskId %>'></td></tr>"
+  "<tr class='formRow' id='edit-deskId'><td class='inputLabel'>DeskId:</td><td class='inputField'><input class='editDeskInput' type='text' name='deskId' value='<%= deskId %>'></td></tr>" +
+  "<tr class='formRow' id='edit-admin'><td class='inputLabel'>Admin:</td><td class='inputField'><input class='editAdminInput' type='checkbox' name='admin' value='admin' <%= admin ? 'checked' : '' %>></td></tr>" +
+  "<tr><td colspan=2> <span class='adminAlert'>Please make sure you completely trust this user's ability to administer this site before enabling him as an administrator</span></td><tr>"
+
   );
 
 var editPositionTemplate = _.template("<table class='editPositionForm'>" +
@@ -101,7 +104,7 @@ var unselectedTemplate = _.template(""+
   );
 
 var unAuthorizedTemplate = _.template(""+
-  "You must be logged in and authorized to modify the map" 
+  "You must be logged in and authorized to modify the map.  If you do not have authorization, ask " 
   );
 
 var EditFormView= Backbone.View.extend({
@@ -117,6 +120,7 @@ var EditFormView= Backbone.View.extend({
     "change .primaryEditForm .editInput": "onFieldEdited",
     "change .primaryEditForm .editPosInput": "onPosFieldEdited",
     "change .primaryEditForm .editFeatInput": "onFeatFieldEdited",
+    "change .primaryEditForm .editAdminInput": "onAdminFieldEdited",
     "change .primaryEditForm .editUserForm #edit-deskId .editDeskInput": "onUserDeskChanged",
 
     "click .primaryEditForm #save": "saveSelectedObject",
@@ -150,7 +154,9 @@ var EditFormView= Backbone.View.extend({
     console.log("edit position changed to " + JSON.stringify(newPos));
     pageState.setOnSelectedObject("position", newPos);
   },
-
+ onAdminFieldEdited: function(event) {
+    pageState.setOnSelectedObject("admin", this.$("[name='admin']").prop('checked'));
+  },
   onFeatFieldEdited: function(event) {
     element = event.currentTarget;
     var newFeats = {
@@ -185,7 +191,7 @@ var EditFormView= Backbone.View.extend({
 
   render: function() {
     var obj = pageState.get("selectedObject");
-    if(gplus.isLoggedIn()) {
+    if(gplus.isCurrentUserAnAdmin()) {
       if(obj instanceof User) {
         this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editUserForm', innerForm:editUserTemplate(obj.attributes)})}));
 

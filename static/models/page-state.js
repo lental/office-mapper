@@ -74,7 +74,6 @@ PageState =  Backbone.Model.extend({
             var nextMap = maps.findWhere({"id":mapId});
             if (nextMap.isFullyLoaded()) {
               var oldDesk = nextMap.get('allMapDesks').findWhere({id:deskId})
-              debugger;
               oldDesk.trigger('change',oldDesk);
             }
           }

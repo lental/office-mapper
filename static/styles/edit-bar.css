@@ -93,6 +93,11 @@
   /*border-bottom: 1px solid black;*/
 }
 
+.adminAlert{
+  font-size:12px;
+  color:red;
+}
+
 #modified-objects-wrapper {
   padding: 0px 10px 10px 10px;
   min-height: 200px;

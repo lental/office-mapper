@@ -8,6 +8,7 @@ var MapDeskView = Backbone.View.extend({
     this.listenTo(this.model, 'sync', this.sync);
     this.listenTo(this.model, 'change', this.render);
     this.listenTo(gplus, 'change', this.render);
+    this.$el.html(this.template({id:this.model.attributes.id}));
   },
 
   sync: function(event) {
@@ -21,17 +22,12 @@ var MapDeskView = Backbone.View.extend({
     })
   },
   template: _.template(
-    "<div class='mapDeskName'><%= id %></div>"
+    "<div class='mapDeskName invisible'><%= id %></div>"
   ),
   render: function() {
     this.user = users.getUserByDeskId(this.model.attributes.id);
     this.$el.toggleClass("mapDeskFull", this.user != null) ;
-    if(gplus.isLoggedIn()){
-      this.$el.html(this.template({id:this.model.attributes.id}));
-    } else {
-      this.$el.empty();
-    }
-      
+    this.$(".mapDeskName").toggleClass("invisible", !gplus.isLoggedIn());
       
     this.$el.css({
       height: this.model.attributes.position.h,
