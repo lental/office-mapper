@@ -77,6 +77,7 @@ var MapSectionView = Backbone.View.extend({
   },
 
   createRoom: function() {
+     if(gplus.isCurrentUserAnAdmin()) {        
     this.$el.find(".mapSectionAddDialog").remove();
     this.showingCreateDialog = false;
     var newRoom = this.model.attributes.rooms.create({
@@ -84,12 +85,15 @@ var MapSectionView = Backbone.View.extend({
         position: {x: 0, y:0, h: 100, w: 100},
         mapId: pageState.attributes.currentMapId,
         sectionId: this.model.attributes.id
-    });
-    new MapRoomView({model: newRoom});
-    location.reload();
+    },{success: function(){location.reload();}});
+    // new MapRoomView({model: newRoom});
+    } else {
+      alert("You are not logged in");
+    }
   },
 
   createPlace: function() {
+     if(gplus.isCurrentUserAnAdmin()) {
     this.$el.find(".mapSectionAddDialog").remove();
     this.showingCreateDialog = false;
     var newPlace = this.model.attributes.places.create({
@@ -97,12 +101,15 @@ var MapSectionView = Backbone.View.extend({
         position: {x: 0, y:0, h: 100, w: 100},
         mapId: pageState.attributes.currentMapId,
         sectionId: this.model.attributes.id
-    });
-    new MapPlaceView({model: newPlace});
-    location.reload();
+    },{success: function(){location.reload();}});
+    // new MapPlaceView({model: newPlace});
+    } else {
+      alert("You are not logged in");
+    }
   },
 
   createDeskGroup: function() {
+     if(gplus.isCurrentUserAnAdmin()) {
     this.$el.find(".mapSectionAddDialog").remove();
     this.showingCreateDialog = false;
     var newDeskGroup = this.model.attributes.deskGroups.create({
@@ -110,21 +117,26 @@ var MapSectionView = Backbone.View.extend({
         mapId: pageState.attributes.currentMapId,
         sectionId: this.model.attributes.id,
         desks: new Desks()
-    });
-    new MapDeskGroupView({model: newDeskGroup});
-    location.reload();
+    },{success: function(){location.reload();}});
+    // new MapDeskGroupView({model: newDeskGroup});
+    } else {
+      alert("You are not logged in");
+    }
   },
 
   createDesk: function(evt) {
+     if(gplus.isCurrentUserAnAdmin()) {
     var deskGroupId = parseInt(evt.target.parentNode.id.split("_")[2]);
     var clickedDeskGroup = this.model.attributes.deskGroups.findWhere({id:deskGroupId});
     var newDesk = clickedDeskGroup.attributes.desks.create({
       deskGroupId: deskGroupId,
       position: {x:0, y:0, h:40, w:20},
       rotation: 0
-    });
-    new MapDeskView({model: newDesk});
-    location.reload();
+    },{success: function(){location.reload();}});
+    // new MapDeskView({model: newDesk});
+    } else {
+      alert("You are not logged in");
+    }
   },
 
   deskGroupModified: function(evt) {

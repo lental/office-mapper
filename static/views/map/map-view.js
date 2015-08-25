@@ -55,11 +55,11 @@ var MapView = Backbone.View.extend({
         var maxY = 0;
         var maxHeight = 0;
         sections.forEach(function(section){
-          if (section.attributes.position.x > maxX) {
+          if (section.attributes.position.x + section.attributes.position.w >= maxX + maxWidth) {
             maxX = section.attributes.position.x;
             maxWidth = section.attributes.position.w;
           }
-          if (section.attributes.position.y > maxY) {
+          if (section.attributes.position.y + section.attributes.position.h >= maxY + maxHeight) {
             maxY = section.attributes.position.y;
             maxHeight = section.attributes.position.h;
           }
@@ -68,14 +68,19 @@ var MapView = Backbone.View.extend({
         $("#map").css({width: (maxX+maxWidth+100) + "px", height: (maxY+maxHeight+100) + "px"});
         $("#new_section_button").css({left: ($("#map")[0].scrollWidth - 80)+"px"});
         $("#new_section_button").click(function(){
-          var newSection = this.model.getCurrentMap().attributes.sections.create({map_id: this.model.attributes.currentMapId,
+          if(gplus.isCurrentUserAnAdmin()) {
+          var newSection = this.model.getCurrentMap().attributes.sections.create({map_id: parseInt(this.model.attributes.currentMapId),
             name: "New Section",
             position: {x: 0, y: 0, w: 200, h: 200},
             deskGroups: new DeskGroups([]),
             places: new Places([]),
             rooms: new Rooms([])
-          });
-          $("#map").prepend((new MapSectionView({model: newSection})).el);
+          },{success: function(){location.reload();}});
+          } else {
+            alert("You are not logged in");
+          }
+          
+          // $("#map").prepend((new MapSectionView({model: newSection})).el);
         }.bind(this));
       }
     }
