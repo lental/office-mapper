@@ -117,7 +117,7 @@ var MapSectionView = Backbone.View.extend({
 
   createDesk: function(evt) {
     var deskGroupId = parseInt(evt.target.parentNode.id.split("_")[2]);
-    var clickedDeskGroup = this.model.attributes.deskGroups.get(deskGroupId);
+    var clickedDeskGroup = this.model.attributes.deskGroups.findWhere({id:deskGroupId});
     var newDesk = clickedDeskGroup.attributes.desks.create({
       deskGroupId: deskGroupId,
       position: {x:0, y:0, h:20, w:20},
@@ -129,7 +129,7 @@ var MapSectionView = Backbone.View.extend({
 
   deskGroupModified: function(evt) {
     var deskGroupId = parseInt(evt.target.id.split("_")[2]);
-    var deskGroup = this.model.attributes.deskGroups.get(deskGroupId);
+    var deskGroup = this.model.attributes.deskGroups.findWhere({id:deskGroupId});
     this.updatePageStateAfterModification(deskGroup,{
       xyPosition: {
         x: parseInt(evt.target.style.left),
@@ -142,7 +142,7 @@ var MapSectionView = Backbone.View.extend({
   deskModified: function(evt) {
     var deskId = parseInt(evt.target.id.split("_")[2]);
     var deskGroupId = parseInt(evt.target.parentNode.id.split("_")[2]);
-    var desk = this.model.attributes.deskGroups.get(deskGroupId).attributes.desks.get(deskId);
+    var desk = this.model.attributes.deskGroups.findWhere({id:deskGroupId}).attributes.desks.get(deskId);
     this.updatePageStateAfterModification(desk,{
       position: {
         x: parseInt(evt.target.style.left),
@@ -154,7 +154,7 @@ var MapSectionView = Backbone.View.extend({
 
   roomModified: function(evt) {
     var roomId = parseInt(evt.target.id.split("_")[2]);
-    var room = this.model.attributes.rooms.get(roomId);
+    var room = this.model.attributes.rooms.findWhere({id:roomId});
     this.updatePageStateAfterModification(room,{
       position: {
         x: parseInt(evt.target.style.left),
@@ -166,7 +166,7 @@ var MapSectionView = Backbone.View.extend({
 
   placeModified: function(evt) {
     var placeId = parseInt(evt.target.id.split("_")[2]);
-    var place = this.model.attributes.places.get(placeId);
+    var place = this.model.attributes.places.findWhere({id:placeId});
     this.updatePageStateAfterModification(place,{
       position: {
         x: parseInt(evt.target.style.left),
@@ -226,24 +226,24 @@ var MapSectionView = Backbone.View.extend({
       
     this.$el.find(".mapDeskGroup").click(function(evt){
       pageState.mapSelectionClick = true;
-      pageState.selectObject(this.model.attributes.deskGroups.get(parseInt(evt.target.id.split("_")[2])));
+      pageState.selectObject(this.model.attributes.deskGroups.findWhere({id:parseInt(evt.target.id.split("_")[2])}));
       evt.stopPropagation();
     }.bind(this));
 
     this.$el.find(".mapRoom").click(function(evt){
       pageState.mapSelectionClick = true;
-      pageState.selectObject(this.model.attributes.rooms.get(parseInt(evt.target.id.split("_")[2])));
+      pageState.selectObject(this.model.attributes.rooms.findWhere({id:parseInt(evt.target.id.split("_")[2])}));
       evt.stopPropagation();
     }.bind(this));
     this.$el.find(".mapPlace").click(function(evt){
       pageState.mapSelectionClick = true;
-      pageState.selectObject(this.model.attributes.places.get(parseInt(evt.target.id.split("_")[2])));
+      pageState.selectObject(this.model.attributes.places.findWhere({id:parseInt(evt.target.id.split("_")[2])}));
       evt.stopPropagation();
     }.bind(this));
     this.$el.find(".mapDesk").click(function(evt){
       var deskId = parseInt(evt.target.id.split("_")[2]);
       var deskGroupId = parseInt(evt.target.parentNode.id.split("_")[2]);
-      var desk = this.model.attributes.deskGroups.get(deskGroupId).attributes.desks.get(deskId);
+      var desk = this.model.attributes.deskGroups.findWhere({id:deskGroupId}).attributes.desks.findWhere({id:deskId});
       pageState.mapSelectionClick = true;
       pageState.selectObject(desk);
       evt.stopPropagation();

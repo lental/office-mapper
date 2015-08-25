@@ -192,8 +192,8 @@ var EditFormView= Backbone.View.extend({
         if (obj.mapIsLoadedAndVisible()) {
           var desk = maps.get(obj.get('mapId')).getDeskById(obj.get('deskId'));
           if (desk) {
-            this.$el.append(subEditTemplate({title:'Edit Associated Desk',
-              innerForm: formWrappingTemplate({divName:'editDeskForm', innerForm:editDeskTemplate(desk.attributes)})}));
+            // this.$el.append(subEditTemplate({title:'Edit Associated Desk',
+              // innerForm: formWrappingTemplate({divName:'editDeskForm', innerForm:editDeskTemplate(desk.attributes)})}));
           } else {
             this.$el.append("Desk is not found");
           }

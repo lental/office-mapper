@@ -63,7 +63,15 @@
   overflow: hidden;
   border-radius: 10px 10px 0 0;
 }
-
+.mapDeskName {
+  background-color: rgba(0,0,0,0.2);
+  width: 100%;
+  font-size: 10px;
+  color: black;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  border-radius: 4px 4px 0 0;
+}
 .mapSection {
   position: absolute !important;
   background-color: aquamarine;

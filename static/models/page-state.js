@@ -70,9 +70,25 @@ PageState =  Backbone.Model.extend({
           console.log(JSON.stringify(data));
           data = JSON.parse(data);
         //  callback(data);
-          this.get("selectedObject").set("deskId", data.desk.id);
-          this.get("selectedObject").set("mapId", data.desk.mapId);
+          var markChangeInDesk = function(deskId, mapId) {;
+            var nextMap = maps.findWhere({"id":mapId});
+            if (nextMap.isFullyLoaded()) {
+              var oldDesk = nextMap.get('allMapDesks').findWhere({id:deskId})
+              debugger;
+              oldDesk.trigger('change',oldDesk);
+            }
+          }
+          var selectedObject = this.get("selectedObject");
+          var oldDeskId = selectedObject.get("deskId");
+          var oldMapId= selectedObject.get("mapId");
+
+          selectedObject.set("deskId", data.desk.id);
+          selectedObject.set("mapId", data.desk.mapId)
           this.selectMapId(data.desk.mapId);
+
+          markChangeInDesk(oldDeskId, oldMapId);
+          markChangeInDesk(data.desk.id, data.desk.mapId);
+
           this.trigger('change', this);
         },this));
       }
