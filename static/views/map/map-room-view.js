@@ -4,7 +4,6 @@ var MapRoomView = Backbone.View.extend({
   id: function() {return "map_room_" + this.model.id},
   initialize: function() {
     this.render();
-    this.listenTo(pageState, 'change', this.render);
   },
   template: _.template(
     "<div class='mapRoomName'><%= name %></div>"

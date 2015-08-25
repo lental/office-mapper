@@ -4,7 +4,6 @@ var MapSectionView = Backbone.View.extend({
   showingCreateDialog: false,
   initialize: function() {
     this.render();
-    this.listenTo(pageState, 'change', this.render);
     this.listenTo(gplus, 'change', this.render);
   },
   template: _.template(

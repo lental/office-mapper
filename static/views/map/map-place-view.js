@@ -4,7 +4,6 @@ var MapPlaceView = Backbone.View.extend({
   className: "mapPlace shadowed",
   initialize: function() {
     this.render();
-    this.listenTo(pageState, 'change', this.render);
   },
   template: _.template(
     "<div class='mapPlaceName'><%= name %></div>"

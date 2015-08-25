@@ -29,6 +29,7 @@ var MapView = Backbone.View.extend({
 
     if (selectedElement) {
       var classToAdd = "mapSelectedItem mapAnimateSelectedItem";
+      $(".mapSelectedItem.mapAnimateSelectedItem").removeClass(classToAdd);
       if (!pState.mapSelectionClick && isChildPartiallyOutsideOfParent(selectedElement[0], $("#map-wrapper")[0])) {
 
         selectedElement[0].scrollIntoView();

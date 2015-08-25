@@ -4,7 +4,6 @@ var MapDeskView = Backbone.View.extend({
   id: function() {return "map_desk_" + this.model.attributes.id;},
   initialize: function() {
     this.render();
-    this.listenTo(pageState, 'change', this.render);
     this.user = users.getUserByDeskId(this.model.attributes.id);
   },
   render: function() {

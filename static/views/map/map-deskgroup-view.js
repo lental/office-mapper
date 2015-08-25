@@ -5,7 +5,6 @@ var MapDeskGroupView = Backbone.View.extend({
   id: function() {return "map_deskgroup_" + this.model.attributes.id},
   initialize: function() {
     this.render();
-    this.listenTo(pageState, 'change', this.render);
   },
   template: _.template(
     "<% desks.forEach(function(desk){ %>" +
