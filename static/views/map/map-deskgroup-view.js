@@ -5,6 +5,16 @@ var MapDeskGroupView = Backbone.View.extend({
   id: function() {return "map_deskgroup_" + this.model.attributes.id},
   initialize: function() {
     this.render();
+    this.listenTo(this.model, 'sync', this.sync);
+  },
+
+  sync: function(event) {
+    console.log("synced");
+    this.$el.css({
+      top: this.model.attributes.xyPosition.y,
+      left: this.model.attributes.xyPosition.x,
+      transform: "rotate(" + this.model.attributes.rotation + "deg)"
+    })
   },
   template: _.template(
     "<div class='mapDeskAddButton shadowed clickable'>+</div>"

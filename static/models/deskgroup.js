@@ -1,4 +1,5 @@
 DeskGroup = Backbone.Model.extend({
+  modelType: "DeskGroup",
     parse : function (response, options) {
       if (response.deskGroup) {
         response = response.deskGroup;

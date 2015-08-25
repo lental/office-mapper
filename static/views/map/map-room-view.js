@@ -4,6 +4,18 @@ var MapRoomView = Backbone.View.extend({
   id: function() {return "map_room_" + this.model.id},
   initialize: function() {
     this.render();
+    this.listenTo(this.model, 'sync', this.sync);
+  },
+
+  sync: function(event) {
+    console.log("synced");
+    this.$el.css({
+      height: this.model.attributes.position.h,
+      width: this.model.attributes.position.w,
+      top: this.model.attributes.position.y,
+      left: this.model.attributes.position.x,
+      transform: "rotate(" + this.model.attributes.rotation + "deg)"
+    })
   },
   template: _.template(
     "<div class='mapRoomName'><%= name %></div>"

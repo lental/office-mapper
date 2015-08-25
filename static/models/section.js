@@ -1,4 +1,5 @@
 Section = Backbone.Model.extend({
+  modelType: "Section",
     parse : function (response, options) {
       if (response.section) {
         response = response.section;
@@ -21,7 +22,7 @@ Section = Backbone.Model.extend({
         return response;
     },
   toSimpleString: function() {
-    return "Section " + this.get('id') + ": " + this.get('name');
+    return this.modelType + " " + this.get('id') + ": " + this.get('name');
   }
 });
 

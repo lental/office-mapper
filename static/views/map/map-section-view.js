@@ -6,6 +6,18 @@ var MapSectionView = Backbone.View.extend({
     this.initialRender();
     this.render();
     this.listenTo(gplus, 'change', this.render);
+    this.listenTo(this.model, 'sync', this.sync);
+  },
+
+  sync: function(event) {
+    console.log("synced");
+    this.$el.css({
+      height: this.model.attributes.position.h,
+      width: this.model.attributes.position.w,
+      top: this.model.attributes.position.y,
+      left: this.model.attributes.position.x,
+      transform: "rotate(" + this.model.attributes.rotation + "deg)"
+    })
   },
 
   initialRender: function() {

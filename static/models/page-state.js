@@ -14,6 +14,7 @@ PageState =  Backbone.Model.extend({
 
       modifiedObjects: new ModifiedObjects()
     },
+    modelType: "PageState",
     isDataModelLoaded: function() {
         return this.get('gplusLoaded') &&
                this.get('placesLoaded') &&

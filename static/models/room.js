@@ -1,4 +1,5 @@
 Room = Backbone.Model.extend({
+  modelType: "Room",
   parse: function(response, options){
     if (response.room) {
       response = response.room;
@@ -15,7 +16,7 @@ Room = Backbone.Model.extend({
         return false;
     },
   toSimpleString: function() {
-    return "Room " + this.get('id') + ": " + this.get('name');
+    return this.modelType + " " + this.get('id') + ": " + this.get('name');
   }
 });
 

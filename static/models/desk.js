@@ -1,4 +1,5 @@
 Desk = Backbone.Model.extend({
+  modelType: "Desk",
   parse: function(response, options){
     if (response.desk) {
       response = response.desk;

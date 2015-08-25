@@ -9,20 +9,33 @@ var ModifiedObjectsView = Backbone.View.extend({
 
   events: {
     "click #modified-objects-save": "saveAll",
+    "click #modified-objects-reset": "resetAll",
+    "click .modifiedObject": "selectModifiedObject",
   },
+
+  selectModifiedObject: function(event) {
+    pageState.selectObject(pageState.get("modifiedObjects").getObjectByCId(event.target.dataset.cid));
+  },
+
   saveAll: function() {
     console.log("saving All Modified");
-    pageState.get("modifiedObjects").forEach(function(i, o, set) {o.save()});
+    pageState.get("modifiedObjects").each(function(i,o) {o.save()});
     pageState.trigger('change', pageState); //HACK 1 of the weekend: need to trigger to update everyone
   },
 
-
-  template: _.template("<% modifiedObjects.forEach( function(i, o, set) { %>" +
-       "<div><%= o.toSimpleString() %></div>" +
-    "<% }); %> "),
+  resetAll: function() {
+    console.log("resetting All Modified");
+    pageState.get("modifiedObjects").each(function(i,o) {o.fetch()});
+    pageState.trigger('change', pageState); //HACK 1 of the weekend: need to trigger to update everyone
+  },
+  objectTemplate: _.template("<div class='modifiedObject' data-cid='<%=o.cid%>' data-modeltype='<%=o.modelType%>'><%= o.toSimpleString() %></div>"),
 
   render: function() {
-    this.$("#modified-objects").html(this.template({modifiedObjects: pageState.get("modifiedObjects")}));
+    this.$("#modified-objects").empty();
+    var objectList = this.$("#modified-objects");
+    pageState.get("modifiedObjects").each( _.bind(function(i,o) { 
+      objectList.append(this.objectTemplate({o:o}));
+    },this));
     return this;
   }
 });

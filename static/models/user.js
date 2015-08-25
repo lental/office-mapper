@@ -1,4 +1,5 @@
 User = Backbone.Model.extend({
+    modelType: "User",
     searchMatches: function(query) {
         if(query == '') {
             return true;
@@ -13,7 +14,7 @@ User = Backbone.Model.extend({
         return this.get("mapId") == pageState.get("currentMapId") && pageState.get("currentMapLoaded");
     },
   toSimpleString: function() {
-    return "User " + this.get('id') + ": " + this.get('name');
+    return this.modelType + " " + this.get('id') + ": " + this.get('name');
   }
 });
 

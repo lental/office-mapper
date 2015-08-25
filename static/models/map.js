@@ -2,6 +2,7 @@ Map = Backbone.Model.extend({
     defaults: {
         allMapDesks: null
     },
+    modelType: "Map",
     parse : function (response) {
         this.set('allMapDesks', new Desks());
         // Can come in from either maps:[{}] or map:{}

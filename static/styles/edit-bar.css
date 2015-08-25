@@ -114,3 +114,18 @@
   color: white;
   font-weight: 700;
 }
+#modified-objects-reset {
+  text-align: center;
+  padding: 10px;
+  background-color: #DDD;
+  margin: 10px;
+  color: black;
+  font-weight: 700;
+}
+
+.modifiedObject {
+  border: black 1px solid;
+  padding: 5px 10px;
+  background-color: #FFEBE6;
+  margin: 3px 0px;
+}

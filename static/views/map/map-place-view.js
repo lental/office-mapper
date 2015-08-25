@@ -4,6 +4,18 @@ var MapPlaceView = Backbone.View.extend({
   className: "mapPlace shadowed",
   initialize: function() {
     this.render();
+    this.listenTo(this.model, 'sync', this.sync);
+  },
+
+  sync: function(event) {
+    console.log("synced");
+    this.$el.css({
+      height: this.model.attributes.position.h,
+      width: this.model.attributes.position.w,
+      top: this.model.attributes.position.y,
+      left: this.model.attributes.position.x,
+      transform: "rotate(" + this.model.attributes.rotation + "deg)"
+    })
   },
   template: _.template(
     "<div class='mapPlaceName'><%= name %></div>"
@@ -20,7 +32,6 @@ var MapPlaceView = Backbone.View.extend({
       this.$el.css({
         "background-color": this.model.attributes.color
       });
-    this.$el.click(function(){alert("bar");});
     return this;
   }
 });
