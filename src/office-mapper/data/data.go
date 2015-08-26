@@ -306,6 +306,17 @@ func GetUserIdFromJson(r *http.Request) (int, error) {
 	return id, nil
 }
 
+func GetUpdateDataFromJson(r *http.Request) (map[string]interface{}, error) {
+
+	decoder := json.NewDecoder(r.Body)
+	updateData := map[string]interface{}{}
+	err := decoder.Decode(&updateData)
+	if err != nil {
+		return nil, err
+	}
+	return updateData,nil
+}
+
 func UpdateRowFromJson(w http.ResponseWriter, r *http.Request, obj interface{}) bool {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -314,9 +325,7 @@ func UpdateRowFromJson(w http.ResponseWriter, r *http.Request, obj interface{}) 
 		return false
 	}
 
-	decoder := json.NewDecoder(r.Body)
-	updateData := map[string]interface{}{}
-	err = decoder.Decode(&updateData)
+	updateData, err := GetUpdateDataFromJson(r)
 	if err != nil {
 		http.Error(w, `{"error": "Error parsing JSON: `+err.Error()+`"}`, http.StatusBadRequest)
 		return false

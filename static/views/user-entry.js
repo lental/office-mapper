@@ -55,7 +55,7 @@ var UserEntryView = Backbone.View.extend({
     if (selectedObject instanceof User) {
       selectedUser = selectedObject;
     } else if (selectedObject instanceof Desk) {
-      selectedUser = this.model.getUserByDeskId(selectedObject.get('id'));
+      selectedUser = users.getUserByDeskId(selectedObject.get('id'));
     }
 
     var isSelected = this.model == selectedUser;
