@@ -5,11 +5,13 @@ var MapSectionView = Backbone.View.extend({
   initialize: function() {
     this.initialRender();
     this.listenTo(this.model, 'sync', this.sync);
+    this.listenTo(this.model, 'change', this.sync);
     this.listenTo(this.model, 'destroy', this.destroy);
     // this.listenTo(this.model.deskGroups, 'add', onDeskGroupAdd);
     this.listenTo(gplus, 'change', this.onGPlusChange);
 
     this.$el.click(function(evt){
+      this.$el.parent().append(this.$el);
       pageState.mapSelectionClick = true;
       pageState.selectObject(this.model);
       evt.stopPropagation();
@@ -17,13 +19,13 @@ var MapSectionView = Backbone.View.extend({
   },
 
   sync: function(event) {
-    console.log("synced");
+    console.log("section synced");
+    this.$(".mapSectionName").html(this.model.get("name"));
     this.$el.css({
       height: this.model.attributes.position.h,
       width: this.model.attributes.position.w,
       top: this.model.attributes.position.y,
       left: this.model.attributes.position.x,
-      transform: "rotate(" + this.model.attributes.rotation + "deg)"
     })
   },
 
@@ -163,18 +165,18 @@ var MapSectionView = Backbone.View.extend({
     var section = evt.target;
     if (map.width() - (parseInt(section.style.left) + parseInt(section.style.width)) < 100) {
       console.log("widening map");
-      map.width(map.width() + 200);
+      map.width(map.width() + 100);
     }
     if (map.height() - (parseInt(section.style.top) + parseInt(section.style.height)) < 100) {
       console.log("heightening map");
-      map.height(map.height() + 200);
+      map.height(map.height() + 100);
     }
   },
 
   onGPlusChange: function() {
     if(gplus.isCurrentUserAnAdmin()){
         this.$el
-        .draggable({containment: "parent", stop: this.sectionModified.bind(this), drag: this.sectionDragged.bind(this)})
+        .draggable({stop: this.sectionModified.bind(this), drag: this.sectionDragged.bind(this)})
         .resizable({stop: this.sectionModified.bind(this)});
         this.$(".mapSectionAddButton").removeClass("displayNone");
       }

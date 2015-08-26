@@ -4,15 +4,14 @@ var MapView = Backbone.View.extend({
     this.renderCurrentMap()
     this.render();
     this.listenTo(pageState, 'change', this.render);
+    this.listenTo(this.model, 'sync', this.sync);
     this.listenTo(pageState, 'change:selectedObject', this.highlightItem);
     this.listenTo(gplus, 'change', this.onGPlusChange);
   },
-
   renderCurrentMap: function() {
     console.log("rendering new map");
     this.listenTo(this.model.attributes.sections, 'change', this.render);
     this.$el.empty();
-    this.$el.append("<div id='new_section_button' class='shadowed clickable displayNone'>+</div>");
     var curMap = this.model;
     this.$("#map_name").text(curMap.attributes.name);
     var sections = curMap.attributes.sections;
@@ -32,8 +31,12 @@ var MapView = Backbone.View.extend({
       this.$el.prepend((new MapSectionView({model: section})).el);
     }, this));
     this.$el.css({width: (maxX+maxWidth+100) + "px", height: (maxY+maxHeight+100) + "px"});
-    $("#new_section_button").css({left: (this.$el[0].scrollWidth - 80)+"px"});
-    $("#new_section_button").click(function(){
+
+
+    var newSectionButton = $("<div id='new_section_button' class='shadowed clickable'>+</div>");
+    this.$el.append(newSectionButton);
+    newSectionButton.css({left: (this.$el[0].scrollWidth - 80)+"px"});
+    newSectionButton.click(function(){
       if(gplus.isCurrentUserAnAdmin()) {
       var newSection = this.model.attributes.sections.create({map_id: parseInt(this.model.attributes.id),
         name: "New Section",
@@ -41,7 +44,15 @@ var MapView = Backbone.View.extend({
         deskGroups: new DeskGroups([]),
         places: new Places([]),
         rooms: new Rooms([])
-      },{success: function(){location.reload();}});
+      },{success: _.bind(function(model){
+            // this.$el.append(new MapDeskView({model:model}).el)
+            pageState.mapSelectionClick = false;
+            var sectionView = new MapSectionView({model: model});
+            this.$el.append(sectionView.el);
+            // debugger
+            model.trigger('sync', model);
+            pageState.selectObject(model);
+          },this), wait:true})
       } else {
         alert("You are not logged in");
       }
@@ -52,12 +63,12 @@ var MapView = Backbone.View.extend({
     this.highlightItem(pageState);
     this.onGPlusChange();
   },
+
   tagName: "div",
   id: "map",
   className: "flexElement",
 
   highlightItem: function(pState) {
-
     var selectedObject = pState.attributes.selectedObject;
 
     //This code doesn't selectMap for User click, but that is handled in pageState
@@ -115,7 +126,26 @@ var MapView = Backbone.View.extend({
   },
 
   render: function() {
+     var maxX = 0;
+    var maxY = 0;
+    var maxWidth = 0;
+    var maxHeight = 0;
 
+    this.model.attributes.sections.forEach(function(section){
+      if (section.attributes.position.x + section.attributes.position.w >= maxX + maxWidth) {
+        maxX = section.attributes.position.x;
+        maxWidth = section.attributes.position.w;
+      }
+      if (section.attributes.position.y + section.attributes.position.h >= maxY + maxHeight) {
+        maxY = section.attributes.position.y;
+        maxHeight = section.attributes.position.h;
+      }
+    });
+    this.$el.css({
+        height: (maxY + maxHeight + 100) + "px",
+        width: (maxX + maxWidth + 100) + "px",
+      });
+    this.$("#new_section_button").css({left: (this.$el[0].scrollWidth - 80)+"px"});
     return this;
   },
   onGPlusChange: function() {
