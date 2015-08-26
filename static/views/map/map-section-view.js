@@ -4,10 +4,16 @@ var MapSectionView = Backbone.View.extend({
   showingCreateDialog: false,
   initialize: function() {
     this.initialRender();
-    this.listenTo(gplus, 'change', this.render);
     this.listenTo(this.model, 'sync', this.sync);
+    this.listenTo(this.model, 'destroy', this.destroy);
     // this.listenTo(this.model.deskGroups, 'add', onDeskGroupAdd);
     this.listenTo(gplus, 'change', this.onGPlusChange);
+
+    this.$el.click(function(evt){
+      pageState.mapSelectionClick = true;
+      pageState.selectObject(this.model);
+      evt.stopPropagation();
+    }.bind(this));
   },
 
   sync: function(event) {

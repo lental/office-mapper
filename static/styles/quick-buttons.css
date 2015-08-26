@@ -1,0 +1,21 @@
+
+#quick-button-bar {
+  display:flex;
+  display:-webkit-flex;
+}
+
+/* Search bar styles in search-bar.css */
+.quickButton {
+  text-align:center;
+  font-size:12px;
+  background-color:#82859C;
+  color:white;
+  padding: 4px 0px;
+  margin: 0px 5px;
+  position:relative;
+  border-bottom-left-radius:5px;
+  border-bottom-right-radius:5px;
+  flex: 1;
+  -webkit-flex: 1;
+}
+

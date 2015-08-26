@@ -7,6 +7,7 @@ var MapDeskGroupView = Backbone.View.extend({
     this.render();
     this.onGPlusChange();
     this.listenTo(this.model, 'sync', this.sync);
+    this.listenTo(this.model, 'destroy', this.destroy);
     this.listenTo(gplus, 'change', this.onGPlusChange);
 
     this.$el.click(function(evt){
@@ -23,6 +24,11 @@ var MapDeskGroupView = Backbone.View.extend({
       left: this.model.attributes.xyPosition.x,
       transform: "rotate(" + this.model.attributes.rotation + "deg)"
     })
+  },
+  destroy: function(event) {
+    console.log("Desk destroyed")
+    this.remove();
+    this.render();
   },
   template: _.template(
     "<div class='mapDeskAddButton shadowed clickable'>+</div>"

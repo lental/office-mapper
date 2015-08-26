@@ -8,6 +8,16 @@ var ListBarSquishView = Backbone.View.extend({
 
   events: {
     "click .squishLeft": "squishListBar",
+    "click #go-to-top": "scrollToTop",
+    "click #go-to-rooms": "scrollToRooms"
+  },
+  scrollToTop: function(event) {
+      console.log("hii");
+      this.$("#scrollable-list").scrollTop( 0 );
+  },
+
+  scrollToRooms: function(event) {
+    this.$("#room-list")[0].scrollIntoView()
   },
 
   squishListBar: function(event) {

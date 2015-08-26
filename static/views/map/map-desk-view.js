@@ -9,6 +9,7 @@ var MapDeskView = Backbone.View.extend({
     this.user = users.getUserByDeskId(this.model.attributes.id);
     this.listenTo(this.model, 'sync', this.sync);
     this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'destroy', this.destroy);
     this.listenToOnce(pageState, 'change:usersLoaded', this.render);
     this.listenTo(gplus, 'change', this.onGPlusChange);
 
@@ -19,6 +20,11 @@ var MapDeskView = Backbone.View.extend({
     }.bind(this));
   },
 
+  destroy: function(event) {
+    console.log("Desk destroyed")
+    this.remove();
+    this.render();
+  },
   sync: function(event) {
     console.log("synced");
     this.$el.css({

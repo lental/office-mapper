@@ -182,9 +182,26 @@ var EditFormView= Backbone.View.extend({
     pageState.get("selectedObject").save();
   },
   deleteSelectedObject: function(event) {
-    console.log("deleting!")
-    pageState.get("selectedObject").destroy();
-  },resetSelectedObject: function(event) {
+    $("#confirm-dialog").html("Are you sure? This will delete this object");
+    $("#confirm-dialog").dialog({appendTo:"#vertical-flexbox",   
+      buttons: [{
+        text: "Ok",
+        click: function() {
+          console.log("deleting!")
+          pageState.get("selectedObject").destroy();
+          $(this).dialog( "close" );
+        }  
+      },
+      {
+        text: "Cancel",
+        click: function() {
+          $(this).dialog( "close" );
+        }  
+      }]
+    });
+  },
+
+  resetSelectedObject: function(event) {
     console.log("resetting!")
     pageState.get("selectedObject").fetch();
   },

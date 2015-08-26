@@ -6,6 +6,7 @@ var MapPlaceView = Backbone.View.extend({
     this.render();
     this.onGPlusChange();
     this.listenTo(this.model, 'sync', this.sync);
+    this.listenTo(this.model, 'destroy', this.destroy);
     this.listenTo(gplus, 'change', this.onGPlusChange);
 
     this.$el.click(function(evt){
@@ -24,6 +25,11 @@ var MapPlaceView = Backbone.View.extend({
       left: this.model.attributes.position.x,
       transform: "rotate(" + this.model.attributes.rotation + "deg)"
     })
+  },
+  destroy: function(event) {
+    console.log("Desk destroyed")
+    this.remove();
+    this.render();
   },
   template: _.template(
     "<div class='mapPlaceName'><%= name %></div>"
