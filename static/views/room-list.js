@@ -18,6 +18,7 @@ var RoomListView = Backbone.View.extend({
   initialize: function(){
     this.hiding = false;
     this.render();
+    this.listenTo(this.model, 'add', this.render);
     this.listenTo(pageState, 'change', this.render);
   },
 

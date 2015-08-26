@@ -1,5 +1,9 @@
 function isChildPartiallyOutsideOfParent(child, parent){
 
+if(child == null) {
+  console.log("child null!")
+}
+
 return isChildOffLeftOfParent(child.getBoundingClientRect(), parent.getBoundingClientRect()) ||
        isChildOffRightOfParent(child.getBoundingClientRect(), parent.getBoundingClientRect()) ||
        isChildOffTopOfParent(child.getBoundingClientRect(), parent.getBoundingClientRect()) ||

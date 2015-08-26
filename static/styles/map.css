@@ -34,9 +34,9 @@
 .mapDeskGroup {
   position: absolute !important;
   background-color: rgba(147,112,219,0.5);
-  border-radius: 10px;
+  border-radius: 6px;
   min-height: 40px;
-  min-width: 40px;
+  min-width: 30px;
 }
 
 .mapPlace {

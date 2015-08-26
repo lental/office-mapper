@@ -7,6 +7,7 @@ var placeTemplate = _.template("<div class='listElement placeListElement<%= isSe
 var PlaceListView = Backbone.View.extend({
   initialize: function(){
     this.hiding = false;
+    this.listenTo(this.model, 'add', this.onAdd);
     this.listenTo(pageState, 'change', this.render);
     this.render();
   },
