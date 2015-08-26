@@ -1,28 +1,19 @@
-var userTemplate = _.template("<div class='listElement userListElement<%= isSelected ? ' active': '' %>' data-id=<%= id%>>" +
-  "<div class='userThumbnail'><img class='userThumbnailImage' src='<%= thumbnailUrl%>' onerror='this.src=\"/images/default-thumbnail.png\"' /></div>" +
-  "<div class='userListInfo'>" +
-  "<div class='userName'><%= name %> </div>" +
-  "<div class='userEmail'><%= email %> </div>" +
-  "<div class='userDesk'>Map: <%= mapName %> </div>" +
-  "</div>" +
-  "</div>"
-  );
-
 
 var UserListView = Backbone.View.extend({
   initialize: function(){
     this.listenTo(pageState, 'change', this.render);
     this.listenTo(this.model, 'add', this.render);
-    this.listenTo(this.model, 'change', this.initialRender);
     this.hiding = false;
     this.initialRender();
     this.render();
   },
   initialRender: function() {
-    this.$('#user-list').html(this.template({users:this.model}));
+    this.$('#user-list').empty();
+    users.each( function(user) { 
+      userView = new UserEntryView({model: user});
+        this.$('#user-list').append(userView.$el);
+    });
   },
-
-  el: '#user-section',
 
   events: {
     "click .userListElement": "onUserClick",
@@ -43,19 +34,14 @@ var UserListView = Backbone.View.extend({
     this.hiding = !this.hiding;
     this.render();
   },
-  onUserClick: function(event) {
-    element = event.currentTarget;
-    console.log("user " + element.dataset.id + " click");
-    pageState.selectObject(users.getUser(element.dataset.id));
-  },
 
-  template: _.template("<% users.each( function(user) { %>" +
-       "<% var isSelected = user == pageState.get('selectedObject') %>" +
-       "<% var params = JSON.parse(JSON.stringify(user.attributes))%>" +
-       "<% params.isSelected = isSelected %>" +
-       "<% params.mapName = user.get('mapId') ? maps.getMap(user.get('mapId')).get('name') : 'No Assigned Desk' %>" +
-       "<%= userTemplate(params) %>" +
-    "<% }); %> "),
+  // template: _.template("<% %>" +
+  //      "<% var isSelected = user == pageState.get('selectedObject') %>" +
+  //      "<% var params = JSON.parse(JSON.stringify(user.attributes))%>" +
+  //      "<% params.isSelected = isSelected %>" +
+  //      "<% params.mapName = user.get('mapId') ? maps.getMap(user.get('mapId')).get('name') : 'No Assigned Desk' %>" +
+  //      "<%= userTemplate(params) %>" +
+  //   "<% }); %> "),
 
   render: function() {
     this.$('.listHideButton').html(this.hiding ? "Show" : "Hide");

@@ -8,8 +8,8 @@ var SeachBarView = Backbone.View.extend({
 
   events: {
     "click #search-clear": "clearSearchQuery",
-    "blur #search-input": "updateSearchValue",
-    "keypress #search-input": "onKeyPress",
+    "input #search-input": "updateSearchValue",
+    // "keypress #search-input": "onKeyPress",
   },
 
   onKeyPress: function(event) {
