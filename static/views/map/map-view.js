@@ -69,10 +69,13 @@ var MapView = Backbone.View.extend({
     if (!selectedObject) {
       console.log("trying to highlight without a selected object");
       return;
+    } if (selectedObject.modelType == "Map") {
+      console.log("Selected a map. won't highlight");
+      return;    
     }
 
     var selectedMapId = selectedObject.get('mapId') || selectedObject.get('map_id');
-    if (selectedMapId != pState.get('currentMapId')){
+    if (selectedMapId && selectedMapId != pState.get('currentMapId')){
       console.log("trying to highlight from a different map. Switching map now");
       pState.selectMapId(selectedMapId);
       return;
