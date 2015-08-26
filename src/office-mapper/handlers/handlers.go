@@ -160,7 +160,7 @@ func authorizeSelfOrAdminWithBody(updateData requestBodyJson, handler handlerFun
 		http.Error(w, `{"error": "Error checking for user admin"}`, http.StatusInternalServerError)
 		return
 	}
-	
+
 	handler(updateData, w, r)
 }
 
@@ -168,7 +168,7 @@ func checkIdOfUserMatches(w http.ResponseWriter, reqUserId int, user map[string]
 	if id, ok := user["id"].(int); ok {
 		if id != reqUserId {
 			http.Error(w, `{"error": "Unauthorized for editing other users"}`, http.StatusUnauthorized)
-		  return false
+			return false
 		}
 	} else {
 		http.Error(w, `{"error": "Error checking for user id"}`, http.StatusInternalServerError)
@@ -176,9 +176,9 @@ func checkIdOfUserMatches(w http.ResponseWriter, reqUserId int, user map[string]
 	}
 	return true
 }
-func ensureAdminNotChanged(updateData requestBodyJson, w http.ResponseWriter,r *http.Request) bool {
+func ensureAdminNotChanged(updateData requestBodyJson, w http.ResponseWriter, r *http.Request) bool {
 	if admin, ok := updateData["admin"].(bool); ok {
-		if (admin) {
+		if admin {
 			http.Error(w, `{"error": "Unauthorized."}`, http.StatusUnauthorized)
 			return false
 		}

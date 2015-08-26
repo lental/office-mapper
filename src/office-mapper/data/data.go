@@ -72,7 +72,7 @@ type Room struct {
 	SectionId int      `json:"sectionId"`
 	Position  Position `json:"position"`
 	Features  Features `json:"features"`
-	Color       *string  `json:"color"`
+	Color     *string  `json:"color"`
 }
 
 type Place struct {
@@ -314,11 +314,10 @@ func GetUpdateDataFromJson(r *http.Request) (map[string]interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	return updateData,nil
+	return updateData, nil
 }
 
 func UpdateRowFromJson(w http.ResponseWriter, r *http.Request, obj interface{}) bool {
-
 
 	updateData, err := GetUpdateDataFromJson(r)
 	if err != nil {
