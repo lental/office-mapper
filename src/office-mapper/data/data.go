@@ -72,7 +72,7 @@ type Room struct {
 	SectionId int      `json:"sectionId"`
 	Position  Position `json:"position"`
 	Features  Features `json:"features"`
-	Color       *string  `json:"color"`
+	Color     *string  `json:"color"`
 }
 
 type Place struct {
@@ -297,7 +297,7 @@ func InsertFromJson(body io.Reader, obj interface{}) error {
 	return insertOne(obj)
 }
 
-func GetUserIdFromJson(r *http.Request) (int, error) {
+func GetUserIdFromRoute(r *http.Request) (int, error) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -306,19 +306,33 @@ func GetUserIdFromJson(r *http.Request) (int, error) {
 	return id, nil
 }
 
+func GetUpdateDataFromJson(r *http.Request) (map[string]interface{}, error) {
+
+	decoder := json.NewDecoder(r.Body)
+	updateData := map[string]interface{}{}
+	err := decoder.Decode(&updateData)
+	if err != nil {
+		return nil, err
+	}
+	return updateData, nil
+}
+
 func UpdateRowFromJson(w http.ResponseWriter, r *http.Request, obj interface{}) bool {
+
+	updateData, err := GetUpdateDataFromJson(r)
+	if err != nil {
+		http.Error(w, `{"error": "Error parsing JSON: `+err.Error()+`"}`, http.StatusBadRequest)
+		return false
+	}
+
+	return UpdateRowFromBody(updateData, w, r, obj)
+}
+
+func UpdateRowFromBody(updateData map[string]interface{}, w http.ResponseWriter, r *http.Request, obj interface{}) bool {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
 		http.Error(w, `{"error": "bad object id"}`, http.StatusBadRequest)
-		return false
-	}
-
-	decoder := json.NewDecoder(r.Body)
-	updateData := map[string]interface{}{}
-	err = decoder.Decode(&updateData)
-	if err != nil {
-		http.Error(w, `{"error": "Error parsing JSON: `+err.Error()+`"}`, http.StatusBadRequest)
 		return false
 	}
 
