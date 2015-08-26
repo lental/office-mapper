@@ -17,7 +17,13 @@ var editUserTemplate = _.template("" +
   "<tr class='formRow' id='edit-deskId'><td class='inputLabel'>DeskId:</td><td class='inputField'><input class='editDeskInput' type='text' name='deskId' value='<%= deskId %>'></td></tr>" +
   "<tr class='formRow' id='edit-admin'><td class='inputLabel'>Admin:</td><td class='inputField'><input class='editAdminInput' type='checkbox' name='admin' value='admin' <%= admin ? 'checked' : '' %>></td></tr>" +
   "<tr><td colspan=2> <span class='adminAlert'>Please make sure you completely trust this user's ability to administer this site before enabling him as an administrator</span></td><tr>"
+  );
 
+var editUserNoAdminTemplate = _.template("" +
+  "<tr class='formRow' id='edit-id'><td class='inputLabel'>Id:</td><td class='inputField'><%= id %></td></tr>" +
+  "<tr class='formRow' id='edit-name'><td class='inputLabel'>Name:</td><td class='inputField'><%= name %></td></tr>" +
+  "<tr class='formRow' id='edit-email'><td class='inputLabel'>Email:</td><td class='inputField'><%= email %></td></tr>" +
+  "<tr class='formRow' id='edit-deskId'><td class='inputLabel'>DeskId:</td><td class='inputField'><input class='editDeskInput' type='text' name='deskId' value='<%= deskId %>'></td></tr>"
   );
 
 var editPositionTemplate = _.template("<table class='editPositionForm'>" +
@@ -106,7 +112,9 @@ var unselectedTemplate = _.template(""+
 var unAuthorizedTemplate = _.template(""+
   "You must be logged in and authorized to modify the map.  If you do not have authorization, ask " 
   );
-
+var onlySelfTemplate = _.template(""+
+  "You are logged in, but not an admin.  You can only modify yourself" 
+  );
 var EditFormView= Backbone.View.extend({
   initialize: function(){
     this.render();
@@ -223,17 +231,17 @@ var EditFormView= Backbone.View.extend({
       if(obj instanceof User) {
         this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editUserForm', innerForm:editUserTemplate(obj.attributes)})}));
 
-        if (obj.mapIsLoadedAndVisible()) {
-          var desk = maps.get(obj.get('mapId')).getDeskById(obj.get('deskId'));
-          if (desk) {
-            // this.$el.append(subEditTemplate({title:'Edit Associated Desk',
-              // innerForm: formWrappingTemplate({divName:'editDeskForm', innerForm:editDeskTemplate(desk.attributes)})}));
-          } else {
-            this.$el.append("Desk is not found");
-          }
-        } else {
-            this.$el.append("This user is not associated to a desk");
-        }
+        // if (obj.mapIsLoadedAndVisible()) {
+        //   var desk = maps.get(obj.get('mapId')).getDeskById(obj.get('deskId'));
+        //   if (desk) {
+        //     // this.$el.append(subEditTemplate({title:'Edit Associated Desk',
+        //       // innerForm: formWrappingTemplate({divName:'editDeskForm', innerForm:editDeskTemplate(desk.attributes)})}));
+        //   } else {
+        //     this.$el.append("Desk is not found");
+        //   }
+        // } else {
+        //     this.$el.append("This user is not associated to a desk");
+        // }
       } else if (obj instanceof Room) {
         this.$el.html(primaryEditTemplate({innerForm:formDeleteWrappingTemplate({divName:'editRoomForm', innerForm:editRoomTemplate(obj.attributes)})}));
       } else if (obj instanceof Place) {
@@ -249,6 +257,12 @@ var EditFormView= Backbone.View.extend({
       }
       else {
         this.$el.html(unselectedTemplate());
+      }
+    } else if(gplus.isLoggedIn()) {
+      if(obj instanceof User && users.getUserByGPlusId(gplus.getUserId()) == obj) {
+        this.$el.html(primaryEditTemplate({innerForm:formWrappingTemplate({divName:'editUserForm', innerForm:editUserNoAdminTemplate(obj.attributes)})}));
+      } else {
+        this.$el.html(onlySelfTemplate());
       }
     } else {
       this.$el.html(unAuthorizedTemplate());

@@ -172,7 +172,7 @@ var MapSectionView = Backbone.View.extend({
   },
 
   onGPlusChange: function() {
-    if(gplus.isLoggedIn()){
+    if(gplus.isCurrentUserAnAdmin()){
         this.$el
         .draggable({containment: "parent", stop: this.sectionModified.bind(this), drag: this.sectionDragged.bind(this)})
         .resizable({stop: this.sectionModified.bind(this)});

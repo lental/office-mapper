@@ -69,8 +69,7 @@ var MapRoomView = Backbone.View.extend({
   },
 
   onGPlusChange: function() {
-    this.$(".mapDeskName").toggleClass("invisible", !gplus.isLoggedIn());
-    if(gplus.isLoggedIn()){
+    if(gplus.isCurrentUserAnAdmin()){
         this.$el
         .draggable({containment: "parent", stop: this.roomModified.bind(this), drag: this.roomDragged.bind(this)})
         .resizable({stop: this.roomModified.bind(this)});

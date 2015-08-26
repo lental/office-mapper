@@ -105,7 +105,7 @@ var MapView = Backbone.View.extend({
     return this;
   },
   onGPlusChange: function() {
-    $("#new_section_button").toggleClass("displayNone", gplus.isLoggedIn());
+    $("#new_section_button").toggleClass("displayNone", gplus.isCurrentUserAnAdmin());
   },
 });
 

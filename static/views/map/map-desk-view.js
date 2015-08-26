@@ -65,7 +65,7 @@ var MapDeskView = Backbone.View.extend({
   },
   onGPlusChange: function() {
     // this.$(".mapDeskName").toggleClass("invisible", !gplus.isLoggedIn());
-    if(gplus.isLoggedIn()){
+    if(gplus.isCurrentUserAnAdmin()){
       this.$el
         .draggable({stop: this.deskModified.bind(this), drag: this.deskDragged.bind(this)})
         .resizable({stop: this.deskModified.bind(this)});

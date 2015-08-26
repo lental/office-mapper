@@ -34,7 +34,7 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/users", authorizeAdmin(NewUserHandler)).Methods("POST")
 	r.HandleFunc("/v1/users/{id}", UserHandler).Methods("GET")
 	r.HandleFunc("/v1/users/{id}", authorizeAdmin(DeleteUserHandler)).Methods("DELETE")
-	r.HandleFunc("/v1/users/{id}", authorizeAdmin(UpdateUserHandler)).Methods("PUT")
+	r.HandleFunc("/v1/users/{id}", authorizeSelf(UpdateUserHandler)).Methods("PUT")
 	r.HandleFunc("/v1/users/{id}", authorizeAdmin(UpdateUserHandler)).Methods("PATCH")
 	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")
 	r.HandleFunc("/v1/rooms", authorizeAdmin(NewRoomHandler)).Methods("POST")
@@ -114,6 +114,39 @@ func authorizeAdmin(handler handlerFunction) handlerFunction {
 	}
 }
 
+func authorizeSelf(handler handlerFunction) handlerFunction {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id_token := getIdToken(w, r)
+		if id_token == "" {
+			return
+		}
+		user, err := data.GetUserByToken(id_token)
+		if err != nil {
+			http.Error(w, `{"error": "Error authorizing user: `+err.Error()+`"}`, http.StatusUnauthorized)
+			return
+		}
+
+		reqUserId, err := data.GetUserIdFromJson(r)
+		if err != nil {
+			http.Error(w, `{"error": "Error Parsing JSON: `+err.Error()+`"}`, http.StatusBadRequest)
+			return
+		}
+
+		if id, ok := user["id"].(int); ok {
+			if id < 0 {
+				http.Error(w, `{"error": "Invalid ID"}`, http.StatusUnauthorized)
+				return
+			} else if id != reqUserId {
+				http.Error(w, `{"error": "Unauthorized for editing other users"}`, http.StatusUnauthorized)
+			  return
+			}
+		} else {
+			http.Error(w, `{"error": "Error checking for user id"}`, http.StatusInternalServerError)
+			return
+		}
+		handler(w, r)
+	}
+}
 func respond(w http.ResponseWriter, name string, data interface{}) {
 	resp, err := json.Marshal(map[string]interface{}{name: data})
 	if err != nil {

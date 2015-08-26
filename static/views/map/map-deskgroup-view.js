@@ -74,7 +74,7 @@ var MapDeskGroupView = Backbone.View.extend({
         top: this.model.attributes.xyPosition.y,
         left: this.model.attributes.xyPosition.x,
         height: (maxY + maxHeight + 10) + "px",
-        width: (maxX + maxWidth + (gplus.isLoggedIn() ? 40 : 10)) + "px",
+        width: (maxX + maxWidth + (gplus.isCurrentUserAnAdmin() ? 40 : 10)) + "px",
         transform: "rotate(" + this.model.attributes.rotation + "deg)"
       });
     return this;
@@ -94,7 +94,7 @@ var MapDeskGroupView = Backbone.View.extend({
   },
 
   onGPlusChange: function() {
-    if(gplus.isLoggedIn()){
+    if(gplus.isCurrentUserAnAdmin()){
         this.$el
         .draggable({containment: "parent", stop: this.deskGroupModified.bind(this), drag: this.deskGroupDragged.bind(this)})
         .resizable({stop: this.deskGroupModified.bind(this)});

@@ -66,7 +66,7 @@ var MapPlaceView = Backbone.View.extend({
   },
 
   onGPlusChange: function() {
-    if(gplus.isLoggedIn()){
+    if(gplus.isCurrentUserAnAdmin()){
         this.$el
         .draggable({containment: "parent", stop: this.placeModified.bind(this), drag: this.placeDragged.bind(this)})
         .resizable({stop: this.placeModified.bind(this)});

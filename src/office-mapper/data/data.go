@@ -297,6 +297,15 @@ func InsertFromJson(body io.Reader, obj interface{}) error {
 	return insertOne(obj)
 }
 
+func GetUserIdFromJson(r *http.Request) (int, error) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		return -1, errors.New("bad object id " + err.Error())
+	}
+	return id, nil
+}
+
 func UpdateRowFromJson(w http.ResponseWriter, r *http.Request, obj interface{}) bool {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
