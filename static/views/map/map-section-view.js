@@ -43,9 +43,8 @@ var MapSectionView = Backbone.View.extend({
       var newPlace = new MapPlaceView({model: place});
       this.$el.append(newPlace.el);
     },this));
-    this.$el.append("<div class='mapSectionAddButton clickable shadowed'>+</div>");
+    this.$el.append("<div class='mapSectionAddButton clickable displayNone shadowed'>+</div>");
     this.$el.find(".mapSectionAddButton").click(this.showCreateDialog.bind(this));
-    this.$el.find(".mapDeskAddButton").click(this.createDesk.bind(this));
 
     this.render();
     this.onGPlusChange();
@@ -80,10 +79,17 @@ var MapSectionView = Backbone.View.extend({
       this.showingCreateDialog = false;
       var newRoom = this.model.attributes.rooms.create({
           name: "New Room",
-          position: {x: 0, y:0, h: 100, w: 100},
+          position: {x: 10, y:10, h: 100, w: 100},
           mapId: pageState.attributes.currentMapId,
           sectionId: this.model.attributes.id
-        }, {success: function(){location.reload();} }
+        }, 
+        { success: _.bind(function(model){
+            this.$el.append(new MapRoomView({model:model}).el);
+            rooms.add(model);
+            pageState.mapSelectionClick = false;
+            pageState.selectObject(model);
+          },this)
+        }
       );
     // new MapRoomView({model: newRoom});
     } else {
@@ -97,10 +103,16 @@ var MapSectionView = Backbone.View.extend({
       this.showingCreateDialog = false;
       var newPlace = this.model.attributes.places.create({
           name: "New Place",
-          position: {x: 0, y:0, h: 100, w: 100},
+          position: {x: 10, y:10, h: 100, w: 100},
           mapId: pageState.attributes.currentMapId,
           sectionId: this.model.attributes.id
-        }, {success: function(){location.reload();} }
+        }, {success: _.bind(function(model){
+            this.$el.append(new MapPlaceView({model:model}).el)
+            places.add(model);
+            pageState.mapSelectionClick = false;
+            pageState.selectObject(model);
+          },this)
+        }
       );
     // new MapPlaceView({model: newPlace});
     } else {
@@ -113,29 +125,18 @@ var MapSectionView = Backbone.View.extend({
       this.$el.find(".mapSectionAddDialog").remove();
       this.showingCreateDialog = false;
       var newDeskGroup = this.model.attributes.deskGroups.create({
-          xyPosition: {x: 0, y:0},
+          xyPosition: {x: 10, y:10},
           mapId: pageState.attributes.currentMapId,
           sectionId: this.model.attributes.id,
           desks: new Desks()
-        }, {success: function(){location.reload();} }
+        },{success: _.bind(function(model){
+            this.$el.append(new MapDeskGroupView({model:model}).el)
+            pageState.mapSelectionClick = false;
+            pageState.selectObject(model);
+          },this)
+        }
       );
     // new MapDeskGroupView({model: newDeskGroup});
-    } else {
-      alert("You are not logged in");
-    }
-  },
-
-  createDesk: function(evt) {
-    if(gplus.isCurrentUserAnAdmin()) {
-      var deskGroupId = parseInt(evt.target.parentNode.id.split("_")[2]);
-      var clickedDeskGroup = this.model.attributes.deskGroups.findWhere({id:deskGroupId});
-      var newDesk = clickedDeskGroup.attributes.desks.create({
-        deskGroupId: deskGroupId,
-        position: {x:0, y:0, h:40, w:20},
-        rotation: 0
-        }, {success: function(){location.reload();} }
-      );
-    // new MapDeskView({model: newDesk});
     } else {
       alert("You are not logged in");
     }
@@ -157,6 +158,7 @@ var MapSectionView = Backbone.View.extend({
   },
 
   sectionDragged: function(evt) {
+    this.$el.parent().append(this.$el);
     var map = $("#map");
     var section = evt.target;
     if (map.width() - (parseInt(section.style.left) + parseInt(section.style.width)) < 100) {
@@ -174,10 +176,12 @@ var MapSectionView = Backbone.View.extend({
         this.$el
         .draggable({containment: "parent", stop: this.sectionModified.bind(this), drag: this.sectionDragged.bind(this)})
         .resizable({stop: this.sectionModified.bind(this)});
+        this.$(".mapSectionAddButton").removeClass("displayNone");
       }
       else{ 
         if (this.$el.resizable("instance")) this.$el.resizable("destroy");
         if (this.$el.draggable("instance")) this.$el.draggable("destroy");
+        this.$(".mapSectionAddButton").addClass("displayNone");
       }
   },
   render: function() {

@@ -3,7 +3,7 @@ var MapView = Backbone.View.extend({
   initialize: function(){
     this.render();
     this.listenTo(pageState, 'change', this.render);
-    this.listenTo(pageState, 'change', setTimeout.bind(window, this.highlightItem, 1));
+    this.listenTo(pageState, 'change', this.highlightItem);
     this.currentlyDisplayedMapId = -1;
   },
 
@@ -34,6 +34,12 @@ var MapView = Backbone.View.extend({
 
         selectedElement[0].scrollIntoView();
       }
+      selectedElement.parent().append(selectedElement);
+
+      //Show the DeskGroup
+      if (pState.attributes.selectedObject instanceof Desk || pState.attributes.selectedObject instanceof User) {
+        selectedElement.parent().parent().append(selectedElement.parent());
+      }
       selectedElement.addClass(classToAdd);
     }
     pState.mapSelectionClick = false;
@@ -46,7 +52,7 @@ var MapView = Backbone.View.extend({
         this.listenTo(this.model.getCurrentMap().attributes.sections, 'change', this.render);
         this.currentlyDisplayedMapId = this.model.get('currentMapId')
         $("#map").empty();
-        $("#map").append("<div id='new_section_button' class='shadowed clickable'>+</div>");
+        $("#map").append("<div id='new_section_button' class='shadowed clickable displayNone'>+</div>");
         var curMap = this.model.getCurrentMap()
         this.$("#map_name").text(curMap.attributes.name);
         var sections = curMap.attributes.sections;
@@ -89,7 +95,10 @@ var MapView = Backbone.View.extend({
       this.$("#map_name").text("loading...");
     }
     return this;
-  }
+  },
+  onGPlusChange: function() {
+    $("#new_section_button").toggleClass("displayNone", gplus.isLoggedIn());
+  },
 });
 
 function renderMapView(pState) {

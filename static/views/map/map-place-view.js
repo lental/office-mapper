@@ -57,6 +57,9 @@ var MapPlaceView = Backbone.View.extend({
         h: parseInt(evt.target.style.height)
       }});
   },
+  placeDragged: function(evt) {
+    this.$el.parent().append(this.$el);
+  },
   updatePageStateAfterModification: function(obj, change) {
     pageState.selectObject(obj);
     pageState.setOnSelectedObject(change);
@@ -65,7 +68,7 @@ var MapPlaceView = Backbone.View.extend({
   onGPlusChange: function() {
     if(gplus.isLoggedIn()){
         this.$el
-        .draggable({containment: "parent", stop: this.placeModified.bind(this)})
+        .draggable({containment: "parent", stop: this.placeModified.bind(this), drag: this.placeDragged.bind(this)})
         .resizable({stop: this.placeModified.bind(this)});
       }
       else{ 

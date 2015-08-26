@@ -1,4 +1,5 @@
 var MapDeskView = Backbone.View.extend({
+  deskOffset: 5, //The amount of top and left padding desired
   tagName: "div",
   className: "mapDesk shadowed",
   id: function() {return "map_desk_" + this.model.attributes.id;},
@@ -27,37 +28,47 @@ var MapDeskView = Backbone.View.extend({
   },
   sync: function(event) {
     console.log("synced");
-    this.$el.css({
-      height: this.model.attributes.position.h,
-      width: this.model.attributes.position.w,
-      top: this.model.attributes.position.y,
-      left: this.model.attributes.position.x,
-      transform: "rotate(" + this.model.attributes.rotation + "deg)"
-    })
+    this.$el.attr("id",this.id());
+    this.$(".mapDeskName").html(this.model.attributes.id);
+    this.render();
   },
   template: _.template(
-    "<div class='mapDeskName invisible'><%= id %></div>"
+    "<div class='mapDeskName '><%= id %></div>" //invisible could be default if desired
   ),
   render: function() {
     this.user = users.getUserByDeskId(this.model.attributes.id);
     this.$el.toggleClass("mapDeskFull", this.user != null) ;
       
     this.$el.css({
+      top: this.model.attributes.position.y + this.deskOffset,
+      left: this.model.attributes.position.x + this.deskOffset,
       height: this.model.attributes.position.h,
       width: this.model.attributes.position.w,
-      top: this.model.attributes.position.y,
-      left: this.model.attributes.position.x,
       transform: "rotate(" + this.model.attributes.rotation + "deg)"
     });
     return this;
   },
 
+  deskDragged: function(evt) {
+    this.$el.parent().append(this.$el);
+    var desk = evt.target;
+    var deskGroup = this.$el.parent();
+    if (deskGroup.width() - (parseInt(desk.style.left) + parseInt(desk.style.width)) <30) {
+      console.log("widening deskgroup");
+      deskGroup.width((parseInt(desk.style.left) + parseInt(desk.style.width))+30);
+    }
+    if (deskGroup.height() - (parseInt(desk.style.top) + parseInt(desk.style.height)) <5) {
+      console.log("heightening deskgroup");
+      deskGroup.height((parseInt(desk.style.top) + parseInt(desk.style.height))+ 5);
+    }
+  },
   onGPlusChange: function() {
-    this.$(".mapDeskName").toggleClass("invisible", !gplus.isLoggedIn());
+    // this.$(".mapDeskName").toggleClass("invisible", !gplus.isLoggedIn());
     if(gplus.isLoggedIn()){
-        this.$el
-        .draggable({containment: "parent", stop: this.deskModified.bind(this)})
+      this.$el
+        .draggable({stop: this.deskModified.bind(this), drag: this.deskDragged.bind(this)})
         .resizable({stop: this.deskModified.bind(this)});
+
       }
       else{ 
         if (this.$el.resizable("instance")) this.$el.resizable("destroy");
@@ -71,8 +82,8 @@ var MapDeskView = Backbone.View.extend({
     // var desk = this.model.attributes.deskGroups.findWhere({id:deskGroupId}).attributes.desks.get(deskId);
     this.updatePageStateAfterModification(this.model,{
       position: {
-        x: parseInt(evt.target.style.left),
-        y: parseInt(evt.target.style.top),
+        x: parseInt(evt.target.style.left - this.deskOffset),
+        y: parseInt(evt.target.style.top - this.deskOffset),
         w: parseInt(evt.target.style.width),
         h: parseInt(evt.target.style.height)
     }});

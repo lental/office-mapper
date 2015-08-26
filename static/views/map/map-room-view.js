@@ -5,6 +5,7 @@ var MapRoomView = Backbone.View.extend({
   initialize: function() {
     this.render();
     this.onGPlusChange();
+    this.listenTo(this.model, 'change', this.render);
     this.listenTo(this.model, 'sync', this.sync);
     this.listenTo(this.model, 'destroy', this.destroy);
     this.listenTo(gplus, 'change', this.onGPlusChange);
@@ -58,6 +59,10 @@ var MapRoomView = Backbone.View.extend({
         h: parseInt(evt.target.style.height)
       }});
   },
+  roomDragged: function(evt) {
+    this.$el.parent().append(this.$el);
+  },
+
   updatePageStateAfterModification: function(obj, change) {
     pageState.selectObject(obj);
     pageState.setOnSelectedObject(change);
@@ -67,7 +72,7 @@ var MapRoomView = Backbone.View.extend({
     this.$(".mapDeskName").toggleClass("invisible", !gplus.isLoggedIn());
     if(gplus.isLoggedIn()){
         this.$el
-        .draggable({containment: "parent", stop: this.roomModified.bind(this)})
+        .draggable({containment: "parent", stop: this.roomModified.bind(this), drag: this.roomDragged.bind(this)})
         .resizable({stop: this.roomModified.bind(this)});
       }
       else{ 
