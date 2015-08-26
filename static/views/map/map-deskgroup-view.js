@@ -5,7 +5,15 @@ var MapDeskGroupView = Backbone.View.extend({
   id: function() {return "map_deskgroup_" + this.model.attributes.id},
   initialize: function() {
     this.render();
+    this.onGPlusChange();
     this.listenTo(this.model, 'sync', this.sync);
+    this.listenTo(gplus, 'change', this.onGPlusChange);
+
+    this.$el.click(function(evt){
+      pageState.mapSelectionClick = true;
+      pageState.selectObject(this.model);
+      evt.stopPropagation();
+    }.bind(this));
   },
 
   sync: function(event) {
@@ -49,6 +57,32 @@ var MapDeskGroupView = Backbone.View.extend({
       transform: "rotate(" + this.model.attributes.rotation + "deg)"
     });
     return this;
-  }
+  },
+
+  deskGroupModified: function(evt) {
+    this.updatePageStateAfterModification(this.model,{
+      xyPosition: {
+        x: parseInt(evt.target.style.left),
+        y: parseInt(evt.target.style.top),
+        // w: parseInt(evt.target.style.width),
+        // h: parseInt(evt.target.style.height)
+      }});
+  },
+  
+  onGPlusChange: function() {
+    if(gplus.isLoggedIn()){
+        this.$el
+        .draggable({containment: "parent", stop: this.deskGroupModified.bind(this)})
+        .resizable({stop: this.deskGroupModified.bind(this)});
+      }
+      else{ 
+        if (this.$el.resizable("instance")) this.$el.resizable("destroy");
+        if (this.$el.draggable("instance")) this.$el.draggable("destroy");
+      }
+  },
+  updatePageStateAfterModification: function(obj, change) {
+    pageState.selectObject(obj);
+    pageState.setOnSelectedObject(change);
+  },
 });
 
