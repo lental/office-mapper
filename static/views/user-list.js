@@ -13,6 +13,7 @@ var UserListView = Backbone.View.extend({
   initialize: function(){
     this.listenTo(pageState, 'change', this.render);
     this.listenTo(this.model, 'add', this.render);
+    this.listenTo(this.model, 'change', this.initialRender);
     this.hiding = false;
     this.initialRender();
     this.render();

@@ -1,51 +1,17 @@
 
 var MapView = Backbone.View.extend({
   initialize: function(){
+    this.renderCurrentMap()
     this.render();
     this.listenTo(pageState, 'change', this.render);
+    this.listenTo(pageState, 'change:currentMapLoaded', this.renderCurrentMap);
+    this.listenTo(pageState, 'change:currentMapId', this.renderCurrentMap);
     this.listenTo(pageState, 'change', this.highlightItem);
     this.currentlyDisplayedMapId = -1;
   },
 
-  el: '#map',
-
-  highlightItem: function(pState) {
-    var selectedElement;
-    if (pState.attributes.selectedObject instanceof Place) {
-      selectedElement = $("#map_place_" + pState.attributes.selectedObject.attributes.id);
-    }
-    if (pState.attributes.selectedObject instanceof Room) {
-      selectedElement = $("#map_room_" + pState.attributes.selectedObject.attributes.id);
-    }
-    if (pState.attributes.selectedObject instanceof DeskGroup) {
-      selectedElement = $("#map_deskgroup_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
-    }
-    if (pState.attributes.selectedObject instanceof Desk) {
-      selectedElement = $("#map_desk_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
-    }
-    if (pState.attributes.selectedObject instanceof User) {
-      selectedElement = $("#map_desk_" + pState.attributes.selectedObject.attributes.deskId).addClass(classToAdd);
-    }
-
-    if (selectedElement) {
-      var classToAdd = "mapSelectedItem mapAnimateSelectedItem";
-      $(".mapSelectedItem.mapAnimateSelectedItem").removeClass(classToAdd);
-      if (!pState.mapSelectionClick && isChildPartiallyOutsideOfParent(selectedElement[0], $("#map-wrapper")[0])) {
-
-        selectedElement[0].scrollIntoView();
-      }
-      selectedElement.parent().append(selectedElement);
-
-      //Show the DeskGroup
-      if (pState.attributes.selectedObject instanceof Desk || pState.attributes.selectedObject instanceof User) {
-        selectedElement.parent().parent().append(selectedElement.parent());
-      }
-      selectedElement.addClass(classToAdd);
-    }
-    pState.mapSelectionClick = false;
-  },
-
-  render: function() {
+  renderCurrentMap: function() {
+    console.log("Maybe rendering new map");
     if(pageState.get("currentMapLoaded")) {
       if(this.currentlyDisplayedMapId != this.model.get('currentMapId')) {
         console.log("rendering new map");
@@ -88,12 +54,54 @@ var MapView = Backbone.View.extend({
           
           // $("#map").prepend((new MapSectionView({model: newSection})).el);
         }.bind(this));
+
+        this.highlightItem(pageState);
       }
     }
-    else
-    {
-      this.$("#map_name").text("loading...");
+  },
+  el: '#map',
+
+  highlightItem: function(pState) {
+    var selectedElement;
+    if (pState.attributes.selectedObject instanceof Place) {
+      selectedElement = $("#map_place_" + pState.attributes.selectedObject.attributes.id);
     }
+    if (pState.attributes.selectedObject instanceof Room) {
+      selectedElement = $("#map_room_" + pState.attributes.selectedObject.attributes.id);
+    }
+    if (pState.attributes.selectedObject instanceof DeskGroup) {
+      selectedElement = $("#map_deskgroup_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
+    }
+    if (pState.attributes.selectedObject instanceof Desk) {
+      selectedElement = $("#map_desk_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
+    }
+    if (pState.attributes.selectedObject instanceof User) {
+      selectedElement = $("#map_desk_" + pState.attributes.selectedObject.attributes.deskId).addClass(classToAdd);
+    }
+
+    if (selectedElement && selectedElement.length > 0) {
+      var classToAdd = "mapSelectedItem mapAnimateSelectedItem";
+      $(".mapSelectedItem.mapAnimateSelectedItem").removeClass(classToAdd);
+      if (!pState.mapSelectionClick && isChildPartiallyOutsideOfParent(selectedElement[0], $("#map-wrapper")[0])) {
+
+        selectedElement[0].scrollIntoView();
+      }
+      selectedElement.parent().append(selectedElement);
+
+      //Show the DeskGroup
+      if (pState.attributes.selectedObject instanceof Desk || pState.attributes.selectedObject instanceof User) {
+        selectedElement.parent().parent().append(selectedElement.parent());
+      }
+      selectedElement.addClass(classToAdd);
+    }
+    else {
+      console.log("Could not find selected element")
+    }
+    pState.mapSelectionClick = false;
+  },
+
+  render: function() {
+
     return this;
   },
   onGPlusChange: function() {
