@@ -34,8 +34,8 @@ func AppHandlers() http.Handler {
 	r.HandleFunc("/v1/users", authorizeAdmin(NewUserHandler)).Methods("POST")
 	r.HandleFunc("/v1/users/{id}", UserHandler).Methods("GET")
 	r.HandleFunc("/v1/users/{id}", authorizeAdmin(DeleteUserHandler)).Methods("DELETE")
-	r.HandleFunc("/v1/users/{id}", authorizeSelfOrAdmin(UpdateUserHandler)).Methods("PUT")
-	r.HandleFunc("/v1/users/{id}", authorizeAdmin(UpdateUserHandler)).Methods("PATCH")
+	r.HandleFunc("/v1/users/{id}", parseBody(authorizeSelfOrAdminWithBody, UpdateUserHandlerWithBody)).Methods("PUT")
+	r.HandleFunc("/v1/users/{id}", parseBody(authorizeSelfOrAdminWithBody, UpdateUserHandlerWithBody)).Methods("PATCH")
 	r.HandleFunc("/v1/rooms", RoomsHandler).Methods("GET")
 	r.HandleFunc("/v1/rooms", authorizeAdmin(NewRoomHandler)).Methods("POST")
 	r.HandleFunc("/v1/rooms/{id}", RoomHandler).Methods("GET")
@@ -87,8 +87,24 @@ func getIdToken(w http.ResponseWriter, r *http.Request) string {
 	return id_tokens[0]
 }
 
+type requestBodyJson map[string]interface{}
 type handlerFunction func(http.ResponseWriter, *http.Request)
 
+type handlerFunctionWithBody func(requestBodyJson, http.ResponseWriter, *http.Request)
+type authorizeFunctionWithBody func(requestBodyJson, handlerFunctionWithBody, http.ResponseWriter, *http.Request)
+
+func parseBody(authorize authorizeFunctionWithBody, handler handlerFunctionWithBody) handlerFunction {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		updateData, err := data.GetUpdateDataFromJson(r)
+		if err != nil {
+			http.Error(w, `{"error": "Error Parsing JSON: `+err.Error()+`"}`, http.StatusBadRequest)
+			return
+		}
+		authorize(updateData, handler, w, r)
+	}
+
+}
 func authorizeAdmin(handler handlerFunction) handlerFunction {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id_token := getIdToken(w, r)
@@ -114,40 +130,38 @@ func authorizeAdmin(handler handlerFunction) handlerFunction {
 	}
 }
 
-func authorizeSelfOrAdmin(handler handlerFunction) handlerFunction {
-	return func(w http.ResponseWriter, r *http.Request) {
-		id_token := getIdToken(w, r)
-		if id_token == "" {
-			return
-		}
-		user, err := data.GetUserByToken(id_token)
-		if err != nil {
-			http.Error(w, `{"error": "Error authorizing user: `+err.Error()+`"}`, http.StatusUnauthorized)
-			return
-		}
-
-		reqUserId, err := data.GetUserIdFromJson(r)
-		if err != nil {
-			http.Error(w, `{"error": "Error Parsing JSON: `+err.Error()+`"}`, http.StatusBadRequest)
-			return
-		}
-
-		if admin, ok := user["admin"].(bool); ok {
-			if !admin {
-				if !checkIdOfUserMatches(w, reqUserId, user) {
-					return
-				}
-				if !ensureAdminNotChanged(w, r) {
-					return
-				}
-			}
-		} else {
-			http.Error(w, `{"error": "Error checking for user admin"}`, http.StatusInternalServerError)
-			return
-		}
-		
-		handler(w, r)
+func authorizeSelfOrAdminWithBody(updateData requestBodyJson, handler handlerFunctionWithBody, w http.ResponseWriter, r *http.Request) {
+	id_token := getIdToken(w, r)
+	if id_token == "" {
+		return
 	}
+	user, err := data.GetUserByToken(id_token)
+	if err != nil {
+		http.Error(w, `{"error": "Error authorizing user: `+err.Error()+`"}`, http.StatusUnauthorized)
+		return
+	}
+
+	reqUserId, err := data.GetUserIdFromQueryString(r)
+	if err != nil {
+		http.Error(w, `{"error": "Error Parsing JSON: `+err.Error()+`"}`, http.StatusBadRequest)
+		return
+	}
+
+	if admin, ok := user["admin"].(bool); ok {
+		if !admin {
+			if !checkIdOfUserMatches(w, reqUserId, user) {
+				return
+			}
+			if !ensureAdminNotChanged(updateData, w, r) {
+				return
+			}
+		}
+	} else {
+		http.Error(w, `{"error": "Error checking for user admin"}`, http.StatusInternalServerError)
+		return
+	}
+	
+	handler(updateData, w, r)
 }
 
 func checkIdOfUserMatches(w http.ResponseWriter, reqUserId int, user map[string]interface{}) bool {
@@ -165,12 +179,8 @@ func checkIdOfUserMatches(w http.ResponseWriter, reqUserId int, user map[string]
 	}
 	return true
 }
-func ensureAdminNotChanged(w http.ResponseWriter,r *http.Request) bool {
-	updateData, err := data.GetUpdateDataFromJson(r)
-	if err != nil {
-		http.Error(w, `{"error": "Error Parsing JSON: `+err.Error()+`"}`, http.StatusBadRequest)
-		return false
-	} else if admin, ok := updateData["admin"].(bool); ok {
+func ensureAdminNotChanged(updateData requestBodyJson, w http.ResponseWriter,r *http.Request) bool {
+	if admin, ok := updateData["admin"].(bool); ok {
 		if (admin) {
 			http.Error(w, `{"error": "Unauthorized."}`, http.StatusUnauthorized)
 			return false
@@ -350,9 +360,9 @@ func NewUserHandler(w http.ResponseWriter, r *http.Request) {
 	respond(w, "user", u)
 }
 
-func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
+func UpdateUserHandlerWithBody(updateData requestBodyJson, w http.ResponseWriter, r *http.Request) {
 	user := &data.User{}
-	if data.UpdateRowFromJson(w, r, &user) {
+	if data.UpdateRowFromBody(updateData, w, r, &user) {
 		respond(w, "user", user)
 	}
 }

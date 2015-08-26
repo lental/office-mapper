@@ -297,7 +297,7 @@ func InsertFromJson(body io.Reader, obj interface{}) error {
 	return insertOne(obj)
 }
 
-func GetUserIdFromJson(r *http.Request) (int, error) {
+func GetUserIdFromRoute(r *http.Request) (int, error) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -318,16 +318,22 @@ func GetUpdateDataFromJson(r *http.Request) (map[string]interface{}, error) {
 }
 
 func UpdateRowFromJson(w http.ResponseWriter, r *http.Request, obj interface{}) bool {
-	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		http.Error(w, `{"error": "bad object id"}`, http.StatusBadRequest)
-		return false
-	}
+
 
 	updateData, err := GetUpdateDataFromJson(r)
 	if err != nil {
 		http.Error(w, `{"error": "Error parsing JSON: `+err.Error()+`"}`, http.StatusBadRequest)
+		return false
+	}
+
+	return UpdateRowFromBody(updateDAta, w, r, obj)
+}
+
+func UpdateRowFromBody(updateData map[string]interface{}, w http.ResponseWriter, r *http.Request, obj interface{}) bool {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, `{"error": "bad object id"}`, http.StatusBadRequest)
 		return false
 	}
 
