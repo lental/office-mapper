@@ -4,62 +4,57 @@ var MapView = Backbone.View.extend({
     this.renderCurrentMap()
     this.render();
     this.listenTo(pageState, 'change', this.render);
-    this.listenTo(pageState, 'change:currentMapLoaded', this.renderCurrentMap);
-    this.listenTo(pageState, 'change:currentMapId', this.renderCurrentMap);
     this.listenTo(pageState, 'change:selectedObject', this.highlightItem);
-    this.currentlyDisplayedMapId = -1;
+    this.listenTo(gplus, 'change', this.onGPlusChange);
   },
 
   renderCurrentMap: function() {
-    console.log("Maybe rendering new map");
-    if(pageState.get("currentMapLoaded")) {
-      if(this.currentlyDisplayedMapId != this.model.get('currentMapId')) {
-        console.log("rendering new map");
-        this.listenTo(this.model.getCurrentMap().attributes.sections, 'change', this.render);
-        this.currentlyDisplayedMapId = this.model.get('currentMapId')
-        $("#map").empty();
-        $("#map").append("<div id='new_section_button' class='shadowed clickable displayNone'>+</div>");
-        var curMap = this.model.getCurrentMap()
-        this.$("#map_name").text(curMap.attributes.name);
-        var sections = curMap.attributes.sections;
-        var maxX = 0;
-        var maxWidth = 0;
-        var maxY = 0;
-        var maxHeight = 0;
-        sections.forEach(function(section){
-          if (section.attributes.position.x + section.attributes.position.w >= maxX + maxWidth) {
-            maxX = section.attributes.position.x;
-            maxWidth = section.attributes.position.w;
-          }
-          if (section.attributes.position.y + section.attributes.position.h >= maxY + maxHeight) {
-            maxY = section.attributes.position.y;
-            maxHeight = section.attributes.position.h;
-          }
-          $("#map").prepend((new MapSectionView({model: section})).el);
-        });
-        $("#map").css({width: (maxX+maxWidth+100) + "px", height: (maxY+maxHeight+100) + "px"});
-        $("#new_section_button").css({left: ($("#map")[0].scrollWidth - 80)+"px"});
-        $("#new_section_button").click(function(){
-          if(gplus.isCurrentUserAnAdmin()) {
-          var newSection = this.model.getCurrentMap().attributes.sections.create({map_id: parseInt(this.model.attributes.currentMapId),
-            name: "New Section",
-            position: {x: 0, y: 0, w: 200, h: 200},
-            deskGroups: new DeskGroups([]),
-            places: new Places([]),
-            rooms: new Rooms([])
-          },{success: function(){location.reload();}});
-          } else {
-            alert("You are not logged in");
-          }
-          
-          // $("#map").prepend((new MapSectionView({model: newSection})).el);
-        }.bind(this));
-
-        this.highlightItem(pageState);
+    console.log("rendering new map");
+    this.listenTo(this.model.attributes.sections, 'change', this.render);
+    this.$el.empty();
+    this.$el.append("<div id='new_section_button' class='shadowed clickable displayNone'>+</div>");
+    var curMap = this.model;
+    this.$("#map_name").text(curMap.attributes.name);
+    var sections = curMap.attributes.sections;
+    var maxX = 0;
+    var maxWidth = 0;
+    var maxY = 0;
+    var maxHeight = 0;
+    sections.forEach(_.bind(function(section){
+      if (section.attributes.position.x + section.attributes.position.w >= maxX + maxWidth) {
+        maxX = section.attributes.position.x;
+        maxWidth = section.attributes.position.w;
       }
-    }
+      if (section.attributes.position.y + section.attributes.position.h >= maxY + maxHeight) {
+        maxY = section.attributes.position.y;
+        maxHeight = section.attributes.position.h;
+      }
+      this.$el.prepend((new MapSectionView({model: section})).el);
+    }, this));
+    this.$el.css({width: (maxX+maxWidth+100) + "px", height: (maxY+maxHeight+100) + "px"});
+    $("#new_section_button").css({left: (this.$el[0].scrollWidth - 80)+"px"});
+    $("#new_section_button").click(function(){
+      if(gplus.isCurrentUserAnAdmin()) {
+      var newSection = this.model.attributes.sections.create({map_id: parseInt(this.model.attributes.id),
+        name: "New Section",
+        position: {x: 0, y: 0, w: 200, h: 200},
+        deskGroups: new DeskGroups([]),
+        places: new Places([]),
+        rooms: new Rooms([])
+      },{success: function(){location.reload();}});
+      } else {
+        alert("You are not logged in");
+      }
+      
+      // $("#map").prepend((new MapSectionView({model: newSection})).el);
+    }.bind(this));
+
+    this.highlightItem(pageState);
+    this.onGPlusChange();
   },
-  el: '#map',
+  tagName: "div",
+  id: "map",
+  className: "flexElement",
 
   highlightItem: function(pState) {
 
@@ -124,10 +119,6 @@ var MapView = Backbone.View.extend({
     return this;
   },
   onGPlusChange: function() {
-    $("#new_section_button").toggleClass("displayNone", gplus.isCurrentUserAnAdmin());
+    $("#new_section_button").toggleClass("displayNone", !gplus.isCurrentUserAnAdmin());
   },
 });
-
-function renderMapView(pState) {
-  mapView = new MapView({model:pState});
-}
