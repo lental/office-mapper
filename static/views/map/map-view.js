@@ -6,7 +6,7 @@ var MapView = Backbone.View.extend({
     this.listenTo(pageState, 'change', this.render);
     this.listenTo(pageState, 'change:currentMapLoaded', this.renderCurrentMap);
     this.listenTo(pageState, 'change:currentMapId', this.renderCurrentMap);
-    this.listenTo(pageState, 'change', this.highlightItem);
+    this.listenTo(pageState, 'change:selectedObject', this.highlightItem);
     this.currentlyDisplayedMapId = -1;
   },
 
@@ -62,6 +62,22 @@ var MapView = Backbone.View.extend({
   el: '#map',
 
   highlightItem: function(pState) {
+
+    var selectedObject = pState.attributes.selectedObject;
+
+    //This code doesn't selectMap for User click, but that is handled in pageState
+    if (!selectedObject) {
+      console.log("trying to highlight without a selected object");
+      return;
+    }
+
+    var selectedMapId = selectedObject.get('mapId') || selectedObject.get('map_id');
+    if (selectedMapId != pState.get('currentMapId')){
+      console.log("trying to highlight from a different map. Switching map now");
+      pState.selectMapId(selectedMapId);
+      return;
+    }
+
     var selectedElement;
     if (pState.attributes.selectedObject instanceof Place) {
       selectedElement = $("#map_place_" + pState.attributes.selectedObject.attributes.id);

@@ -21,6 +21,7 @@ GPlus =  Backbone.Model.extend({
       return this.get('authToken');
     },
     isCurrentUserAnAdmin: function() {
+      if (!this.isLoggedIn()) return false;
       var user = users.getUserByGPlusId(this.getUserId());
       return user != null ? user.get('admin') : false ;
     }
