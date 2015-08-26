@@ -72,6 +72,7 @@ PageState =  Backbone.Model.extend({
           if(occupant != null ){
             console.log("Error: This desk is already occupied by " + occupant.get('name') + ". Please select another desk");
             errorCallback(occupant);
+            return;
           }
           this.get("modifiedObjects").add(this.get("selectedObject"));
 

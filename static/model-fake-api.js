@@ -36,11 +36,11 @@ $( document ).ready(function(){
 
     connectGPlusView();
 
+    renderPageView(pageState);
     renderLoadingOverlayView();
     renderEditForm();
     renderSearchBar();
     renderListBarSquishView();
     renderEditBarSquishView();
-    renderMapView(pageState);
     renderModifiedObjectsView();
 });
