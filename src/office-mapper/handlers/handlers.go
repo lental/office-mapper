@@ -141,7 +141,7 @@ func authorizeSelfOrAdminWithBody(updateData requestBodyJson, handler handlerFun
 		return
 	}
 
-	reqUserId, err := data.GetUserIdFromQueryString(r)
+	reqUserId, err := data.GetUserIdFromRoute(r)
 	if err != nil {
 		http.Error(w, `{"error": "Error Parsing JSON: `+err.Error()+`"}`, http.StatusBadRequest)
 		return
@@ -166,10 +166,7 @@ func authorizeSelfOrAdminWithBody(updateData requestBodyJson, handler handlerFun
 
 func checkIdOfUserMatches(w http.ResponseWriter, reqUserId int, user map[string]interface{}) bool {
 	if id, ok := user["id"].(int); ok {
-		if id < 0 {
-			http.Error(w, `{"error": "Invalid ID"}`, http.StatusUnauthorized)
-			return false
-		} else if id != reqUserId {
+		if id != reqUserId {
 			http.Error(w, `{"error": "Unauthorized for editing other users"}`, http.StatusUnauthorized)
 		  return false
 		}

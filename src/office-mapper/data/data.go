@@ -326,7 +326,7 @@ func UpdateRowFromJson(w http.ResponseWriter, r *http.Request, obj interface{}) 
 		return false
 	}
 
-	return UpdateRowFromBody(updateDAta, w, r, obj)
+	return UpdateRowFromBody(updateData, w, r, obj)
 }
 
 func UpdateRowFromBody(updateData map[string]interface{}, w http.ResponseWriter, r *http.Request, obj interface{}) bool {
