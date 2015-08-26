@@ -2,7 +2,8 @@ GPlus =  Backbone.Model.extend({
     defaults: {
       googleUser: null,
       error: null,
-      authToken: null
+      authToken: null,
+      usersLoaded: false
     },
     isLoggedIn: function() {
       return this.get("googleUser") != null;

@@ -2,13 +2,16 @@ var GPlusButtonView = Backbone.View.extend({
   initialize: function(){
     this.render();
     this.listenTo(gplus, 'change', this.render);
+    this.listenToOnce(pageState, 'change:usersLoaded', this.onUsersLoaded);
   },
 
   events: {
     "click #signout": "signout",
     "click #updateUsers": "updateUsers"
   },
-
+  onUsersLoaded: function() {
+    gplus.set('usersLoaded', true);
+  },
   updateUsers: function() {
     $("#confirm-dialog").html("Are you sure? This will update the user list to be up-to-date from Google Servers");
     $("#confirm-dialog").dialog({appendTo:"#vertical-flexbox",   
