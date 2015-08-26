@@ -53,6 +53,7 @@ var MapDeskView = Backbone.View.extend({
     this.$el.parent().append(this.$el);
     var desk = evt.target;
     var deskGroup = this.$el.parent();
+    deskGroup.css({transform:"rotate(0)"});
     if (deskGroup.width() - (parseInt(desk.style.left) + parseInt(desk.style.width)) <30) {
       console.log("widening deskgroup");
       deskGroup.width((parseInt(desk.style.left) + parseInt(desk.style.width))+30);
@@ -82,8 +83,8 @@ var MapDeskView = Backbone.View.extend({
     // var desk = this.model.attributes.deskGroups.findWhere({id:deskGroupId}).attributes.desks.get(deskId);
     this.updatePageStateAfterModification(this.model,{
       position: {
-        x: parseInt(evt.target.style.left - this.deskOffset),
-        y: parseInt(evt.target.style.top - this.deskOffset),
+        x: parseInt(evt.target.style.left) - this.deskOffset,
+        y: parseInt(evt.target.style.top) - this.deskOffset,
         w: parseInt(evt.target.style.width),
         h: parseInt(evt.target.style.height)
     }});

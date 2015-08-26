@@ -19,7 +19,12 @@ var ModifiedObjectsView = Backbone.View.extend({
 
   saveAll: function() {
     console.log("saving All Modified");
-    pageState.get("modifiedObjects").each(function(i,o) {o.save()});
+    var counter = 0;
+    pageState.get("modifiedObjects").each(function(i,o) {
+    counter++;
+    setTimeout(function(){
+       o.save();
+    },300 + ( counter * 300 ))});
     pageState.trigger('change', pageState); //HACK 1 of the weekend: need to trigger to update everyone
   },
 
