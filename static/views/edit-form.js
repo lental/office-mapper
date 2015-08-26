@@ -141,7 +141,18 @@ var EditFormView= Backbone.View.extend({
     element = event.currentTarget;
 
     var value = !isNaN(element.value) ? Number(element.value) : element.value;
-    pageState.setDeskOnUserSelectedObject(value)
+    !pageState.setDeskOnUserSelectedObject(value, function(occupant){
+      element.value = pageState.get("selectedObject").get("deskId");
+      $("#desk-occupied-dialog").html("This desk is already occupied by " + occupant.get("name") +". Please choose a different desk");
+      $("#desk-occupied-dialog").dialog({appendTo:"#vertical-flexbox",   
+        buttons: [{
+          text: "Ok",
+          click: function() {
+            $(this).dialog( "close" );
+          }  
+        }]
+      });
+    })
   },
   onPosFieldEdited: function(event) {
     element = event.currentTarget;

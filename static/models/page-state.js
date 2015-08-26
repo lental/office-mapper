@@ -63,13 +63,18 @@ PageState =  Backbone.Model.extend({
         this.get("modifiedObjects").add(this.get("selectedObject"));
         this.trigger('change', this);
     },
-    setDeskOnUserSelectedObject: function(deskId) {
-      this.get("modifiedObjects").add(this.get("selectedObject"));
+    setDeskOnUserSelectedObject: function(deskId,errorCallback) {
       if (this.get("selectedObject") instanceof User) {
         $.get( "v1/desks/" + deskId, _.bind(function( data ) {
           console.log(JSON.stringify(data));
           data = JSON.parse(data);
-        //  callback(data);
+          var occupant = users.getUserByDeskId(data.desk.id);
+          if(occupant != null ){
+            console.log("Error: This desk is already occupied by " + occupant.get('name') + ". Please select another desk");
+            errorCallback(occupant);
+          }
+          this.get("modifiedObjects").add(this.get("selectedObject"));
+
           var markChangeInDesk = function(deskId, mapId) {;
             var nextMap = maps.findWhere({"id":mapId});
             if (nextMap.isFullyLoaded()) {
