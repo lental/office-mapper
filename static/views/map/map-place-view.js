@@ -27,7 +27,7 @@ var MapPlaceView = Backbone.View.extend({
     })
   },
   destroy: function(event) {
-    console.log("Desk destroyed")
+    console.log("Place destroyed")
     this.remove();
     this.render();
   },

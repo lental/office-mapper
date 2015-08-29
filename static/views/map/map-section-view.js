@@ -7,7 +7,6 @@ var MapSectionView = Backbone.View.extend({
     this.listenTo(this.model, 'sync', this.sync);
     this.listenTo(this.model, 'change', this.sync);
     this.listenTo(this.model, 'destroy', this.destroy);
-    // this.listenTo(this.model.deskGroups, 'add', onDeskGroupAdd);
     this.listenTo(gplus, 'change', this.onGPlusChange);
 
     this.$el.click(function(evt){
@@ -93,7 +92,6 @@ var MapSectionView = Backbone.View.extend({
           },this)
         }
       );
-    // new MapRoomView({model: newRoom});
     } else {
       alert("You are not logged in");
     }
@@ -116,7 +114,6 @@ var MapSectionView = Backbone.View.extend({
           },this)
         }
       );
-    // new MapPlaceView({model: newPlace});
     } else {
       alert("You are not logged in");
     }
@@ -138,7 +135,6 @@ var MapSectionView = Backbone.View.extend({
           },this)
         }
       );
-    // new MapDeskGroupView({model: newDeskGroup});
     } else {
       alert("You are not logged in");
     }

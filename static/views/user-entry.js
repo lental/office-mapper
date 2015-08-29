@@ -1,14 +1,12 @@
 var UserEntryView = Backbone.View.extend({
   initialize: function(){
-    // this.listenTo(pageState, 'change', this.render);
-    // this.listenTo(this.model, 'add', this.render);
     this.listenTo(this.model, 'change', this.initialRender);
     this.listenTo(pageState, 'change:searchQuery', this.render);
     this.listenTo(pageState, 'change:selectedObject', this.render);
-    // this.hiding = false;
     this.initialRender();
     this.render();
   },
+
   initialRender: function() {
     this.$el.html(this.template({
       user:this.model,
@@ -37,19 +35,10 @@ var UserEntryView = Backbone.View.extend({
   "<div class='userName'><%= user.get('name') %> </div>" +
   "<div class='userEmail'><%= user.get('email') %> </div>" +
   "<div class='userDesk'>Map: <%= mapName %> </div>" +
-  "</div>" +
-  ""
+  "</div>"
   ),
-  // _.template("<% users.each( function(user) { %>" +
-  //      "<% var isSelected = user ==  %>" +
-  //      "<% var params = JSON.parse(JSON.stringify(user.attributes))%>" +
-  //      "<% params.isSelected = isSelected %>" +
-  //      "<% params.mapName = user.get('mapId') ? maps.getMap(user.get('mapId')).get('name') : 'No Assigned Desk' %>" +
-  //      "<%= userTemplate(params) %>" +
-  //   "<% }); %> "),
 
   render: function() {
-
     var selectedObject = pageState.get('selectedObject');
     var selectedUser;
     if (selectedObject instanceof User) {
@@ -59,7 +48,6 @@ var UserEntryView = Backbone.View.extend({
     }
 
     var isSelected = this.model == selectedUser;
-    // if () { 
     this.$el.toggleClass("displayNone", !(isSelected || this.model.searchMatches(pageState.get('searchQuery'))));
     this.$el.toggleClass("active", isSelected);
     if(isSelected) {
@@ -68,8 +56,6 @@ var UserEntryView = Backbone.View.extend({
         element[0].scrollIntoView();
       }
     }
-    // }
-  
 
     return this;
   }

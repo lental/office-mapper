@@ -30,23 +30,13 @@ var UserListView = Backbone.View.extend({
   },
 
   hideShowUsers: function(event) {
-    // element = event.currentTarget;
     this.hiding = !this.hiding;
     this.render();
   },
 
-  // template: _.template("<% %>" +
-  //      "<% var isSelected = user == pageState.get('selectedObject') %>" +
-  //      "<% var params = JSON.parse(JSON.stringify(user.attributes))%>" +
-  //      "<% params.isSelected = isSelected %>" +
-  //      "<% params.mapName = user.get('mapId') ? maps.getMap(user.get('mapId')).get('name') : 'No Assigned Desk' %>" +
-  //      "<%= userTemplate(params) %>" +
-  //   "<% }); %> "),
-
   render: function() {
     this.$('.listHideButton').html(this.hiding ? "Show" : "Hide");
     this.$('#user-list').toggleClass("hiddenList", this.hiding);
-
 
     var selectedObject = pageState.get('selectedObject');
     var selectedUser;
@@ -59,16 +49,16 @@ var UserListView = Backbone.View.extend({
     this.$('#user-list .listElement').each(_.bind(function(i, o){
       var userForRow = users.getUser(o.dataset.id);
       var isSelected = userForRow == selectedUser;
-      // if () { 
+
       $(o).toggleClass("displayNone", (this.isHiding ||!(isSelected || userForRow.searchMatches(pageState.get('searchQuery')))));
       $(o).toggleClass("active", isSelected);
+
       if(isSelected) {
         var element = this.$('#user-list .listElement[data-id='+selectedUser.get('id')+']');
         if (isChildPartiallyOutsideOfParent(element[0], $("#scrollable-list")[0])) {
           element[0].scrollIntoView();
         }
       }
-      // }
     },this));
 
     return this;

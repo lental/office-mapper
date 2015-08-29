@@ -18,12 +18,14 @@ function auth(){
     _.bind(onAuthSuc, this)
     );
 }
+
 function onAuthSuc(googleUser) {
   console.log("test");
   if(googleUser.g)
   gplus.set('googleUser',googleUser);
   debugger;
 }
+
 function onSuccess(googleUser) {
   if (googleUser.getAuthResponse().access_token){
     console.log("putting new token in storage");

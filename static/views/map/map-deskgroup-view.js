@@ -18,6 +18,7 @@ var MapDeskGroupView = Backbone.View.extend({
       evt.stopPropagation();
     }.bind(this));
   },
+  
   change: function(){
     this.render();
   },

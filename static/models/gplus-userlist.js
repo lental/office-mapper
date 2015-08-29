@@ -9,12 +9,12 @@ GPlusUserList =  Backbone.Model.extend({
   getUserList: function(callback) {
     this.set("list", []);
     gapi.client.load('admin', 'directory_v1', _.bind(function() {
-          // Step 5: Assemble the API request
           console.log(gapi.client);
           this.executeRecursiveRequest({}, callback);
         }, this));
   },
 
+  //Generate the full user list to provide to the API
   executeRecursiveRequest: function(extraArguments, callback) {
     var request = gapi.client.directory.users.list($.extend({
               customer: "my_customer",
@@ -23,8 +23,6 @@ GPlusUserList =  Backbone.Model.extend({
               fields:"etag,kind,nextPageToken,users(creationTime,id,name,primaryEmail,thumbnailPhotoUrl)"
             }, extraArguments));
 
-
-    // Step 6: Execute the API request
     request.execute(_.bind(function(resp) {
       console.log("request complete.");
 

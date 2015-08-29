@@ -76,7 +76,7 @@ var MapView = Backbone.View.extend({
       console.log("trying to highlight without a selected object");
       return;
     } if (selectedObject.modelType == "Map") {
-      console.log("Selected a map. won't highlight");
+      //Selected a map. won't highlight
       return;    
     }
 
