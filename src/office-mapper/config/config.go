@@ -6,8 +6,9 @@ import (
 	_ "github.com/ziutek/mymysql/godrv"
 	"io/ioutil"
 	"log"
-	"ooyala/go-ooyaladb"
+	"office-mapper/db"
 	"os"
+	"strconv"
 )
 
 const (
@@ -28,7 +29,7 @@ type settings struct {
 	} `json:"container"`
 	Dependencies struct {
 		MySQL struct {
-			Address  []string `json:"address"`
+			Address  string `json:"address"`
 			Username string   `json:"username"`
 			Password string   `json:"password"`
 		} `json:"mysql"`
@@ -45,22 +46,28 @@ type settings struct {
 // http_port is the port the service should listen on
 func loadConfig() *settings {
 	var path string
+	s := &settings{}
 	if p := os.Getenv("ATLANTIS"); p == "true" {
 		path = atlantisConfigFilePath
+	} else if p := os.Getenv("HEROKU"); p == "true" {
+		path = ""
 	} else {
 		path = localConfigFilePath
 	}
 
-	data, err := ioutil.ReadFile(path)
-	if err != nil {
-		log.Fatalf("Error reading configuration from %s\n. Error: %s\n", path, err.Error())
-	}
+	if path != "" {
+		data, err := ioutil.ReadFile(path)
+		if err != nil {
+			log.Fatalf("Error reading configuration from %s\n. Error: %s\n", path, err.Error())
+		}
 
-	s := &settings{}
-	err = json.Unmarshal(data, s)
-	if err != nil {
-		log.Fatalf("Error unmarshalling json from config file. Error: %s\nRaw data: %v\n", err.Error(),
-			string(data))
+		err = json.Unmarshal(data, s)
+		if err != nil {
+			log.Fatalf("Error unmarshalling json from config file. Error: %s\nRaw data: %v\n", err.Error(),
+				string(data))
+		}
+	} else {
+		getSettingsFromEnvironment(s)
 	}
 
 	//s.DatadogAddr = datadogAddr
@@ -80,23 +87,34 @@ func loadConfig() *settings {
 	return s
 }
 
-func initDatabaseConn() *oodb.DB {
-	dbs := []string{}
-	for _, h := range Settings.Dependencies.MySQL.Address {
-		connString := fmt.Sprintf("tcp:%s*%s/%s/%s", h, "officemapper", Settings.Dependencies.MySQL.Username, Settings.Dependencies.MySQL.Password)
-		dbs = append(dbs, connString)
+// func getSettingsFromEnvironment({}) {
+func getSettingsFromEnvironment(s *settings) {
+	port, err := strconv.ParseUint(os.Getenv("PORT"), 0, 16)
+	if err != nil {
+		log.Fatalf("Error converting PORT value from environment: %s\n", err.Error())
 	}
+	s.HTTPPort = uint16(port)
+	s.Container.ID = os.Getenv("OM_CONTAINER_ID")
+	s.Container.Host = os.Getenv("OM_CONTAINER_HOST")
+	s.Container.Env = os.Getenv("OM_CONTAINER_ENV")
 
-	db, err := oodb.GetDB("OfficeMapper:", dbs, "mymysql", os.Stderr, []string{`SELECT 1 FROM DUAL`})
+	s.Dependencies.MySQL.Address = os.Getenv("OM_DB_ADDRESS")
+	s.Dependencies.MySQL.Username = os.Getenv("OM_DB_USERNAME")
+	s.Dependencies.MySQL.Password = os.Getenv("OM_DB_PASSWORD")
+}
+
+func initDatabaseConn() *dbwrapper.DB {
+	connString := fmt.Sprintf("tcp:%s*%s/%s/%s", Settings.Dependencies.MySQL.Address, "officemapper", Settings.Dependencies.MySQL.Username, Settings.Dependencies.MySQL.Password)
+
+	db, err := dbwrapper.GetDB("OfficeMapper:", connString, "mymysql", os.Stderr, []string{`SELECT 1 FROM DUAL`})
 	db.SetMaxIdleConns(30)
 	db.SetMaxOpenConns(30)
 	if err != nil {
 		log.Fatalf("Error creating database connection. DB Urls: %v. \nError: %v\n",
-			dbs, err.Error())
+			connString, err.Error())
 	}
 	return db
 }
-
 // Other package inits may use Settings. So do this during var initialization
 // so that it happens before init()s are run.
 var Settings = loadConfig()
