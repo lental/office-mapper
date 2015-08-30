@@ -33,8 +33,10 @@ $( document ).ready(function(){
       pageState.set("mapsLoaded", true);
 
       renderMapSelecton();
-      firstMap = maps.first();
-      pageState.selectMapId(firstMap.get("id"));
+
+      var mapQueryParam = getQueryParam('map');
+      var mapToLoad = mapQueryParam ? mapQueryParam : maps.first().get("id");
+      pageState.selectMapId(mapToLoad);
 
       if (pageState.get("usersLoaded")) {
         renderUsers();

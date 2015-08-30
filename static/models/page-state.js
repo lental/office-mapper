@@ -49,6 +49,11 @@ PageState =  Backbone.Model.extend({
           }
 
           this.set({currentMapId: mapId});
+
+          // update URL without refreshing page
+          if(window.history && window.history.pushState) {
+            window.history.pushState(window.history.state, "", "?map=" + mapId);
+          }
         }
     },
     getCurrentMap: function(){
