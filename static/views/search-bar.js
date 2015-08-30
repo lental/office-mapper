@@ -1,7 +1,7 @@
 var SeachBarView = Backbone.View.extend({
   initialize: function(){
     this.render();
-    this.listenTo(pageState, 'change', this.clearSearchIfSearchEmpty);
+    this.listenTo(listState, 'change', this.clearSearchIfSearchEmpty);
   },
 
   el: '#search-bar',
@@ -14,22 +14,22 @@ var SeachBarView = Backbone.View.extend({
 
   onKeyPress: function(event) {
     if (event.keyCode == 13) {
-      pageState.changeSearch(event.target.value);
+      listState.changeSearch(event.target.value);
       return false;
     }
   },
 
   updateSearchValue: function(event) {
     element = event.currentTarget;
-    pageState.changeSearch(event.target.value);
+    listState.changeSearch(event.target.value);
   },
 
   clearSearchQuery: function(event) {
-    pageState.changeSearch('');
+    listState.changeSearch('');
   },
 
   clearSearchIfSearchEmpty: function() {
-    if (pageState.get("searchQuery") == '') {
+    if (listState.get("searchQuery") == '') {
       this.$("#search-input").val('');
     }
   },

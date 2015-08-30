@@ -1,12 +1,13 @@
 
 var UserListView = Backbone.View.extend({
   initialize: function(){
-    this.listenTo(pageState, 'change', this.render);
+    this.listenTo(listState, 'change', this.render);
     this.listenTo(this.model, 'add', this.render);
     this.hiding = false;
     this.initialRender();
     this.render();
   },
+  el:'#user-section',
   initialRender: function() {
     this.$('#user-list').empty();
     users.each( function(user) { 
@@ -38,33 +39,10 @@ var UserListView = Backbone.View.extend({
     this.$('.listHideButton').html(this.hiding ? "Show" : "Hide");
     this.$('#user-list').toggleClass("hiddenList", this.hiding);
 
-    var selectedObject = pageState.get('selectedObject');
-    var selectedUser;
-    if (selectedObject instanceof User) {
-      selectedUser = selectedObject;
-    } else if (selectedObject instanceof Desk) {
-      selectedUser = this.model.getUserByDeskId(selectedObject.get('id'));
-    }
-
-    this.$('#user-list .listElement').each(_.bind(function(i, o){
-      var userForRow = users.getUser(o.dataset.id);
-      var isSelected = userForRow == selectedUser;
-
-      $(o).toggleClass("displayNone", (this.isHiding ||!(isSelected || userForRow.searchMatches(pageState.get('searchQuery')))));
-      $(o).toggleClass("active", isSelected);
-
-      if(isSelected) {
-        var element = this.$('#user-list .listElement[data-id='+selectedUser.get('id')+']');
-        if (isChildPartiallyOutsideOfParent(element[0], $("#scrollable-list")[0])) {
-          element[0].scrollIntoView();
-        }
-      }
-    },this));
-
     return this;
   }
 });
 
 var renderUsers = function() {
-  new UserListView({model:users, pageState: pageState});
+  new UserListView({model:users, listState: listState});
 };

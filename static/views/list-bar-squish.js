@@ -9,7 +9,8 @@ var ListBarSquishView = Backbone.View.extend({
   events: {
     "click .squishLeft": "squishListBar",
     "click #go-to-top": "scrollToTop",
-    "click #go-to-rooms": "scrollToRooms"
+    "click #go-to-rooms": "scrollToRooms",
+    "change #filter-current-map-checkbox": "onFilterCurrentMapChanged",
   },
   scrollToTop: function(event) {
       console.log("hii");
@@ -24,6 +25,10 @@ var ListBarSquishView = Backbone.View.extend({
     console.log("squishing");
     this.listSquished = !this.listSquished;
     this.render();
+  },
+
+  onFilterCurrentMapChanged: function(event) {
+    listState.set("filterByCurrentMap", event.target.checked);
   },
   render: function() {
     this.$(".squishLeft").html(this.listSquished ? ">>" : "<<");

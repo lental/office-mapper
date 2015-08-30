@@ -1,7 +1,8 @@
 var UserEntryView = Backbone.View.extend({
   initialize: function(){
     this.listenTo(this.model, 'change', this.initialRender);
-    this.listenTo(pageState, 'change:searchQuery', this.render);
+    this.listenTo(listState, 'change:searchQuery', this.render);
+    this.listenTo(listState, 'change:filterByCurrentMap', this.render);
     this.listenTo(pageState, 'change:selectedObject', this.render);
     this.initialRender();
     this.render();
@@ -48,7 +49,11 @@ var UserEntryView = Backbone.View.extend({
     }
 
     var isSelected = this.model == selectedUser;
-    this.$el.toggleClass("displayNone", !(isSelected || this.model.searchMatches(pageState.get('searchQuery'))));
+    var matchesSearchQuery = this.model.searchMatches(listState.get('searchQuery'));
+    var isCurrentMapShowing = !listState.get('filterByCurrentMap') || this.model.get('mapId') == pageState.get('currentMapId');
+
+    var shouldShow = isSelected || (matchesSearchQuery && isCurrentMapShowing)
+    this.$el.toggleClass("displayNone", !shouldShow);
     this.$el.toggleClass("active", isSelected);
     if(isSelected) {
       var element = this.$el;
@@ -62,5 +67,5 @@ var UserEntryView = Backbone.View.extend({
 });
 
 var renderUsers = function() {
-  new UserListView({model:users, pageState: pageState});
+  new UserListView({model:users, listState: listState, pageState: pageState});
 };

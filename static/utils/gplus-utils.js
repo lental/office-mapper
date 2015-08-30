@@ -21,8 +21,9 @@ function auth(){
 
 function onAuthSuc(googleUser) {
   console.log("test");
-  if(googleUser.g)
-  gplus.set('googleUser',googleUser);
+  if(googleUser.g) {
+    gplus.set('googleUser',googleUser);
+  }
   debugger;
 }
 

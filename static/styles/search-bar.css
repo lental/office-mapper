@@ -1,3 +1,8 @@
+#filter-bar {
+  margin: 5px 10px;
+  padding: 5px;
+}
+
 #search-bar {
   display: -webkit-flex;
   display: flex;
@@ -15,11 +20,11 @@
 }
 
 #search-clear {
-    font-size: 20px;
-    margin: auto;
-    padding: 5px 10px;
-    background-color: #82859C;
-    border-bottom-right-radius: .4em;
-    border-top-right-radius: .1em;
-    color: white;
+  font-size: 20px;
+  margin: auto;
+  padding: 5px 10px;
+  background-color: #82859C;
+  border-bottom-right-radius: .4em;
+  border-top-right-radius: .1em;
+  color: white;
 }

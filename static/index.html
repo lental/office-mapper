@@ -21,6 +21,7 @@
     <script type='text/javascript' src="models/map.js"> </script>
     <script type='text/javascript' src="models/modified-objects.js"> </script>
     <script type='text/javascript' src="models/page-state.js"> </script>
+    <script type='text/javascript' src="models/list-state.js"> </script>
 
     <script type='text/javascript' src="model-routes.js"> </script>
     <script type='text/javascript' src="utils/gplus-utils.js"> </script>
@@ -85,6 +86,11 @@
             <div id="search-bar">
               <input type="text" id="search-input" class="searchBarText" name="q" placeholder="Search for Person/Place" />
               <div id="search-clear">Clear</div>
+            </div>
+            <div id="filter-bar">
+              <div id="filter-current-map">
+                <input class='filterCheckBox' id="filter-current-map-checkbox" type='checkbox' name='currentMap' value='Filter by Current Map' checked> Filter by Current Map
+              </div>
             </div>
             <div id="quick-button-bar">
               <div class="quickButton" id="go-to-top">
