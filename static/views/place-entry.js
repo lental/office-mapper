@@ -32,7 +32,7 @@ var PlaceEntryView = Backbone.View.extend({
   template: _.template("" +
   "<div class='placeName'><%= place.get('name') %> </div>" +
   "<div class='placeDescription'><%= place.get('description') %> </div>" +
-  "<div class='userDesk'>Map: <%= mapName %> </div>" +
+  "<div class='userDesk'><%= mapName %> </div>" +
   ""),
 
   render: function() {

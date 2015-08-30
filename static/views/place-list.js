@@ -8,11 +8,12 @@ var PlaceListView = Backbone.View.extend({
   },
 
   el: '#places-section',
+  
   initialRender: function() {
     this.$('#place-list').empty();
     places.each( function(place) { 
-      userView = new PlaceEntryView({model: place});
-        this.$('#place-list').append(userView.$el);
+      placeView = new PlaceEntryView({model: place});
+      this.$('#place-list').append(placeView.$el);
     });
   },
 

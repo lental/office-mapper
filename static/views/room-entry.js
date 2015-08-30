@@ -1,4 +1,5 @@
-var UserEntryView = Backbone.View.extend({
+
+var RoomEntryView = Backbone.View.extend({
   initialize: function(){
     this.listenTo(this.model, 'change', this.initialRender);
     this.listenTo(listState, 'change:searchQuery', this.render);
@@ -10,45 +11,45 @@ var UserEntryView = Backbone.View.extend({
 
   initialRender: function() {
     this.$el.html(this.template({
-      user:this.model,
-      isSelected: this.model == pageState.get('selectedObject'),
+      room:this.model,
       mapName: this.model.get('mapId') ? maps.getMap(this.model.get('mapId')).get('name') : 'No Assigned Desk'
     }));
   },
 
-  id: function() {return "list_user_" + this.model.attributes.id;},
+  id: function() {return "list_room_" + this.model.attributes.id;},
   tagName: "div",
-  className: "listElement userListElement",
+  className: "listElement roomListElement",
 
   events: {
-    "click ": "onUserClick"
+    "click": "onRoomClick",
   },
 
-  onUserClick: function(event) {
+  onRoomClick: function(event) {
     element = event.currentTarget;
-    console.log("user " + element.dataset.id + " click");
-    pageState.selectObject(this.model);
+    console.log("room " + element.dataset.id + " click");
+    pageState.selectObject(rooms.getRoom(element.dataset.id));
   },
 
-  template:  _.template("" +
-  "<div class='userThumbnail'><img class='userThumbnailImage' src='<%= user.get('thumbnailUrl')%>' onerror='this.src=\"/images/default-thumbnail.png\"' /></div>" +
-  "<div class='userListInfo'>" +
-  "<div class='userName'><%= user.get('name') %> </div>" +
-  "<div class='userEmail'><%= user.get('email') %> </div>" +
-  "<div class='userMap'><%= mapName %> </div>" +
-  "</div>"
+  template: _.template("" +
+  "<div class='roomName'><%= room.get('name') %> </div>" +
+  "<div class='roomMap'><%= mapName %> </div>" +
+  "<div class='roomFeatures'><%= this.featuresTemplate(room.get('features')) %> </div>" +
+  ""),
+
+  featuresTemplate: _.template("<table class='featureListTable'>" +
+  "<tr class='' id=''><td class='featureListLabel'>chromecast:</td><td><%= chromecast ? '&#10004;' : 'X' %></td>" +
+  "<td class='featureListSpacer'></td>" +
+  "<td class='featureListLabel'>phone:</td><td><%= phone ? '&#10004;' : 'X' %></td></tr>" +
+  "<tr class='' id=''><td class='featureListLabel'>tv:</td><td><%= tv ?  '&#10004;' : 'X'  %></td>" +
+  "<td class='featureListSpacer'></td>" +
+  "<td class='featureListLabel'>seats:</td><td><%= seats %></td></tr>" +
+  "</table>"
   ),
 
   render: function() {
     var selectedObject = pageState.get('selectedObject');
-    var selectedUser;
-    if (selectedObject instanceof User) {
-      selectedUser = selectedObject;
-    } else if (selectedObject instanceof Desk) {
-      selectedUser = users.getUserByDeskId(selectedObject.get('id'));
-    }
 
-    var isSelected = this.model == selectedUser;
+    var isSelected = this.model == selectedObject;
     var matchesSearchQuery = this.model.searchMatches(listState.get('searchQuery'));
     var isCurrentMapShowing = !listState.get('filterByCurrentMap') || this.model.get('mapId') == pageState.get('currentMapId');
 
@@ -61,11 +62,9 @@ var UserEntryView = Backbone.View.extend({
         element[0].scrollIntoView();
       }
     }
-
     return this;
   }
 });
-
-var renderUsers = function() {
-  new UserListView({model:users, listState: listState, pageState: pageState});
+var renderRooms = function() {
+  new RoomListView({model:rooms, pageState: pageState});
 };
