@@ -33,6 +33,7 @@
     <script type='text/javascript' src="views/user-list.js"> </script>
     <script type='text/javascript' src="views/room-list.js"> </script>
     <script type='text/javascript' src="views/place-list.js"> </script>
+    <script type='text/javascript' src="views/place-entry.js"> </script>
     <script type='text/javascript' src="views/map-list.js"> </script>
     <script type='text/javascript' src="views/edit-form.js"> </script>
     <script type='text/javascript' src="views/search-bar.js"> </script>
@@ -87,17 +88,17 @@
               <input type="text" id="search-input" class="searchBarText" name="q" placeholder="Search for Person/Place" />
               <div id="search-clear">Clear</div>
             </div>
-            <div id="filter-bar">
-              <div id="filter-current-map">
-                <input class='filterCheckBox' id="filter-current-map-checkbox" type='checkbox' name='currentMap' value='Filter by Current Map' checked> Filter by Current Map
-              </div>
-            </div>
             <div id="quick-button-bar">
               <div class="quickButton" id="go-to-top">
                 Go To Top
               </div>
               <div class="quickButton" id="go-to-rooms">
                 Go To Rooms
+              </div>
+            </div>
+            <div id="filter-bar">
+              <div id="filter-current-map">
+                <label><input class='filterCheckBox' id="filter-current-map-checkbox" type='checkbox' name='currentMap' value='Filter by Current Map' checked> Filter by Current Map</label>
               </div>
             </div>
             <div id="scrollable-list">
