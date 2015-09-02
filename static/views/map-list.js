@@ -1,16 +1,19 @@
-var mapTemplate = _.template("<div class='mapListElement <%= isSelected ? 'active': '' %>' data-id=<%= id %>>" +
-  "<div class='mapName'>Map: <%= name %></div>" +
-  "</div>"
-  );
-
 var MapListView = Backbone.View.extend({
   initialize: function(){
-    this.render();
+    this.initialRender();
     this.listenTo(pageState, 'change', this.render);
+    this.listenTo(this.model, 'add', this.initialRender);
   },
 
   el: '#navigation-bar',
-
+  
+  initialRender: function() {
+    this.$el.empty();
+    this.model.each( _.bind(function(map) { 
+      mapView = new MapEntryView({model: map});
+      this.$el.append(mapView.$el);
+    },this));
+  },
   events: {
     "click .mapListElement": "onMapClick",
   },
@@ -22,13 +25,7 @@ var MapListView = Backbone.View.extend({
     pageState.selectObject(maps.getMap(element.dataset.id));
   },
 
-  template: _.template("<% maps.each( function(map) { %>" +
-       "<% map.attributes.isSelected = currentMapId == map.id %>" +
-       "<%= mapTemplate(map.attributes) %>" +
-    "<% }); %> "),
-
   render: function() {
-    this.$el.html(this.template({maps:this.model, currentMapId:pageState.get("currentMapId")}));
     return this;
   }
 });
