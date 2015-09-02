@@ -29,7 +29,7 @@ var MapEntryView = Backbone.View.extend({
   },
 
   template: _.template("" +
-  "<div class='mapName'>Map: <%= map.get('name') %></div>" +
+  "<div class='mapName'><%= map.get('name') %></div>" +
   ""),
 
   render: function() {

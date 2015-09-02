@@ -24,3 +24,11 @@
   background:#2e335a;
   color:white;
 }
+
+.addMapButton {
+  display:inline-block;
+  background: #82859C;
+  padding: 8px;
+  border-radius: .5em;
+  color:white;
+}}
