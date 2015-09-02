@@ -4,6 +4,8 @@ var PlaceEntryView = Backbone.View.extend({
     this.listenTo(listState, 'change:searchQuery', this.render);
     this.listenTo(listState, 'change:filterByCurrentMap', this.render);
     this.listenTo(pageState, 'change:selectedObject', this.render);
+    this.map = maps.getMap(this.model.get('mapId'));
+    this.listenTo(this.map, 'change', this.onMapChanged);
     this.initialRender();
     this.render();
   },
@@ -17,7 +19,7 @@ var PlaceEntryView = Backbone.View.extend({
 
   id: function() {return "list_place_" + this.model.attributes.id;},
   tagName: "div",
-  className: "listElement placeListElement",
+  className: "listElement placeListElement clickable",
 
   events: {
     "click ": "onPlaceClick"
@@ -29,10 +31,14 @@ var PlaceEntryView = Backbone.View.extend({
     pageState.selectObject(this.model);
   },
 
+  onMapChanged: function() {
+    this.$(".placeDesk").html(this.map.get("name"));
+  },
+
   template: _.template("" +
   "<div class='placeName'><%= place.get('name') %> </div>" +
   "<div class='placeDescription'><%= place.get('description') %> </div>" +
-  "<div class='userDesk'><%= mapName %> </div>" +
+  "<div class='placeDesk'><%= mapName %> </div>" +
   ""),
 
   render: function() {

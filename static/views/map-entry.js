@@ -15,7 +15,7 @@ var MapEntryView = Backbone.View.extend({
 
   id: function() {return "list_map_" + this.model.attributes.id;},
   tagName: "div",
-  className: "mapListElement",
+  className: "mapListElement clickable",
 
   events: {
     "click ": "onMapClick"

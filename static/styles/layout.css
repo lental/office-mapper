@@ -43,3 +43,7 @@ body {
   background-color:#CCD6DB;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
+
+.clickable {
+  cursor:pointer;
+}

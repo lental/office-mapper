@@ -5,6 +5,8 @@ var RoomEntryView = Backbone.View.extend({
     this.listenTo(listState, 'change:searchQuery', this.render);
     this.listenTo(listState, 'change:filterByCurrentMap', this.render);
     this.listenTo(pageState, 'change:selectedObject', this.render);
+    this.map = maps.getMap(this.model.get('mapId'));
+    this.listenTo(this.map, 'change', this.onMapChanged);
     this.initialRender();
     this.render();
   },
@@ -18,7 +20,7 @@ var RoomEntryView = Backbone.View.extend({
 
   id: function() {return "list_room_" + this.model.attributes.id;},
   tagName: "div",
-  className: "listElement roomListElement",
+  className: "listElement roomListElement clickable",
 
   events: {
     "click": "onRoomClick",
@@ -27,7 +29,11 @@ var RoomEntryView = Backbone.View.extend({
   onRoomClick: function(event) {
     element = event.currentTarget;
     console.log("room " + element.dataset.id + " click");
-    pageState.selectObject(rooms.getRoom(element.dataset.id));
+    pageState.selectObject(this.model);
+  },
+
+  onMapChanged: function() {
+    this.$(".roomMap").html(this.map.get("name"));
   },
 
   template: _.template("" +
