@@ -16,6 +16,7 @@ var PageView = Backbone.View.extend({
     if(pageState.get("currentMapLoaded")) {
       if(this.currentlyDisplayedMapId != this.model.get('currentMapId')) {
         this.$("#map-wrapper").html(new MapView({model:this.model.getCurrentMap()}).$el);
+        this.currentlyDisplayedMapId = this.model.get('currentMapId');
       }
     }
   },

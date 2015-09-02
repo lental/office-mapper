@@ -83,25 +83,24 @@ var MapView = Backbone.View.extend({
     var selectedMapId = selectedObject.get('mapId') || selectedObject.get('map_id');
     if (selectedMapId && selectedMapId != pState.get('currentMapId')){
       console.log("trying to highlight from a different map. Switching map now");
-      pState.selectMapId(selectedMapId);
       return;
     }
 
     var selectedElement;
     if (pState.attributes.selectedObject instanceof Place) {
-      selectedElement = $("#map_place_" + pState.attributes.selectedObject.attributes.id);
+      selectedElement = this.$("#map_place_" + pState.attributes.selectedObject.attributes.id);
     }
     if (pState.attributes.selectedObject instanceof Room) {
-      selectedElement = $("#map_room_" + pState.attributes.selectedObject.attributes.id);
+      selectedElement = this.$("#map_room_" + pState.attributes.selectedObject.attributes.id);
     }
     if (pState.attributes.selectedObject instanceof DeskGroup) {
-      selectedElement = $("#map_deskgroup_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
+      selectedElement = this.$("#map_deskgroup_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
     }
     if (pState.attributes.selectedObject instanceof Desk) {
-      selectedElement = $("#map_desk_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
+      selectedElement = this.$("#map_desk_" + pState.attributes.selectedObject.attributes.id).addClass(classToAdd);
     }
     if (pState.attributes.selectedObject instanceof User) {
-      selectedElement = $("#map_desk_" + pState.attributes.selectedObject.attributes.deskId).addClass(classToAdd);
+      selectedElement = this.$("#map_desk_" + pState.attributes.selectedObject.attributes.deskId).addClass(classToAdd);
     }
 
     if (selectedElement && selectedElement.length > 0) {
