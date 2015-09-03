@@ -3,7 +3,10 @@
 package panichandler
 
 import (
+	"fmt"
 	"net/http"
+	"ooyala/go-ooyalalog"
+	"runtime/debug"
 )
 
 type Handler struct {
@@ -17,6 +20,9 @@ func NewHandler(h http.Handler) *Handler {
 func (h *Handler) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	defer func() {
 		if e := recover(); e != nil {
+			logger := ooyalalog.NewLogger(r)
+			logger.Set("Error", fmt.Sprintf("%s", e))
+			logger.Set("Stacktrace", string(debug.Stack()))
 			rw.WriteHeader(http.StatusInternalServerError)
 			rw.Write([]byte("Internal Server Error"))
 		}

@@ -7,14 +7,17 @@ import (
 	"io/ioutil"
 	"net/http"
 	"office-mapper/config"
+	"ooyala/go-ooyalalog"
 	"os"
 	"strings"
 )
 
 func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 	// Log the server status and additional error information if healthz fails
+	logger := ooyalalog.NewLogger(r)
 
 	if _, err := os.Stat("/etc/maint"); !os.IsNotExist(err) {
+		logger.Set("Server-Status", "MAINTENANCE")
 		w.Header().Add("Server-Status", "MAINTENANCE")
 		http.Error(w, "Service is under maintenance", http.StatusNotFound)
 		return
@@ -26,6 +29,8 @@ func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		// Skeletor can still serve some requests from the cache if the DB is down
 		w.Header().Add("Server-Status", "DEGRADED")
+		logger.Set("Server-Status", "Degraded due to DB connection error")
+		logger.Set("Error", err.Error())
 		msg := map[string]string{
 			"message": "Error connecting to the DB",
 			"error":   err.Error(),
@@ -36,8 +41,11 @@ func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func validateDBConnection() error {
-	_, err := config.DB.QueryRow(`SELECT 1 FROM DUAL`)
-	return err
+	row := config.DB.QueryRow(`SELECT 1 FROM DUAL`)
+	// err isn't exposed directly, so try to scan it and see if we succeed.
+	// This is a broken interface.
+	var n int
+	return row.Scan(&n)
 }
 
 // This route raises a panic and is only intended for tests

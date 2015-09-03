@@ -8,6 +8,9 @@ import (
 	"office-mapper/config"
 	"office-mapper/handlers"
 	"office-mapper/panichandler"
+	"ooyala/go-ooyala-headers"
+	"ooyala/go-ooyalalog"
+	"os"
 	"runtime"
 	"time"
 )
@@ -21,7 +24,9 @@ func main() {
 	appHandlers := handlers.AppHandlers()
 	panicHandler := panichandler.NewHandler(appHandlers)
 	timeoutHandler := http.TimeoutHandler(panicHandler, 60*time.Second, "Request Timed Out")
-	clearContextHandler := context.ClearHandler(timeoutHandler)
+	ooyalaHeaderHandler := ooheaders.NewHandler(timeoutHandler)
+	logHandler := ooyalalog.NewHandler(ooyalaHeaderHandler, os.Stdout, []string{"/healthz"})
+	clearContextHandler := context.ClearHandler(logHandler)
 
 	addr := fmt.Sprintf(":%d", config.Settings.HTTPPort)
 
