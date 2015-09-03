@@ -107,8 +107,11 @@
               </div>
             </div>
             <div id="filter-bar">
-              <div id="filter-current-map">
-                <label class="clickable"><input class='filterCheckBox' id="filter-current-map-checkbox" type='checkbox' name='currentMap' value='Filter by Current Map' checked> Filter by Current Map</label>
+              <div id="filter-title">Filter By:</div>
+              <div id="filter-by">
+                <label for="filter-current-map-radio"class="clickable"><input class='filterRadio' id="filter-current-map-radio" type='radio' name='filterBy' value='currentMap' checked> Current Map</label>
+                <label for="filter-unassigned-radio" class="clickable"><input class='filterRadio' id="filter-unassigned-radio" type='radio' name='filterBy' value='unassigned'> Unassigned</label>
+                <label for="filter-all-radio" class="clickable"><input class='filterRadio' id="filter-all-radio" type='radio' name='filterBy' value='all'> All</label>
               </div>
             </div>
             <div id="scrollable-list">

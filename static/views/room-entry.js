@@ -3,7 +3,7 @@ var RoomEntryView = Backbone.View.extend({
   initialize: function(){
     this.listenTo(this.model, 'change', this.initialRender);
     this.listenTo(listState, 'change:searchQuery', this.render);
-    this.listenTo(listState, 'change:filterByCurrentMap', this.render);
+    this.listenTo(listState, 'change:filterBy', this.render);
     this.listenTo(pageState, 'change:selectedObject', this.render);
     this.map = maps.getMap(this.model.get('mapId'));
     this.listenTo(this.map, 'change', this.onMapChanged);
@@ -57,9 +57,9 @@ var RoomEntryView = Backbone.View.extend({
 
     var isSelected = this.model == selectedObject;
     var matchesSearchQuery = this.model.searchMatches(listState.get('searchQuery'));
-    var isCurrentMapShowing = !listState.get('filterByCurrentMap') || this.model.get('mapId') == pageState.get('currentMapId');
+    var satisfiesFilter = listState.satisfiesFilter(this.model);
 
-    var shouldShow = isSelected || (matchesSearchQuery && isCurrentMapShowing)
+    var shouldShow = isSelected || (matchesSearchQuery && satisfiesFilter)
     this.$el.toggleClass("displayNone", !shouldShow);
     this.$el.toggleClass("active", isSelected);
     if(isSelected) {
