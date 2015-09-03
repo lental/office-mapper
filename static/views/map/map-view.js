@@ -125,7 +125,7 @@ var MapView = Backbone.View.extend({
   },
 
   render: function() {
-     var maxX = 0;
+    var maxX = 0;
     var maxY = 0;
     var maxWidth = 0;
     var maxHeight = 0;

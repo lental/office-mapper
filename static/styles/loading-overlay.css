@@ -21,11 +21,14 @@
   -webkit-flex: 1;
 }
 
-#loading-logo-img {
+#loading-info {
   -webkit-transition: opacity 100ms linear;
   -moz-transition: opacity 100ms linear;
   -o-transition: opacity 100ms linear;
   -ms-transition: opacity 100ms linear;
   transition: opacity 100ms linear;
+}
 
+.loadingStatus {
+  display: inline;
 }
