@@ -52,7 +52,7 @@ func (db *DB) Query(query string, args ...interface{}) (result *sql.Rows, err er
 }
 
 func (db *DB) QueryRow(query string, args ...interface{}) (result *sql.Rows,err error) {
-  result, err = db.Query(query, args...)
+  result, err = db.db.Query(query, args...)
   db.logWithHost(db.connection, query, err, args...)
   return 
 }

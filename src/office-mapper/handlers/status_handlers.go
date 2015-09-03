@@ -36,14 +36,8 @@ func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func validateDBConnection() error {
-	row, err := config.DB.QueryRow(`SELECT 1 FROM DUAL`)
-	if err != nil {
-		return err
-	}
-	// err isn't exposed directly, so try to scan it and see if we succeed.
-	// This is a broken interface.
-	var n int
-	return row.Scan(&n)
+	_, err := config.DB.QueryRow(`SELECT 1 FROM DUAL`)
+	return err
 }
 
 // This route raises a panic and is only intended for tests
