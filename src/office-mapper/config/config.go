@@ -85,6 +85,7 @@ func initDatabaseConn() *oodb.DB {
 	dbs := []string{}
 	for _, h := range Settings.Dependencies.MySQL.Address {
 		connString := fmt.Sprintf("tcp:%s*%s/%s/%s", h, Settings.Dependencies.MySQL.Database, Settings.Dependencies.MySQL.Username, Settings.Dependencies.MySQL.Password)
+    log.Printf("Constring is", connString)
 		dbs = append(dbs, connString)
 	}
 
