@@ -29,6 +29,7 @@ type settings struct {
 	Dependencies struct {
 		MySQL struct {
 			Address  []string `json:"address"`
+			Database string   `json:"database"`
 			Username string   `json:"username"`
 			Password string   `json:"password"`
 		} `json:"mysql"`
@@ -83,7 +84,7 @@ func loadConfig() *settings {
 func initDatabaseConn() *oodb.DB {
 	dbs := []string{}
 	for _, h := range Settings.Dependencies.MySQL.Address {
-		connString := fmt.Sprintf("tcp:%s*%s/%s/%s", h, "officemapper", Settings.Dependencies.MySQL.Username, Settings.Dependencies.MySQL.Password)
+		connString := fmt.Sprintf("tcp:%s*%s/%s/%s", h, Settings.Dependencies.MySQL.Database, Settings.Dependencies.MySQL.Username, Settings.Dependencies.MySQL.Password)
 		dbs = append(dbs, connString)
 	}
 
