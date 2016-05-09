@@ -6,13 +6,13 @@
 	url = git://github.com/gorilla/context.git
 [submodule "vendor/src/ooyala/go-ooyala-headers"]
 	path = vendor/src/ooyala/go-ooyala-headers
-	url = http://github.services.ooyala.net/Platform/go-ooyala-headers.git
+	url = https://scm@git.corp.ooyala.com/scm/common-go/go-ooyala-headers.git
 [submodule "vendor/src/ooyala/go-ooyalalog"]
 	path = vendor/src/ooyala/go-ooyalalog
-	url = http://github.services.ooyala.net/Platform/go-ooyalalog.git
+	url = https://scm@git.corp.ooyala.com/scm/common-go/go-ooyalalog.git 
 [submodule "vendor/src/ooyala/go-ooyaladb"]
 	path = vendor/src/ooyala/go-ooyaladb
-	url = http://github.services.ooyala.net/Platform/go-ooyaladb.git
+	url = https://scm@git.corp.ooyala.com/scm/common-go/go-ooyaladb.git
 [submodule "vendor/src/github.com/ziutek/mymysql"]
 	path = vendor/src/github.com/ziutek/mymysql
 	url = git://github.com/ziutek/mymysql
